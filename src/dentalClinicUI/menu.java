@@ -1,6 +1,6 @@
-package dental_clinic;
+package dentalClinicUI;
 
-import DentalClinicJDBC.JDBCManager;
+import dentalClinicJDBC.JDBCManager;
 
 public class menu {
 
