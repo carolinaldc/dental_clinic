@@ -13,7 +13,7 @@ public class Patient implements Serializable {
 	private int phone; 
 	private String email; 
 	private int credit_card; 
-	private int urgency; 
+	private Emergency urgency; 
 	private Date dob; 
 	private Clinician id_clinicians;
 	
@@ -62,13 +62,7 @@ public class Patient implements Serializable {
 		this.credit_card = credit_card;
 	}
 
-	public int getUrgency() {
-		return urgency;
-	}
-
-	public void setUrgency(int urgency) {
-		this.urgency = urgency;
-	}
+	// HACER SETTER Y GETTER DE URGENCY
 
 	public Date getDob() {
 		return dob;
