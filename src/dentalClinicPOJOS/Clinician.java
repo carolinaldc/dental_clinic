@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Clinician implements Serializable {
 		
 		private static final long serialVersionUID = -2637321372475755L;
-		private String id ; 
+		private int id ; 
 		private String name ; 
 		private String surname ; 
 		private String email ; 
@@ -18,13 +18,8 @@ public class Clinician implements Serializable {
 		}
 
 
-		public String getId() {
+		public int getId() {
 			return id;
-		}
-
-
-		public void setId(String id) {
-			this.id = id;
 		}
 
 

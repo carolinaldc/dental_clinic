@@ -1,112 +1,95 @@
 package dentalClinicPOJOS;
+
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 public class Payment implements Serializable {
-		
-		private static final long serialVersionUID = -2637321372475755L;
-		private String id ; 
-		private String name ; 
-		private String surname ; 
-		private String email ; 
-		private int phone ; 
-		private String speciality ;
-		
-		
-		public Payment() {
-			super();
-		}
 
+    private static final long serialVersionUID = -2637321372475755L;
+    
+    private int id;
+    private double amount;
+    private Date date;
+    private Method method;
+    private Status status;
+    private Patient patient_id;
 
-		public String getId() {
-			return id;
-		}
+    public enum Method {
+        CASH, CARD, BIZUM
+    }
 
+    public enum Status {
+        PENDING, COMPLETED, CANCELLED
+    }
 
-		public void setId(String id) {
-			this.id = id;
-		}
+    public Payment() {
+        super();
+    }
 
+    public int getId() {
+        return id;
+    }
 
-		public String getName() {
-			return name;
-		}
+    public double getAmount() {
+        return amount;
+    }
 
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
 
-		public void setName(String name) {
-			this.name = name;
-		}
+    public Date getDate() {
+        return date;
+    }
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-		public String getSurname() {
-			return surname;
-		}
+    public Method getMethod() {
+        return method;
+    }
 
+    public void setMethod(Method method) {
+        this.method = method;
+    }
 
-		public void setSurname(String surname) {
-			this.surname = surname;
-		}
+    public Status getStatus() {
+        return status;
+    }
 
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
-		public String getEmail() {
-			return email;
-		}
+    public Patient getPatient_id() {
+        return patient_id;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, amount, date, method, status, patient_id);
+    }
 
-		public void setEmail(String email) {
-			this.email = email;
-		}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!(obj instanceof Payment))
+            return false;
+        Payment other = (Payment) obj;
+        return id == other.id &&
+               Double.compare(other.amount, amount) == 0 &&
+               patient_id == other.patient_id &&
+               Objects.equals(date, other.date) &&
+               method == other.method &&
+               status == other.status;
+    }
 
-
-		public int getPhone() {
-			return phone;
-		}
-
-
-		public void setPhone(int phone) {
-			this.phone = phone;
-		}
-
-
-		public String getSpeciality() {
-			return speciality;
-		}
-
-
-		public void setSpeciality(String speciality) {
-			this.speciality = speciality;
-		}
-
-
-		
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(id, name, surname, email, phone, speciality);
-		}
-
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			Payment other = (Payment) obj;
-			return Objects.equals(email, other.email) && Objects.equals(id, other.id) && Objects.equals(name, other.name)
-					&& phone == other.phone && Objects.equals(speciality, other.speciality)
-					&& Objects.equals(surname, other.surname);
-		}
-
-
-		@Override
-		public String toString() {
-			return "Clinicians [id=" + id + ", name=" + name + ", surname=" + surname + ", email=" + email + ", phone=" + phone
-					+ ", speciality=" + speciality + "]";
-		}
-		
-		
-
-	}
+    @Override
+    public String toString() {
+        return "Payment [id=" + id + ", amount=" + amount + ", date=" + date +
+               ", method=" + method + ", status=" + status + ", patient_id=" + patient_id + "]";
+    }
+}
