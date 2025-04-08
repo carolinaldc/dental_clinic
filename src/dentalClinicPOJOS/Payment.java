@@ -2,7 +2,7 @@ package dentalClinicPOJOS;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Clinician implements Serializable {
+public class Payment implements Serializable {
 		
 		private static final long serialVersionUID = -2637321372475755L;
 		private String id ; 
@@ -13,7 +13,7 @@ public class Clinician implements Serializable {
 		private String speciality ;
 		
 		
-		public Clinician() {
+		public Payment() {
 			super();
 		}
 
@@ -94,7 +94,7 @@ public class Clinician implements Serializable {
 				return false;
 			if (getClass() != obj.getClass())
 				return false;
-			Clinician other = (Clinician) obj;
+			Payment other = (Payment) obj;
 			return Objects.equals(email, other.email) && Objects.equals(id, other.id) && Objects.equals(name, other.name)
 					&& phone == other.phone && Objects.equals(speciality, other.speciality)
 					&& Objects.equals(surname, other.surname);
