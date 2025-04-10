@@ -3,22 +3,28 @@ package dentalClinicPOJOS;
 import java.io.Serializable;
 import java.util.Objects;
 
+
 public class Room implements Serializable{
-	private static final long serialVersionUID = -7099651662171602398L;
-	private String ID ; 
-	private String description ;
 	
+	
+	private static final long serialVersionUID = -7099651662171602398L;
+	private String id_room ; 
+	private Status status;
+	
+	public enum Status {
+        AVAILABLE, OCCUPIED //acordarnos que luego tenemos que pasarlo a string para pasarlo a SQL
+    }
 	
 	public Room() {
 		super();
 	}
 
 	public String getID() {
-		return ID;
+		return id_room;
 	}
 
 	public void setID(String iD) {
-		ID = iD;
+		id_room = iD;
 	}
 
 	public String getDescription() {
@@ -35,7 +41,7 @@ public class Room implements Serializable{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(ID, description);
+		return Objects.hash(id_room, description);
 	}
 	
 	@Override
@@ -47,7 +53,7 @@ public class Room implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Room other = (Room) obj;
-		return Objects.equals(ID, other.ID) && Objects.equals(description, other.description);
+		return Objects.equals(id_room, other.id_room) && Objects.equals(description, other.description);
 	}
 
 	@Override
