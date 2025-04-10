@@ -17,6 +17,10 @@ public class Patient implements Serializable {
 	private Date dob; 
 	private Clinician id_clinicians;
 	
+	public enum Emergency {
+		LOW, MEDIUM, HIGH
+	}
+	
 	public Patient() {
 		super();
 	}

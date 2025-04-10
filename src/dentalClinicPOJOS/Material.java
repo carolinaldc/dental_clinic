@@ -4,32 +4,33 @@ import java.io.Serializable;
 
 public class Material implements Serializable{
 	private static final long serialVersionUID = -6546395167641015440L;
-	private String description ; 
-	private int ID ;
+	private String name ; 
+	private int id ;
+	private int stock;
 	
 	public Material() {
 		super();
 	}
 
 	public String getDescription() {
-		return description;
+		return name;
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		this.name = description;
 	}
 
 	public int getID() {
-		return ID;
+		return id;
 	}
 	
 	public void setID(int iD) {
-		ID = iD;
+		id = iD;
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(ID, description);
+		return Objects.hash(id, name);
 	}
 
 	@Override
@@ -41,12 +42,12 @@ public class Material implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Material other = (Material) obj;
-		return ID == other.ID && Objects.equals(description, other.description);
+		return id == other.id && Objects.equals(name, other.name);
 	}
 
 	@Override
 	public String toString() {
-		return "Material [description=" + description + "]";
+		return "Material [description=" + name + "]";
 	} 
 
 }

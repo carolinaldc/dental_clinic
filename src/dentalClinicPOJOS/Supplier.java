@@ -4,21 +4,26 @@ import java.util.Objects;
 
 public class Supplier implements Serializable {
 	private static final long serialVersionUID = 869952558751098968L;
-	private int CIF ;
+	private int supplier_id ;
 	private String name  ; 
-	private String contact ;
+	private String surname; 
+	private String phone ;
+	private String email ;
 	private String address ; 
+	private Material material; 
+	
+	//hacer getters y setters the surname, phone email
 	
 	public Supplier () {
 		super(); 
 	}
 
 	public int getCIF() {
-		return CIF;
+		return supplier_id;
 	}
 
 	public void setCIF(int CIF) {
-		this.CIF = CIF;
+		this.supplier_id = CIF;
 	}
 
 	public String getName() {
@@ -49,7 +54,7 @@ public class Supplier implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(CIF, address, contact, name);
+		return Objects.hash(supplier_id, address, contact, name);
 	}
 
 	@Override
@@ -61,7 +66,7 @@ public class Supplier implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Supplier other = (Supplier) obj;
-		return CIF == other.CIF && Objects.equals(address, other.address) && Objects.equals(contact, other.contact)
+		return supplier_id == other.supplier_id && Objects.equals(address, other.address) && Objects.equals(contact, other.contact)
 				&& Objects.equals(name, other.name);
 	}
 
