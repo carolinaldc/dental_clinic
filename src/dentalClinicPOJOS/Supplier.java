@@ -4,27 +4,56 @@ import java.util.Objects;
 
 public class Supplier implements Serializable {
 	private static final long serialVersionUID = 869952558751098968L;
-	private int supplier_id ;
+	private Integer supplier_id ;
 	private String name  ; 
 	private String surname; 
-	private String phone ;
+	private Integer phone ;
 	private String email ;
 	private String address ; 
 	private Material material; 
 	
-	//hacer getters y setters the surname, phone email
 	
-	public Supplier () {
+	
+	public Supplier (String name, String surname, Integer phone, String email, String address, Material material) {
 		super(); 
+		this.name = name;
+		this.surname = surname;
+		this.phone = phone;
+		this.email = email;
+		this.address = address;
+		this.material = material;
 	}
 
-	public int getCIF() {
-		return supplier_id;
+	public String getSurname() {
+		return surname;
 	}
 
-	public void setCIF(int CIF) {
-		this.supplier_id = CIF;
+	public void setSurname(String surname) {
+		this.surname = surname;
 	}
+
+	
+
+	public Integer getPhone() {
+		return phone;
+	}
+
+	public void setPhone(Integer phone) {
+		this.phone = phone;
+	}
+
+	public void setSupplier_id(Integer supplier_id) {
+		this.supplier_id = supplier_id;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 
 	public String getName() {
 		return name;
@@ -43,12 +72,19 @@ public class Supplier implements Serializable {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
-	
+		
+
+	public Material getMaterial() {
+		return material;
+	}
+
+	public void setMaterial(Material material) {
+		this.material = material;
+	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(supplier_id, address, name);
+		return Objects.hash(address, email, material, name, phone, supplier_id, surname);
 	}
 
 	@Override
@@ -60,14 +96,19 @@ public class Supplier implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Supplier other = (Supplier) obj;
-		return supplier_id == other.supplier_id && Objects.equals(address, other.address)
-				&& Objects.equals(name, other.name);
+		return Objects.equals(address, other.address) && Objects.equals(email, other.email)
+				&& Objects.equals(material, other.material) && Objects.equals(name, other.name)
+				&& Objects.equals(phone, other.phone) && supplier_id == other.supplier_id
+				&& Objects.equals(surname, other.surname);
 	}
 
 	@Override
 	public String toString() {
-		return "Supplier [name=" + name  + ", address=" + address + "]";
+		return "Supplier [name=" + name + ", surname=" + surname + ", phone=" + phone + ", email=" + email
+				+ ", address=" + address + ", material=" + material + "]";
 	}
+
+	
 
 	
 	

@@ -8,28 +8,27 @@ public class PatientTreatment implements Serializable {
 
     private static final long serialVersionUID = -2637321372475755L;
 
-    private int id;
-    private Patient patient_id;
-    private Treatment treatment_id;
+    private Integer id;
+    private Patient patient;
+    private Treatment treatment;
     private Date date;
     private String comment;
 
-    public PatientTreatment() {
+    public PatientTreatment(String comment, Date date, Treatment treatment, Patient patient) {
         super();
+        this.comment = comment;
+        this.date = date;
+        this.treatment = treatment;
+        this.patient = patient;
     }
 
     public int getId() {
         return id;
     }
-
-    public Patient getPatient_id() {
-        return patient_id;
-    }
-
-
-    public Treatment getTreatment_id() {
-        return treatment_id;
-    }
+    public void setId(Integer id) {
+		this.id = id;
+	}
+    
 
     public Date getDate() {
         return date;
@@ -47,28 +46,49 @@ public class PatientTreatment implements Serializable {
         this.comment = comment;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, patient_id, treatment_id, date, comment);
-    }
+    
+    public Patient getPatient() {
+		return patient;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof PatientTreatment))
-            return false;
-        PatientTreatment other = (PatientTreatment) obj;
-        return id == other.id &&
-               patient_id == other.patient_id &&
-               treatment_id == other.treatment_id &&
-               Objects.equals(date, other.date) &&
-               Objects.equals(comment, other.comment);
-    }
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
 
-    @Override
-    public String toString() {
-        return "PatientTreatment [id=" + id + ", patient_id=" + patient_id + ", treatment_id=" + treatment_id +
-               ", date=" + date + ", comment=" + comment + "]";
-    }
+	public Treatment getTreatment() {
+		return treatment;
+	}
+
+	public void setTreatment(Treatment treatment) {
+		this.treatment = treatment;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(comment, date, id, patient, treatment);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PatientTreatment other = (PatientTreatment) obj;
+		return Objects.equals(comment, other.comment) && Objects.equals(date, other.date)
+				&& Objects.equals(id, other.id) && Objects.equals(patient, other.patient)
+				&& Objects.equals(treatment, other.treatment);
+	}
+
+	@Override
+	public String toString() {
+		return "PatientTreatment [patient=" + patient + ", treatment=" + treatment + ", date=" + date + ", comment="
+				+ comment + "]";
+	}
+
+	
+	
+	
 }

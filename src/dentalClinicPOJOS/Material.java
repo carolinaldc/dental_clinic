@@ -5,11 +5,13 @@ import java.io.Serializable;
 public class Material implements Serializable{
 	private static final long serialVersionUID = -6546395167641015440L;
 	private String name ; 
-	private int id ;
-	private int stock;
+	private Integer id ;
+	private Integer stock;
 	
-	public Material() {
+	public Material(Integer stock, String name) {
 		super();
+		this.stock = stock;
+		this.name = name;
 	}
 
 	public String getDescription() {
@@ -20,14 +22,32 @@ public class Material implements Serializable{
 		this.name = description;
 	}
 
-	public int getID() {
+	
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Integer getId() {
 		return id;
 	}
-	
-	public void setID(int iD) {
-		id = iD;
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
-	
+
+	public Integer getStock() {
+		return stock;
+	}
+
+	public void setStock(Integer stock) {
+		this.stock = stock;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, name);

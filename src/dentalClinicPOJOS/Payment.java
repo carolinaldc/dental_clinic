@@ -8,12 +8,12 @@ public class Payment implements Serializable {
 
     private static final long serialVersionUID = -2637321372475755L;
     
-    private int id;
-    private double amount;
+    private Integer id;
+    private Double amount;
     private Date date;
     private Method method;
     private Status status;
-    private Patient patient_id;
+    private Patient patient;
 
     public enum Method {
         CASH, CARD, BIZUM
@@ -23,8 +23,13 @@ public class Payment implements Serializable {
         PENDING, COMPLETED, CANCELLED
     }
 
-    public Payment() {
+    public Payment(Double amount, Date date, Method method, Status status, Patient patient) {
         super();
+    	this.amount = amount;
+    	this.date = date;
+    	this.method = method;
+    	this.status = status;
+    	this.patient = patient; 
     }
 
     public int getId() {
@@ -64,12 +69,12 @@ public class Payment implements Serializable {
     }
 
     public Patient getPatient_id() {
-        return patient_id;
+        return patient;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, amount, date, method, status, patient_id);
+        return Objects.hash(id, amount, date, method, status, patient);
     }
 
     @Override
@@ -81,7 +86,7 @@ public class Payment implements Serializable {
         Payment other = (Payment) obj;
         return id == other.id &&
                Double.compare(other.amount, amount) == 0 &&
-               patient_id == other.patient_id &&
+               patient == other.patient &&
                Objects.equals(date, other.date) &&
                method == other.method &&
                status == other.status;
@@ -90,6 +95,6 @@ public class Payment implements Serializable {
     @Override
     public String toString() {
         return "Payment [id=" + id + ", amount=" + amount + ", date=" + date +
-               ", method=" + method + ", status=" + status + ", patient_id=" + patient_id + "]";
+               ", method=" + method + ", status=" + status + ", patient_id=" + patient + "]";
     }
 }

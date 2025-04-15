@@ -8,13 +8,17 @@ public class TreatmentMaterial implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int id;
-    private Material material_id;
-    private Treatment treatment_id;
+    private Material material;
+    private Treatment treatment;
     private String tools;
     private String description;
 
-    public TreatmentMaterial() {
+    public TreatmentMaterial(Material material, Treatment treatment, String tools, String description) {
         super();
+        this.material = material;
+        this.treatment = treatment;
+        this.tools = tools;
+        this.description = description;
     }
 
     public int getId() {
@@ -25,12 +29,12 @@ public class TreatmentMaterial implements Serializable {
         this.id = id;
     }
 
-    public Material getMaterial_id() {
-        return material_id;
+    public Material getMaterial() {
+        return material;
     }
 
-    public Treatment getTreatment_id() {
-        return treatment_id;
+    public Treatment getTreatment() {
+        return treatment;
     }
 
     public String getTools() {
@@ -51,7 +55,7 @@ public class TreatmentMaterial implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, material_id, treatment_id, tools, description);
+        return Objects.hash(id, material, treatment, tools, description);
     }
 
     @Override
@@ -62,16 +66,16 @@ public class TreatmentMaterial implements Serializable {
             return false;
         TreatmentMaterial other = (TreatmentMaterial) obj;
         return id == other.id &&
-               material_id == other.material_id &&
-               treatment_id == other.treatment_id &&
+               material == other.material &&
+               treatment == other.treatment &&
                Objects.equals(tools, other.tools) &&
                Objects.equals(description, other.description);
     }
 
     @Override
     public String toString() {
-        return "TreatmentMaterial [id=" + id + ", material_id=" + material_id +
-               ", treatment_id=" + treatment_id + ", tools=" + tools +
+        return "TreatmentMaterial [id=" + id + ", material_id=" + material +
+               ", treatment_id=" + treatment + ", tools=" + tools +
                ", description=" + description + "]";
     }
 }

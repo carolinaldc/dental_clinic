@@ -2,20 +2,25 @@ package dentalClinicPOJOS;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+
 
 public class Patient implements Serializable {
 
 	private static final long serialVersionUID = -2651925648311189667L;
-	private  int id;
+	private Integer id;
 	private String name; 
 	private String surname; 
-	private int phone; 
+	private Integer phone; 
 	private String email; 
-	private int credit_card; 
+	private Integer credit_card; 
 	private Emergency urgency; 
 	private Date dob; 
-	private Clinician id_clinicians;
+	private Clinician clinician;
+	private List<PatientTreatment> appointment;
 	
 	public enum Emergency {
 		LOW, MEDIUM, HIGH
@@ -23,8 +28,28 @@ public class Patient implements Serializable {
 	
 	public Patient() {
 		super();
+		appointment = new ArrayList<PatientTreatment>();
+	}
+	
+	public Patient(String name, String surname, Date dob, Integer phone, String email, Integer credit_card, Emergency urgency) {
+		super();
+		this.name = name;
+		this.surname = surname;
+		this.dob = dob;
+		this.phone = phone;
+		this.email = email;
+		this.credit_card = credit_card;
+		this.urgency = urgency;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;
@@ -66,7 +91,6 @@ public class Patient implements Serializable {
 		this.credit_card = credit_card;
 	}
 
-	// HACER SETTER Y GETTER DE URGENCY
 
 	public Date getDob() {
 		return dob;
@@ -77,11 +101,36 @@ public class Patient implements Serializable {
 	}
 
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(credit_card, dob, email, id, id_clinicians, name, phone, surname, urgency);
+	public Emergency getUrgency() {
+		return urgency;
 	}
 
+	public void setUrgency(Emergency urgency) {
+		this.urgency = urgency;
+	}
+
+	
+	
+	public Clinician getClinician() {
+		return clinician;
+	}
+
+	public void setClinician(Clinician clinician) {
+		this.clinician = clinician;
+	}
+
+	public List<PatientTreatment> getAppointment() {
+		return appointment;
+	}
+
+	public void setAppointment(List<PatientTreatment> appointment) {
+		this.appointment = appointment;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(appointment, clinician, credit_card, dob, email, id, name, phone, surname, urgency);
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -92,23 +141,22 @@ public class Patient implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Patient other = (Patient) obj;
-		return credit_card == other.credit_card && Objects.equals(dob, other.dob) && Objects.equals(email, other.email)
-				&& id == other.id && Objects.equals(id_clinicians, other.id_clinicians)
-				&& Objects.equals(name, other.name) && phone == other.phone && Objects.equals(surname, other.surname)
-				&& urgency == other.urgency;
-	
-		
-	
+		return Objects.equals(appointment, other.appointment) && Objects.equals(clinician, other.clinician)
+				&& Objects.equals(credit_card, other.credit_card) && Objects.equals(dob, other.dob)
+				&& Objects.equals(email, other.email) && Objects.equals(id, other.id)
+				&& Objects.equals(name, other.name) && Objects.equals(phone, other.phone)
+				&& Objects.equals(surname, other.surname) && urgency == other.urgency;
 	}
-
 
 	@Override
 	public String toString() {
 		return "Patient [name=" + name + ", surname=" + surname + ", phone=" + phone + ", email=" + email
-				+ ", credit_card=" + credit_card + ", urgency=" + urgency + ", dob=" + dob + "]";
-		
-		
+				+ ", credit_card=" + credit_card + ", urgency=" + urgency + ", dob=" + dob + ", clinician=" + clinician
+				+ "]";
 	}
+
+	
+	
 	
 	
 	

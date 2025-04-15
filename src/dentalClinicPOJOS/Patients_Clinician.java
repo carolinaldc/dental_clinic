@@ -6,31 +6,45 @@ import java.util.Objects;
 public class Patients_Clinician implements Serializable{
 
 	private static final long serialVersionUID = 7404145314772486159L;
-	private Patient id_patient ;  
-	private Clinician id_clinician ;  
+	private Patient patient ;  
+	private Clinician clinician ;  
 	private Date date ;  
 	private String visitInfo ;  
-	private int id ;
+	private Integer id ;
 	
-	public Patients_Clinician() {
+	public Patients_Clinician(String visitInfo, Date date, Clinician clinician, Patient patient) {
 		super();
+        this.visitInfo = visitInfo;
+        this.date = date;
+        this.clinician = clinician;
+        this.patient = patient;
 	}
 
-	public Patient getId_patient() {
-		return id_patient;
+	
+	
+	public Patient getPatient() {
+		return patient;
 	}
 
-	public void setId_patient(Patient id_patient) {
-		this.id_patient = id_patient;
+
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
 	}
 
-	public Clinician getId_clinician() {
-		return id_clinician;
+
+
+	public Clinician getClinician() {
+		return clinician;
 	}
 
-	public void setId_clinician(Clinician id_clinician) {
-		this.id_clinician = id_clinician;
+
+
+	public void setClinician(Clinician clinician) {
+		this.clinician = clinician;
 	}
+
+
 
 	public Date getDate() {
 		return date;
@@ -56,10 +70,14 @@ public class Patients_Clinician implements Serializable{
 		this.id = id;
 	}
 
+
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(date, id, id_clinician, id_patient, visitInfo);
+		return Objects.hash(clinician, date, id, patient, visitInfo);
 	}
+
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -70,14 +88,19 @@ public class Patients_Clinician implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Patients_Clinician other = (Patients_Clinician) obj;
-		return Objects.equals(date, other.date) && id == other.id && Objects.equals(id_clinician, other.id_clinician)
-				&& Objects.equals(id_patient, other.id_patient) && Objects.equals(visitInfo, other.visitInfo);
+		return Objects.equals(clinician, other.clinician) && Objects.equals(date, other.date)
+				&& Objects.equals(id, other.id) && Objects.equals(patient, other.patient)
+				&& Objects.equals(visitInfo, other.visitInfo);
 	}
+
 
 	@Override
 	public String toString() {
-		return "Patients_Clinician [date=" + date + ", visitInfo=" + visitInfo + "]";
+		return "Patients_Clinician [patient=" + patient + ", clinician=" + clinician + ", date=" + date + ", visitInfo="
+				+ visitInfo + "]";
 	}
+
+	
 	
 	
 	

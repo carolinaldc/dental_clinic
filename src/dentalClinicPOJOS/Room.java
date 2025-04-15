@@ -16,17 +16,25 @@ public class Room implements Serializable{
         AVAILABLE, OCCUPIED //acordarnos que luego tenemos que pasarlo a string para pasarlo a SQL
     }
 	
-	public Room() {
+	public Room(String description, Status status) {
 		super();
+		this.description = description;
+		this.status = status;
 	}
 
-	public String getID() {
+	
+
+	public String getId_room() {
 		return id_room;
 	}
 
-	public void setID(String iD) {
-		id_room = iD;
+
+
+	public void setId_room(String id_room) {
+		this.id_room = id_room;
 	}
+
+
 
 	public String getDescription() {
 		return description;
