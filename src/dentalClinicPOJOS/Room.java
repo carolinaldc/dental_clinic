@@ -9,6 +9,7 @@ public class Room implements Serializable{
 	
 	private static final long serialVersionUID = -7099651662171602398L;
 	private String id_room ; 
+	private String description;
 	private Status status;
 	
 	public enum Status {
@@ -35,15 +36,19 @@ public class Room implements Serializable{
 		this.description = description;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id_room, description);
+		return Objects.hash(description, id_room, status);
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -53,11 +58,15 @@ public class Room implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Room other = (Room) obj;
-		return Objects.equals(id_room, other.id_room) && Objects.equals(description, other.description);
+		return Objects.equals(description, other.description) && Objects.equals(id_room, other.id_room)
+				&& status == other.status;
 	}
 
 	@Override
 	public String toString() {
-		return "Room [description=" + description + "]";
-	} 
+		return "Room [description=" + description + ", status=" + status + "]";
+	}
+	
+	
+	 
 }

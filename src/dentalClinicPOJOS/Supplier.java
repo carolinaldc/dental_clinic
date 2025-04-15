@@ -34,13 +34,7 @@ public class Supplier implements Serializable {
 		this.name = name;
 	}
 
-	public String getContact() {
-		return contact;
-	}
-
-	public void setContact(String contact) {
-		this.contact = contact;
-	}
+	
 
 	public String getAddress() {
 		return address;
@@ -54,7 +48,7 @@ public class Supplier implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(supplier_id, address, contact, name);
+		return Objects.hash(supplier_id, address, name);
 	}
 
 	@Override
@@ -66,13 +60,13 @@ public class Supplier implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Supplier other = (Supplier) obj;
-		return supplier_id == other.supplier_id && Objects.equals(address, other.address) && Objects.equals(contact, other.contact)
+		return supplier_id == other.supplier_id && Objects.equals(address, other.address)
 				&& Objects.equals(name, other.name);
 	}
 
 	@Override
 	public String toString() {
-		return "Supplier [name=" + name + ", contact=" + contact + ", address=" + address + "]";
+		return "Supplier [name=" + name  + ", address=" + address + "]";
 	}
 
 	
