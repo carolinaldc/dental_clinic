@@ -9,12 +9,12 @@ import java.util.Objects;
 public class Clinician implements Serializable {
 		
 		private static final long serialVersionUID = -2637321372475755L;
-		private Integer id ; 
-		private String name ; 
-		private String surname ; 
-		private String email ; 
-		private Integer phone ; 
+		private Integer clinician_id; 
+		private String name; 
+		private String surname; 
 		private String speciality;
+		private Integer phone; 
+		private String email; 
 		private List<Patient> patients;
 		private List<Treatment> treatments;
 		
@@ -27,11 +27,11 @@ public class Clinician implements Serializable {
 
 
 		public int getId() {
-			return id;
+			return clinician_id;
 		}
 		
 		public void setId(Integer id) {
-			this.id = id;
+			this.clinician_id = id;
 		}
 		
 		public String getName() {
@@ -108,7 +108,7 @@ public class Clinician implements Serializable {
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(email, id, name, patients, phone, speciality, surname, treatments);
+			return Objects.hash(email, clinician_id, name, patients, phone, speciality, surname, treatments);
 		}
 
 
@@ -121,7 +121,7 @@ public class Clinician implements Serializable {
 			if (getClass() != obj.getClass())
 				return false;
 			Clinician other = (Clinician) obj;
-			return Objects.equals(email, other.email) && id == other.id && Objects.equals(name, other.name)
+			return Objects.equals(email, other.email) && clinician_id == other.clinician_id && Objects.equals(name, other.name)
 					&& Objects.equals(patients, other.patients) && phone == other.phone
 					&& Objects.equals(speciality, other.speciality) && Objects.equals(surname, other.surname)
 					&& Objects.equals(treatments, other.treatments);
@@ -130,7 +130,7 @@ public class Clinician implements Serializable {
 
 		@Override
 		public String toString() {
-			return "Clinician [id=" + id + ", name=" + name + ", surname=" + surname + ", email=" + email + ", phone="
+			return "Clinician [id=" + clinician_id + ", name=" + name + ", surname=" + surname + ", email=" + email + ", phone="
 					+ phone + ", speciality=" + speciality + ", patients=" + patients + ", treatments=" + treatments
 					+ "]";
 		}

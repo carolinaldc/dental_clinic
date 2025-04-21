@@ -8,7 +8,7 @@ public class Room implements Serializable{
 	
 	
 	private static final long serialVersionUID = -7099651662171602398L;
-	private String id_room ; 
+	private String room_id ; 
 	private String description;
 	private Status status;
 	
@@ -25,13 +25,13 @@ public class Room implements Serializable{
 	
 
 	public String getId_room() {
-		return id_room;
+		return room_id;
 	}
 
 
 
 	public void setId_room(String id_room) {
-		this.id_room = id_room;
+		this.room_id = id_room;
 	}
 
 
@@ -54,7 +54,7 @@ public class Room implements Serializable{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(description, id_room, status);
+		return Objects.hash(description, room_id, status);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class Room implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Room other = (Room) obj;
-		return Objects.equals(description, other.description) && Objects.equals(id_room, other.id_room)
+		return Objects.equals(description, other.description) && Objects.equals(room_id, other.room_id)
 				&& status == other.status;
 	}
 

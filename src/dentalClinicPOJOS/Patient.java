@@ -11,14 +11,14 @@ import java.util.Objects;
 public class Patient implements Serializable {
 
 	private static final long serialVersionUID = -2651925648311189667L;
-	private Integer id;
+	private Integer patient_id;
 	private String name; 
 	private String surname; 
+	private Date dob; 
 	private Integer phone; 
 	private String email; 
+	private Emergency emergency; 
 	private Integer credit_card; 
-	private Emergency urgency; 
-	private Date dob; 
 	private Clinician clinician;
 	private List<PatientTreatment> appointment;
 	
@@ -39,16 +39,16 @@ public class Patient implements Serializable {
 		this.phone = phone;
 		this.email = email;
 		this.credit_card = credit_card;
-		this.urgency = urgency;
+		this.emergency = urgency;
 	}
 
 	public Integer getId() {
-		return id;
+		return patient_id;
 	}
 
 
 	public void setId(Integer id) {
-		this.id = id;
+		this.patient_id = id;
 	}
 
 	public String getName() {
@@ -102,11 +102,11 @@ public class Patient implements Serializable {
 
 
 	public Emergency getUrgency() {
-		return urgency;
+		return emergency;
 	}
 
 	public void setUrgency(Emergency urgency) {
-		this.urgency = urgency;
+		this.emergency = urgency;
 	}
 
 	
@@ -129,7 +129,7 @@ public class Patient implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(appointment, clinician, credit_card, dob, email, id, name, phone, surname, urgency);
+		return Objects.hash(appointment, clinician, credit_card, dob, email, patient_id, name, phone, surname, emergency);
 	}
 
 	@Override
@@ -143,15 +143,15 @@ public class Patient implements Serializable {
 		Patient other = (Patient) obj;
 		return Objects.equals(appointment, other.appointment) && Objects.equals(clinician, other.clinician)
 				&& Objects.equals(credit_card, other.credit_card) && Objects.equals(dob, other.dob)
-				&& Objects.equals(email, other.email) && Objects.equals(id, other.id)
+				&& Objects.equals(email, other.email) && Objects.equals(patient_id, other.patient_id)
 				&& Objects.equals(name, other.name) && Objects.equals(phone, other.phone)
-				&& Objects.equals(surname, other.surname) && urgency == other.urgency;
+				&& Objects.equals(surname, other.surname) && emergency == other.emergency;
 	}
 
 	@Override
 	public String toString() {
 		return "Patient [name=" + name + ", surname=" + surname + ", phone=" + phone + ", email=" + email
-				+ ", credit_card=" + credit_card + ", urgency=" + urgency + ", dob=" + dob + ", clinician=" + clinician
+				+ ", credit_card=" + credit_card + ", urgency=" + emergency + ", dob=" + dob + ", clinician=" + clinician
 				+ "]";
 	}
 

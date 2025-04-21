@@ -8,7 +8,7 @@ public class PatientTreatment implements Serializable {
 
     private static final long serialVersionUID = -2637321372475755L;
 
-    private Integer id;
+    private Integer patient_appointment_id;
     private Patient patient;
     private Treatment treatment;
     private Date date;
@@ -23,10 +23,10 @@ public class PatientTreatment implements Serializable {
     }
 
     public int getId() {
-        return id;
+        return patient_appointment_id;
     }
     public void setId(Integer id) {
-		this.id = id;
+		this.patient_appointment_id = id;
 	}
     
 
@@ -65,7 +65,7 @@ public class PatientTreatment implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(comment, date, id, patient, treatment);
+		return Objects.hash(comment, date, patient_appointment_id, patient, treatment);
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class PatientTreatment implements Serializable {
 			return false;
 		PatientTreatment other = (PatientTreatment) obj;
 		return Objects.equals(comment, other.comment) && Objects.equals(date, other.date)
-				&& Objects.equals(id, other.id) && Objects.equals(patient, other.patient)
+				&& Objects.equals(patient_appointment_id, other.patient_appointment_id) && Objects.equals(patient, other.patient)
 				&& Objects.equals(treatment, other.treatment);
 	}
 

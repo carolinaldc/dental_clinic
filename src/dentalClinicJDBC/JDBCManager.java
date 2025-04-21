@@ -33,7 +33,7 @@ public class JDBCManager {
 			
 Statement stmt = c.createStatement();
 			
-			String sql = "CREATE TABLE IF NOT EXISTS Clinicians ("
+			String sql = "CREATE TABLE Clinicians ("
 					+ "clinician_id INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ "name TEXT,"
 					+ "surname TEXT,"
@@ -42,29 +42,29 @@ Statement stmt = c.createStatement();
 					+ "email TEXT)";
 			stmt.executeUpdate(sql);
 			
-			sql = "CREATE TABLE IF NOT EXISTS Patients ("
+			sql = "CREATE TABLE Patients ("
 					+ "patient_id INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ "name TEXT,"
 					+ "surname TEXT,"
 					+ "dob TEXT,"
-					+ "phone TEXT,"
+					+ "phone INTEGER,"
 					+ "email TEXT,"
 					+ "emergency TEXT,"
-					+ "credit_card TEXT)";
+					+ "credit_card INTEGER)";
 			stmt.executeUpdate(sql);
 			
-			sql = "CREATE TABLE IF NOT EXISTS Materials ("
+			sql = "CREATE TABLE Materials ("
 					+ "materials_id INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ "name TEXT,"
 					+ "stock INTEGER)";
 			stmt.executeUpdate(sql);
 			
-			sql = "CREATE TABLE IF NOT EXISTS Rooms ("
+			sql = "CREATE TABLE Rooms ("
 					+ "room_id INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ "status TEXT)";
 			stmt.executeUpdate(sql);
 
-			sql = "CREATE TABLE IF NOT EXISTS Treatments ("
+			sql = "CREATE TABLE Treatments ("
 					+ "treatment_id INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ "name TEXT,"
 					+ "description TEXT,"
@@ -72,21 +72,21 @@ Statement stmt = c.createStatement();
 					+ "room_id INTEGER REFERENCES Rooms(room_id) NOT NULL)";
 			stmt.executeUpdate(sql);
 
-			sql = "CREATE TABLE IF NOT EXISTS Clinicians_treatments ("
+			sql = "CREATE TABLE Clinicians_treatments ("
 					+ "clinician_appointment_id INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ "treatment_id INTEGER REFERENCES Treatments(treatment_id) NOT NULL,"
 					+ "clinician_id INTEGER REFERENCES Clinicians(clinician_id) NOT NULL)";
 			stmt.executeUpdate(sql);
 
-			sql = "CREATE TABLE IF NOT EXISTS Patient_treatments ("
-					+ "Patient_appointment_id INTEGER PRIMARY KEY AUTOINCREMENT,"
+			sql = "CREATE TABLE Patient_treatments ("
+					+ "patient_appointment_id INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ "patient_id INTEGER REFERENCES Patients(patient_id) NOT NULL,"
 					+ "treatment_id INTEGER REFERENCES Treatments(treatment_id) NOT NULL,"
-					+ "date TEXT,"
+					+ "date DATE,"
 					+ "comments TEXT)";
 			stmt.executeUpdate(sql);
 			
-			sql = "CREATE TABLE IF NOT EXISTS Patients_clinicians ("
+			sql = "CREATE TABLE Patients_clinicians ("
 					+ "patient_id INTEGER REFERENCES Patients(patient_id) NOT NULL,"
 					+ "clinician_id INTEGER REFERENCES Clinicians(clinician_id) NOT NULL,"
 					+ "date TEXT,"
@@ -94,15 +94,15 @@ Statement stmt = c.createStatement();
 					+ "PRIMARY KEY(patient_id, clinician_id))";
 			stmt.executeUpdate(sql);
 			
-			sql = "CREATE TABLE IF NOT EXISTS Payments ("
+			sql = "CREATE TABLE Payments ("
 					+ "payment_id INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ "amount NUMERIC,"
-					+ "payment_date TEXT,"
+					+ "payment_date DATE,"
 					+ "payment_method TEXT,"
 					+ "status TEXT)";
 			stmt.executeUpdate(sql);
 			
-			sql = "CREATE TABLE IF NOT EXISTS Treatment_materials ("
+			sql = "CREATE TABLE Treatment_materials ("
 					+ "id INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ "treatment_id INTEGER REFERENCES Treatments(treatment_id) NOT NULL,"
 					+ "materials_id INTEGER REFERENCES Materials(materials_id) NOT NULL,"
@@ -110,11 +110,11 @@ Statement stmt = c.createStatement();
 					+ "tools TEXT)";
 			stmt.executeUpdate(sql);	
 			
-			sql = "CREATE TABLE IF NOT EXISTS Suppliers (" 
+			sql = "CREATE TABLE Suppliers (" 
 					+ "supplier_id INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ "name TEXT,"
 					+ "surname TEXT,"
-					+ "phone TEXT,"
+					+ "phone INTEGER,"
 					+ "email TEXT,"
 					+ "materials_id INTEGER REFERENCES Materials(materials_id) NOT NULL)";
 			stmt.executeUpdate(sql);

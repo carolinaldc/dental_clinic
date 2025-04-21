@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class Material implements Serializable{
 	private static final long serialVersionUID = -6546395167641015440L;
+	private Integer materials_id ;
 	private String name ; 
-	private Integer id ;
 	private Integer stock;
 	
 	public Material(Integer stock, String name) {
@@ -33,11 +33,11 @@ public class Material implements Serializable{
 	}
 
 	public Integer getId() {
-		return id;
+		return materials_id;
 	}
 
 	public void setId(Integer id) {
-		this.id = id;
+		this.materials_id = id;
 	}
 
 	public Integer getStock() {
@@ -50,7 +50,7 @@ public class Material implements Serializable{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name);
+		return Objects.hash(materials_id, name);
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class Material implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Material other = (Material) obj;
-		return id == other.id && Objects.equals(name, other.name);
+		return materials_id == other.materials_id && Objects.equals(name, other.name);
 	}
 
 	@Override
