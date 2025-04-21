@@ -1,4 +1,4 @@
-package dentalClinicIfaces;
+package dentalClinicIFaces;
 
 public interface ClinicianManager {
 

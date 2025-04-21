@@ -3,10 +3,10 @@ package dentalClinicJDBC;
 import dentalClinicPOJOS.Patient;
 import java.sql.PreparedStatement;
 
-import dentalClinicIfaces.PatientManager;
+import dentalClinicIFaces.PatientManager;
 
 public class JDBCPatientManager implements PatientManager{
-	private JDBCPatientManager manager;
+	private JDBCManager manager;
 	
 	private JDBCPatientManager(JDBCManager m) {
 		this.manager = m;
@@ -24,8 +24,8 @@ public class JDBCPatientManager implements PatientManager{
 			prep.setInt(4, p.getCredit_card());
 			prep.setString(5, p.getEmail());
 			prep.setInt(6, p.getPhone());
-			prep.setEmergency(7, p.getUrgency());
-			prep.setInt(8, p.getClinician_id);
+			prep.setString(7, p.getUrgency().toString());
+			prep.setInt(8, p.getClinician().getId());
 			
 			prep.executeUpdate();
 
