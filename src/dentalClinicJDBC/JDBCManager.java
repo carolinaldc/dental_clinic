@@ -15,9 +15,12 @@ public class JDBCManager {
 			
 			Class.forName("org.sqlite.JDBC");
 			c = DriverManager.getConnection("jdbc:sqlite:./db/Dental_Clinic.db");
-			System.out.println("Database connection opened");
+			c.createStatement().execute("PRAGMA foreign_keys=ON");
 			
+		
+			System.out.println("Database connection opened");
 			createTables();
+			
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -31,7 +34,7 @@ public class JDBCManager {
 		
 		try {
 			
-Statement stmt = c.createStatement();
+			Statement stmt = c.createStatement();
 			
 			String sql = "CREATE TABLE Clinicians ("
 					+ "clinician_id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -124,6 +127,7 @@ Statement stmt = c.createStatement();
 					+ "VALUES (2341, 'Jorge', 'Gonzalez', '1992-06-23', '+34684027863', 'jorgegonzalez@gmail.com', 'MEDIUM', '5223935698626682')";
 			stmt.executeUpdate(sql);
 
+			
 			sql = "INSERT INTO Clinicians (clinician_id, name, surname, specialty, phone, email) "
 					+ "VALUES (7823, 'Julia', 'Velazquez', 'Surgery', '+34692438522', 'juliavelazquez@gmail.com')";
 			stmt.executeUpdate(sql);
