@@ -24,6 +24,17 @@ public class Clinician implements Serializable {
 			patients = new ArrayList<Patient>();
 			treatments = new ArrayList<Treatment>();
 		}
+		
+		public Clinician(Integer clinician_id, String name, String surname, String speciality, String email, Integer phone) {
+			super();
+			this.clinician_id = clinician_id;
+			this.name = name;
+			this.surname = surname;
+			this.speciality = speciality;
+			this.email = email;
+			this.phone = phone;
+		
+		}
 
 
 		public int getId() {

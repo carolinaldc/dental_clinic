@@ -2,7 +2,9 @@ package dentalClinicJDBC;
 
 import java.sql.* ; 
 import java.util.ArrayList ; 
-import java.util.List ; 
+import java.util.List ;
+
+import dentalClinicPOJOS.Clinician; 
 
 public class JDBCClinicianManager {
     
@@ -19,7 +21,7 @@ public class JDBCClinicianManager {
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, clinician.getId());
             stmt.setString(2, clinician.getName());
-            stmt.setString(3, clinician.getSpecialty());
+            stmt.setString(3, clinician.getSpeciality().toString());
             stmt.setString(4, clinician.getEmail());
 
             stmt.executeUpdate();
@@ -41,8 +43,10 @@ public class JDBCClinicianManager {
                 Clinician c = new Clinician(
                     rs.getInt("id"),
                     rs.getString("name"),
+                    rs.getString("surname"),
                     rs.getString("specialty"),
-                    rs.getString("email")
+                    rs.getString("email"),
+                    rs.getInt("phone")
                 );
                 clinicians.add(c);
             }
