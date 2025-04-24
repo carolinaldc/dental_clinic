@@ -4,9 +4,10 @@ import java.sql.* ;
 import java.util.ArrayList ; 
 import java.util.List ;
 
+import dentalClinicIFaces.ClinicianManager;
 import dentalClinicPOJOS.Clinician; 
 
-public class JDBCClinicianManager {
+public class JDBCClinicianManager implements ClinicianManager {
     
     private Connection connection;
 
