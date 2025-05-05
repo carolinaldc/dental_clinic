@@ -8,10 +8,11 @@ import dentalClinicIFaces.PatientManager;
 public class JDBCPatientManager implements PatientManager{
 	private JDBCManager manager;
 	
-	private JDBCPatientManager(JDBCManager m) {
+	public JDBCPatientManager(JDBCManager m) {
 		this.manager = m;
 	}
 	
+	@Override
 	public void addPatient(Patient p) {
 		try {
 			String sql = "INSERT INTO Patients (name, surname, dob, creditcard, email, telephone, urgency, id_clinician) VALUES(?,?,?,?,?,?,?,?)";
@@ -32,6 +33,14 @@ public class JDBCPatientManager implements PatientManager{
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
+		
+		
+	}
+	
+	@Override
+	public void getPatient(String email) {
+		//TODO method
+		
 	}
 
 }

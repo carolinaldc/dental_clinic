@@ -1,25 +1,37 @@
 package dentalClinicUI;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.MessageDigest;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
+import dentalClinicIFaces.PatientManager;
+import dentalClinicIFaces.UserManager;
 import dentalClinicJDBC.JDBCManager;
 import dentalClinicJDBC.JDBCPatientManager;
+import dentalClinicJPA.JPAUserManager;
 import dentalClinicPOJOS.Patient;
+import dentalClinicPOJOS.Role;
+import dentalClinicPOJOS.User;
 
 
 public class menu {
 	
 	private static JDBCManager jdbcmanager;
-	private static JDBCPatientManager patientManager;
+	private static PatientManager patientManager;
+	private static UserManager usermanager;
 	private static BufferedReader reader = new BufferedReader (new InputStreamReader(System.in));
 
 	public static void main(String[] args) {
 	
 		jdbcmanager = new JDBCManager();
+		patientManager = new JDBCPatientManager(jdbcmanager);
+		usermanager = new JPAUserManager();
+		
 		int choice=0;
 		try {
 			do {
@@ -27,6 +39,8 @@ public class menu {
 				System.out.println("Choose an option:");
 				System.out.println("1. Login");
 				System.out.println("2. Register");
+				System.out.println("2. Exit");
+				
 			
 				choice = Integer.parseInt(reader.readLine());
 
@@ -39,6 +53,7 @@ public class menu {
 						break;
 					case 0:				
 						jdbcmanager.closeConnection();
+						usermanager.disconnect();
 						break;
 				}
 			}while(choice!=0);
@@ -47,6 +62,29 @@ public class menu {
 		}
     }
 
+	
+	//KATERINA LO HA HECHO ASI, NO SE COMO QUEREIS QUE LO UNAMOS A LO QUE YA TENEMOS HECHO
+	private static void login() {
+		try {
+			System.out.println("Introduce mail:");
+			String mail = reader.readLine();
+			System.out.println("Introduce password");
+			String password = reader.readLine();
+			
+			User user = usermanager.checkPassword(mail, password);
+			
+			if(user != null & user.getRole().getDescription().equals("Patient")) {
+				System.out.println("Login Successful!");
+				patientMenu(user.getEmail());
+			}else if(user == null) 
+				System.out.println("There is no user with these credentials");
+			
+			
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
     public static void loginPage() {
         System.out.println("Login as:");
         System.out.println("1. Patient");
@@ -57,7 +95,7 @@ public class menu {
 			userType = Integer.parseInt(reader.readLine());
 			
 			if (userType == 1) {
-	            patientMenu();
+	            //patientMenu();
 	        } else if (userType == 2) {
 	            clinicianMenu();
 	        } else {
@@ -80,7 +118,7 @@ public class menu {
 			
 			if (userType == 1) {
 	            //enterPatientData();
-	            patientMenu();
+	            //patientMenu();
 	        } else if (userType == 2) {
 	            //enterClinicianData();
 	            clinicianMenu();
@@ -93,8 +131,13 @@ public class menu {
 		}
     }
 
-    public static void patientMenu() {
-        System.out.println("Choose an option:");
+    public static void patientMenu(String email) {
+        
+    	//lo que puso katerina
+    	patientManager.getPatient(email);
+    	//
+    	
+    	System.out.println("Choose an option:");
         System.out.println("1. Profile");
         System.out.println("2. Appointments");
         System.out.println("3. Treatments");
@@ -113,14 +156,14 @@ public class menu {
                 break;
             case 3:
                 //TODO: este no sabia como hacerlo
-                patientMenu();
+                //patientMenu();
                 break;
             case 4:
                 //logOut();
                 break;
             default:
                 System.out.println("Invalid choice");
-                patientMenu();
+                //patientMenu();
         	}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -342,5 +385,38 @@ public class menu {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+        
+        
+        
+        
+    }
+    
+  //TODO no hemos hecho el addPatient
+    
+    private static void addNewUser() {
+    	
+    	try {
+    		System.out.println("Introduce email:");
+    		String mail = reader.readLine();
+    		System.out.println("Introduce password:");
+    		String password = reader.readLine();
+    		MessageDigest md = MessageDigest.getInstance("MD5");
+			md.update(password.getBytes());
+			byte[] digest = md.digest();
+			
+			System.out.println("Which is your role?:");
+			List<Role> roles = usermanager.getRoles();
+			System.out.println(roles.toString());
+			Integer role = Integer.parseInt(reader.readLine());				
+			Role rol = usermanager.getRole(role);
+			
+			User user = new User(mail,digest,rol);
+			usermanager.newUser(user);
+    		
+    	}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+    	
     }
 }
