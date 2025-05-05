@@ -26,7 +26,7 @@ public class JPAUserManager implements UserManager{
 	public void connect() {
 		// TODO Auto-generated method stub
 		
-		entityManager = Persistence.createEntityManagerFactory("rehabclinic-provider").createEntityManager();
+		entityManager = Persistence.createEntityManagerFactory("dentalclinic-provider").createEntityManager();
 	
 		entityManager.getTransaction().begin();
 		entityManager.createNativeQuery("PRAGMA foreign_keys = ON").executeUpdate();
