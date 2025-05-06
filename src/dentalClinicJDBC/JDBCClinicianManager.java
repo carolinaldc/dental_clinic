@@ -58,4 +58,10 @@ public class JDBCClinicianManager implements ClinicianManager {
 
         return clinicians;
     }
+
+	@Override
+	public void getClinician(String email) {
+		// TODO Auto-generated method stub
+		
+	}
 }

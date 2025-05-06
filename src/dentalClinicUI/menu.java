@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import dentalClinicIFaces.ClinicianManager;
 import dentalClinicIFaces.PatientManager;
 import dentalClinicIFaces.UserManager;
 import dentalClinicJDBC.JDBCManager;
@@ -23,6 +24,7 @@ public class menu {
 	
 	private static JDBCManager jdbcmanager;
 	private static PatientManager patientManager;
+	private static ClinicianManager clinicianManager;
 	private static UserManager usermanager;
 	private static BufferedReader reader = new BufferedReader (new InputStreamReader(System.in));
 
@@ -62,9 +64,7 @@ public class menu {
 		}
     }
 
-	
-	//KATERINA LO HA HECHO ASI, NO SE COMO QUEREIS QUE LO UNAMOS A LO QUE YA TENEMOS HECHO
-	private static void login() {
+	private static void loginPage() {
 		try {
 			System.out.println("Introduce mail:");
 			String mail = reader.readLine();
@@ -76,6 +76,9 @@ public class menu {
 			if(user != null & user.getRole().getDescription().equals("Patient")) {
 				System.out.println("Login Successful!");
 				patientMenu(user.getEmail());
+			}else if(user != null & user.getRole().getDescription().equals("Clinician")) {
+				System.out.println("Login Successful!");
+				clinicianMenu(user.getEmail());
 			}else if(user == null) 
 				System.out.println("There is no user with these credentials");
 			
@@ -84,28 +87,6 @@ public class menu {
 			e.printStackTrace();
 		}
 	}
-	
-    public static void loginPage() {
-        System.out.println("Login as:");
-        System.out.println("1. Patient");
-        System.out.println("2. Clinician");
-
-        int userType;
-		try {
-			userType = Integer.parseInt(reader.readLine());
-			
-			if (userType == 1) {
-	            //patientMenu();
-	        } else if (userType == 2) {
-	            clinicianMenu();
-	        } else {
-	            System.out.println("Invalid choice");
-	            loginPage(); //le hace repetir
-	        }
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-    }
 
     public static void registerPage() {
         System.out.println("Register as:");
@@ -121,7 +102,7 @@ public class menu {
 	            //patientMenu();
 	        } else if (userType == 2) {
 	            //enterClinicianData();
-	            clinicianMenu();
+	            //clinicianMenu();
 	        } else {
 	            System.out.println("Invalid choice");
 	            registerPage();//le hace repetir
@@ -223,7 +204,11 @@ public class menu {
 		}
     }
 
-    public static void clinicianMenu() {
+    public static void clinicianMenu(String email) {
+        
+    	//lo que puso katerina
+    	clinicianManager.getClinician(email);
+    	
         System.out.println("Choose an option:");
         System.out.println("1. Profile");
         System.out.println("2. Appointments");
@@ -253,7 +238,7 @@ public class menu {
                 break;
             default:
                 System.out.println("Invalid choice");
-                clinicianMenu();
+                clinicianMenu(email);
         }
 		}catch(Exception e){
 			e.printStackTrace();
