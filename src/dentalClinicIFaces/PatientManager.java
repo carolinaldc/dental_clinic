@@ -6,5 +6,11 @@ public interface PatientManager {
 
 	void getPatient(String email);
 	void addPatient(Patient patient);
-
+	  
+    Patient getPatientById(int id);
+    List<Patient> listPatients();
+    void deletePatient(int id);
+    void updatePatient(Patient patient);
 }
+
+
