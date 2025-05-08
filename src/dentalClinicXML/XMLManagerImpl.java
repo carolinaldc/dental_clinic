@@ -1,5 +1,8 @@
 package dentalClinicXML;
 
-public class XMLManagerImpl implements {
+import dentalClinicIFacws.XMLManager ;
+
+public class XMLManagerImpl implements XMLManager {
+
 
 }
