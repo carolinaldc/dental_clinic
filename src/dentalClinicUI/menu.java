@@ -23,27 +23,25 @@ import dentalClinicPOJOS.Patient;
 import dentalClinicPOJOS.Role;
 import dentalClinicPOJOS.User;
 
->>>>>>> branch 'master' of https://github.com/carolinaldc/dental_clinic.git
 
 public class menu {
-<<<<<<< HEAD
+
 
 	private static JDBCManager jdbcManager;
     private JDBCClinicianManager clinicianManager;
     private JDBCPatientManager patientManager;
     private static UserManager userManager;
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-=======
-	
+
 	private static JDBCManager jdbcmanager;
 	private static PatientManager patientManager;
 	private static ClinicianManager clinicianManager;
 	private static UserManager usermanager;
 	private static BufferedReader reader = new BufferedReader (new InputStreamReader(System.in));
->>>>>>> branch 'master' of https://github.com/carolinaldc/dental_clinic.git
+
 
 	public static void main(String[] args) {
-<<<<<<< HEAD
+
 		// TODO Auto-generated method stub
 		System.out.println("Hello world");
 		
@@ -60,8 +58,7 @@ public class menu {
                 System.out.println("0. Exit");
                 System.out.print("Choose an option: ");
 	}
-=======
->>>>>>> branch 'master' of https://github.com/carolinaldc/dental_clinic.git
+
 	
 		jdbcmanager = new JDBCManager();
 		patientManager = new JDBCPatientManager(jdbcmanager);
