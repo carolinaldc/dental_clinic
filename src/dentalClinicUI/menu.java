@@ -13,10 +13,8 @@ import dentalClinicIFaces.ClinicianManager;
 import dentalClinicIFaces.PatientManager;
 import dentalClinicIFaces.UserManager;
 import dentalClinicJDBC.JDBCManager;
-<<<<<<< HEAD
 import dentalClinicJDBC.JDBCClinicianManager;
 import dentalClinicJDBC.JDBCPatientManager;
-=======
 import dentalClinicJDBC.JDBCPatientManager;
 import dentalClinicJPA.JPAUserManager;
 import dentalClinicPOJOS.Patient;
