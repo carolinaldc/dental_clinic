@@ -21,7 +21,7 @@ public class JDBCClinicianManager implements ClinicianManager {
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, clinician.getName());
-            stmt.setString(2, clinician.getSpecialty());
+            stmt.setString(2, clinician.getSpeciality());
             stmt.executeUpdate();
             System.out.println("Dentista añadido correctamente.");
         } catch (SQLException e) {
