@@ -53,11 +53,10 @@ public class JDBCClinicianManager implements ClinicianManager {
         return clinicians;
     }
 
-
     @Override
     public Clinician getClinicianById(int id) {
-        try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT * FROM clinicians WHERE id = ?")) {
+        String sql = "SELECT * FROM clinicians WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -75,8 +74,8 @@ public class JDBCClinicianManager implements ClinicianManager {
 
     @Override
     public void deleteClinician(int id) {
-        try (PreparedStatement ps = connection.prepareStatement(
-                "DELETE FROM clinicians WHERE id = ?")) {
+        String sql = "DELETE FROM clinicians WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -86,59 +85,8 @@ public class JDBCClinicianManager implements ClinicianManager {
 
     @Override
     public void updateClinician(Clinician cl) {
-        try (PreparedStatement ps = connection.prepareStatement(
-                "UPDATE clinicians SET name=?, specialty=? WHERE id=?")) {
-            ps.setString(1, cl.getName());
-            ps.setString(2, cl.getSpecialty());
-            ps.setInt(3, cl.getId());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-	@Override
-	public void getClinician(String email) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	
-    @Override
-    public Clinician getClinicianById(int id) {
-        try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT * FROM clinicians WHERE id = ?")) {
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return new Clinician(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getString("specialty")
-                );
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-	
-    @Override
-    public void deleteClinician(int id) {
-        try (PreparedStatement ps = connection.prepareStatement(
-                "DELETE FROM clinicians WHERE id = ?")) {
-            ps.setInt(1, id);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void updateClinician(Clinician cl) {
-        try (PreparedStatement ps = connection.prepareStatement(
-                "UPDATE clinicians SET name=?, specialty=? WHERE id=?")) {
+        String sql = "UPDATE clinicians SET name = ?, specialty = ? WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, cl.getName());
             ps.setString(2, cl.getSpecialty());
             ps.setInt(3, cl.getId());
@@ -148,4 +96,3 @@ public class JDBCClinicianManager implements ClinicianManager {
         }
     }
 }
-
