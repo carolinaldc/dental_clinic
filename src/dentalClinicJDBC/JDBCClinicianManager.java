@@ -53,7 +53,7 @@ public class JDBCClinicianManager implements ClinicianManager {
         return clinicians;
     }
 
-<<<<<<< HEAD
+
     @Override
     public Clinician getClinicianById(int id) {
         try (PreparedStatement ps = connection.prepareStatement(
@@ -96,7 +96,7 @@ public class JDBCClinicianManager implements ClinicianManager {
             e.printStackTrace();
         }
     }
-=======
+
 	@Override
 	public void getClinician(String email) {
 		// TODO Auto-generated method stub
@@ -148,5 +148,4 @@ public class JDBCClinicianManager implements ClinicianManager {
         }
     }
 }
->>>>>>> branch 'master' of https://github.com/carolinaldc/dental_clinic.git
-}
+
