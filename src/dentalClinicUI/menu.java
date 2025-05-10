@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+
 import dentalClinicIFaces.ClinicianManager;
 import dentalClinicIFaces.PatientManager;
 import dentalClinicIFaces.UserManager;
@@ -25,42 +26,23 @@ import dentalClinicPOJOS.User;
 public class menu {
 
 
-	private static JDBCManager jdbcManager;
-    private JDBCClinicianManager clinicianManager;
-    private JDBCPatientManager patientManager;
-    private static UserManager userManager;
-    private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
 	private static JDBCManager jdbcmanager;
 	private static PatientManager patientManager;
 	private static ClinicianManager clinicianManager;
 	private static UserManager usermanager;
 	private static BufferedReader reader = new BufferedReader (new InputStreamReader(System.in));
+	//private static XMLManager xmlmanager;
 
 
 	public static void main(String[] args) {
 
 		// TODO Auto-generated method stub
-		System.out.println("Hello world");
 		
-		jdbcManager = new JDBCManager();
-		patientManager = new JDBCPatientManager(jdbcManager);
-        clinicianManager = new JDBCClinicianManager(jdbcManager);
-		
-        
-        try {
-            do {
-                System.out.println("\n=== Dental Clinic ===");
-                System.out.println("1. Login");
-                System.out.println("2. Sign-up");
-                System.out.println("0. Exit");
-                System.out.print("Choose an option: ");
-	}
-
-	
 		jdbcmanager = new JDBCManager();
 		patientManager = new JDBCPatientManager(jdbcmanager);
 		usermanager = new JPAUserManager();
+		//xmlmanager = new XMLManagerImpl();
+		clinicianManager = new JDBCClinicianManager(jdbcmanager);
 		
 		int choice=0;
 		try {
@@ -126,9 +108,11 @@ public class menu {
 			userType = Integer.parseInt(reader.readLine());
 			
 			if (userType == 1) {
+				addNewUser();
 	            //enterPatientData();
 	            //patientMenu();
 	        } else if (userType == 2) {
+	        	addNewUser();
 	            //enterClinicianData();
 	            //clinicianMenu();
 	        } else {

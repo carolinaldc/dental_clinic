@@ -6,22 +6,26 @@ import java.util.List;
 
 import dentalClinicIFaces.PatientManager;
 import dentalClinicPOJOS.Patient;
+import dentalClinicPOJOS.Patient.Emergency;
 
 public class JDBCPatientManager implements PatientManager {
-    private Connection connection;
+    private JDBCManager manager;
 
-    public JDBCPatientManager(Connection connection) {
-        this.connection = connection;
+    public JDBCPatientManager(JDBCManager manager) {
+        this.manager = manager;
     }
 
     @Override
     public void addPatient(Patient p) {
-        String sql = "INSERT INTO patients (name, dni, phone, birth_date) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, p.getName());
-            ps.setString(2, p.getDni());
-            ps.setString(3, p.getPhone());
-            ps.setDate(4, new java.sql.Date(p.getBirthDate().getTime()));
+        String sql = "INSERT INTO patients (name, surname, birth_date, phone, email, credit_card, urgency) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+        	ps.setString(1, p.getName());
+            ps.setString(2, p.getSurname());
+            ps.setDate(3, p.getDob());
+            ps.setInt(4, p.getPhone());
+            ps.setString(5, p.getEmail());
+            ps.setInt(6, p.getCredit_card());
+            ps.setString(7, p.getUrgency().name());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -31,16 +35,18 @@ public class JDBCPatientManager implements PatientManager {
     @Override
     public Patient getPatientById(int id) {
         String sql = "SELECT * FROM patients WHERE id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return new Patient(
-                    rs.getInt("id"),
                     rs.getString("name"),
-                    rs.getString("dni"),
-                    rs.getString("phone"),
-                    rs.getDate("birth_date")
+                    rs.getString("surname"),
+                    rs.getDate("birth_date"),
+                    rs.getInt("phone"),
+                    rs.getString("mail"),
+                    rs.getInt("credit_card"),
+                    Emergency.valueOf(rs.getString("emergency").toUpperCase())
                 );
             }
         } catch (SQLException e) {
@@ -53,15 +59,17 @@ public class JDBCPatientManager implements PatientManager {
     public List<Patient> listPatients() {
         List<Patient> list = new ArrayList<>();
         String sql = "SELECT * FROM patients";
-        try (Statement st = connection.createStatement()) {
+        try (Statement st = manager.getConnection().createStatement()) {
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 Patient p = new Patient(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getString("dni"),
-                    rs.getString("phone"),
-                    rs.getDate("birth_date")
+                		rs.getString("name"),
+                        rs.getString("surname"),
+                        rs.getDate("birth_date"),
+                        rs.getInt("phone"),
+                        rs.getString("mail"),
+                        rs.getInt("credit_card"),
+                        Emergency.valueOf(rs.getString("emergency").toUpperCase())
                 );
                 list.add(p);
             }
@@ -74,7 +82,7 @@ public class JDBCPatientManager implements PatientManager {
     @Override
     public void deletePatient(int id) {
         String sql = "DELETE FROM patients WHERE id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -84,13 +92,16 @@ public class JDBCPatientManager implements PatientManager {
 
     @Override
     public void updatePatient(Patient p) {
-        String sql = "UPDATE patients SET name = ?, dni = ?, phone = ?, birth_date = ? WHERE id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, p.getName());
-            ps.setString(2, p.getDni());
-            ps.setString(3, p.getPhone());
-            ps.setDate(4, new java.sql.Date(p.getBirthDate().getTime()));
-            ps.setInt(5, p.getId());
+        String sql = "UPDATE patients SET name = ?, surname = ?, birth_date = ?, phonw = ? , email = ?, credit_card = ?, urgency = ?, WHERE id = ?";
+        try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+        	ps.setString(1, p.getName());
+            ps.setString(2, p.getSurname());
+            ps.setDate(3, p.getDob());
+            ps.setInt(4, p.getPhone());
+            ps.setString(5, p.getEmail());
+            ps.setInt(6, p.getCredit_card());
+            ps.setString(7, p.getUrgency().name());
+            ps.setInt(8,p.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -100,16 +111,18 @@ public class JDBCPatientManager implements PatientManager {
     @Override
     public Patient getPatient(String email) {
         String sql = "SELECT * FROM patients WHERE email = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return new Patient(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getString("dni"),
-                    rs.getString("phone"),
-                    rs.getDate("birth_date")
+                		rs.getString("name"),
+                        rs.getString("surname"),
+                        rs.getDate("birth_date"),
+                        rs.getInt("phone"),
+                        rs.getString("email"),
+                        rs.getInt("credit_card"),
+                        Emergency.valueOf(rs.getString("emergency").toUpperCase())
                 );
             }
         } catch (SQLException e) {

@@ -10,6 +10,6 @@ public interface PatientManager {
     Patient getPatientById(int id);
     void deletePatient(int id);
     void updatePatient(Patient p);
-	void getPatient(String email);
+	Patient getPatient(String email);
 	void addPatient(Patient patient);	  
 }

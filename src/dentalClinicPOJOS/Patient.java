@@ -41,6 +41,7 @@ public class Patient implements Serializable {
 		this.credit_card = credit_card;
 		this.emergency = urgency;
 	}
+	
 
 	public Integer getId() {
 		return patient_id;
