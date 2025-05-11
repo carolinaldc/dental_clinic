@@ -13,9 +13,9 @@ import dentalClinicPOJOS.PatientTreatment;
 
 public class JDBCPaymentManager implements PaymentManager {
 	private Connection c;
-    private ConnectionManager conMan;
+    private JDBCManager conMan;
 
-    public JDBCPaymentManager(ConnectionManager connectionManager) {
+    public JDBCPaymentManager(JDBCManager connectionManager) {
         this.setConMan(connectionManager);
         this.c = connectionManager.getConnection();
     }
@@ -23,11 +23,14 @@ public class JDBCPaymentManager implements PaymentManager {
     @Override
     public void addPayment(Payment payment) {
         try {
-            String sql = "INSERT INTO payments (amount, date, treatment_id) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO payments (payment_id, amount, payment_date, payment_method,status) VALUES (?, ?, ?)";
             PreparedStatement ps = c.prepareStatement(sql);
+            
             ps.setDouble(1, payment.getAmount());
-            ps.setDate(2, payment.getDate());
-            ps.setInt(3, payment.getTreatment().getId());
+            ps.setDate(2, new java.sql.Date(payment.getDate().getTime()));  // Conversión de Date
+            ps.setString(3, payment.getMethod().toString());  // Convertir Payment.Method a String
+            ps.setString(4, payment.getStatus().toString());
+            
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
@@ -49,10 +52,11 @@ public class JDBCPaymentManager implements PaymentManager {
                 double amount = rs.getDouble("amount");
                 java.sql.Date date = rs.getDate("date");
                 int treatmentId = rs.getInt("treatment_id");
+                String method = rs.getString("payment_method"); 
 
                 PatientTreatment treatment = conMan.getTreatmentManager().getTreatmentById(treatmentId); // suponiendo que tienes este método
 
-                Payment payment = new Payment(id, amount, date, treatment);
+                Payment payment = new Payment( amount, date, method , treatment);
                 payments.add(payment);
             }
 
@@ -97,11 +101,11 @@ public class JDBCPaymentManager implements PaymentManager {
         }
     }
 
-    public ConnectionManager getConMan() {
+    public JDBCManager getConMan() {
         return conMan;
     }
 
-    public void setConMan(ConnectionManager conMan) {
+    public void setConMan(JDBCManager conMan) {
         this.conMan = conMan;
     }
 }

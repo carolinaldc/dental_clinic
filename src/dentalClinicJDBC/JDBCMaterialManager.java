@@ -14,9 +14,9 @@ import dentalClinicPOJOS.Treatment;
 
 public class JDBCMaterialManager implements MaterialManager {
     private Connection c;
-    private ConnectionManager conMan;
+    private JDBCManager conMan;
 
-    public JDBCMaterialManager(ConnectionManager connectionManager) {
+    public JDBCMaterialManager(JDBCManager connectionManager) {
         this.setConMan(connectionManager);
         this.c = connectionManager.getConnection();
     }
@@ -24,17 +24,14 @@ public class JDBCMaterialManager implements MaterialManager {
     @Override 
     public void addMaterial(Material material) {
         try {
-            String sql = "INSERT INTO materials (material_name, quantity, supplier_id) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO materials (name, stock) VALUES (?, ?)";
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setString(1, material.getName());
-            ps.setInt(2, material.getQuantity());
-            if (material.getSupplier() != null) {
-                ps.setInt(3, material.getSupplier().getId());
-            } else {
-                ps.setNull(3, java.sql.Types.INTEGER);
-            }
+            ps.setInt(2, material.getStock());
             ps.executeUpdate();
             ps.close();
+            
+  
         } catch (SQLException e) {
             System.out.println("Error inserting material");
             e.printStackTrace();
@@ -45,19 +42,23 @@ public class JDBCMaterialManager implements MaterialManager {
     public List<Material> getAllMaterials() {
         List<Material> materials = new ArrayList<>();
         try {
-            String sql = "SELECT material_id, material_name, quantity, supplier_id FROM materials";
+           
+            String sql = "SELECT material_id, name, stock FROM materials";
+
             PreparedStatement ps = c.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
+            
             while (rs.next()) {
-                int id = rs.getInt("material_id");
-                String name = rs.getString("material_name");
-                int quantity = rs.getInt("quantity");
-                int supplierId = rs.getInt("supplier_id");
+                
+                int id = rs.getInt("material_id");  
+                String name = rs.getString("name");
+                int stock = rs.getInt("stock");
 
-                Supplier supplier = conMan.getSupplierManager().getSupplierById(supplierId);
-                Material material = new Material(id, name, quantity, supplier);
+                
+                Material material = new Material(id, name, stock);
                 materials.add(material);
             }
+            
             rs.close();
             ps.close();
         } catch (SQLException e) {
@@ -67,19 +68,15 @@ public class JDBCMaterialManager implements MaterialManager {
         return materials;
     }
 
+
     @Override
     public void updateMaterial(Material material) {
         try {
             String sql = "UPDATE materials SET material_name = ?, quantity = ?, supplier_id = ? WHERE material_id = ?";
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setString(1, material.getName());
-            ps.setInt(2, material.getQuantity());
-            if (material.getSupplier() != null) {
-                ps.setInt(3, material.getSupplier().getId());
-            } else {
-                ps.setNull(3, java.sql.Types.INTEGER);
-            }
-            ps.setInt(4, material.getId());
+            ps.setInt(2, material.getStock());
+           
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
@@ -117,11 +114,11 @@ public class JDBCMaterialManager implements MaterialManager {
         }
     }
 
-    public ConnectionManager getConMan() {
+    public JDBCManager getConMan() {
         return conMan;
     }
 
-    public void setConMan(ConnectionManager conMan) {
+    public void setConMan(JDBCManager conMan) {
         this.conMan = conMan;
     }
 }
