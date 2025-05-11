@@ -32,7 +32,8 @@ public class Payment implements Serializable {
     	this.patient = patient; 
     }
 
-    public int getId() {
+ 
+	public int getId() {
         return payment_id;
     }
 
