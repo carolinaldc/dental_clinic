@@ -8,7 +8,7 @@ public class Material implements Serializable{
 	private String name ; 
 	private Integer stock;
 	
-	public Material(Integer stock, String name) {
+	public Material(int id,String name,Integer stock) {
 		super();
 		this.stock = stock;
 		this.name = name;
