@@ -54,9 +54,10 @@ public class JDBCPaymentManager implements PaymentManager {
                 int treatmentId = rs.getInt("treatment_id");
                 String method = rs.getString("payment_method"); 
 
-                PatientTreatment treatment = conMan.getTreatmentManager().getTreatmentById(treatmentId); // suponiendo que tienes este método
+                String status = rs.getString("status");
+                String patient = rs.getString("patient");
 
-                Payment payment = new Payment( amount, date, method , treatment);
+                Payment payment = new Payment( amount, date, method ,status , patient);
                 payments.add(payment);
             }
 

@@ -3,7 +3,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import dentalClinicIfaces.
+import dentalClinicIFaces; 
 
 public class JDBCRoleManager {
 
