@@ -22,18 +22,18 @@ public class Room implements Serializable {
     }
 
     // Constructor con ID (por ejemplo, para leer desde la BD)
-    public Room(int id, String description, Status status) {
-        this.room_id = Integer.toString(id);
+    public Room(int room_id, String description, Status status) {
+        this.room_id = room_id;
         this.description = description;
         this.status = status;
     }
     
 
-    public int getId() {
+    public int getRoom_id() {
         return room_id;
     }
 
-    public void setId(int room_id) {
+    public void setRoom_id(int room_id) {
         this.room_id = room_id;
     }
 
@@ -72,4 +72,5 @@ public class Room implements Serializable {
     public String toString() {
         return "Room [id=" + room_id + ", description=" + description + ", status=" + status + "]";
     }
+
 }

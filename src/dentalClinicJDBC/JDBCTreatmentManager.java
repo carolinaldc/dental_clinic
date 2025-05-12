@@ -1,4 +1,4 @@
-package dentalClinicJDBC;
+-package dentalClinicJDBC;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class JDBCTreatmentManager implements TreatmentManager {
             ps.setString(1, treatment.getName());
             ps.setString(2, treatment.getDescription());
             ps.setInt(3, treatment.getPrice());
-            ps.setInt(4, treatment.getRoom().getId_room());  
+            ps.setInt(4, treatment.getRoom().getRoom_id());  
             ps.executeUpdate();
 
            
