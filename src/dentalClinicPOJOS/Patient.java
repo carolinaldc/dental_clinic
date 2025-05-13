@@ -43,8 +43,8 @@ public class Patient implements Serializable {
 	@XmlTransient
 	private List<Patients_Clinician> treats ; 
 	
+	private Payment payment; 
 	
-	//ahora tenemos que preguntar si es urgente o no
 	
 	public Patient() {
 		super();
