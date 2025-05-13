@@ -7,6 +7,8 @@ import java.util.List;
 import dentalClinicIFaces.PatientManager;
 import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Patient;
+import dentalClinicPOJOS.PatientTreatment;
+import dentalClinicPOJOS.Patients_Clinician;
 
 public class JDBCPatientManager implements PatientManager {
     private JDBCManager manager;
@@ -35,7 +37,8 @@ public class JDBCPatientManager implements PatientManager {
     //HE creado uno nuevo paracido a lo que hizo katerina en XMLManager y decidimos que queremos
     @Override
     public Patient getPatientByid(int id) {
-    	JDBCClinicianManager jdbcClinicianManager = new JDBCClinicianManager(manager);
+    	JDBCPatientsClinicianManager jdbcPatientsCliniciansManager = new JDBCPatientsClinicianManager(manager);
+    	JDBCPatientTreatmentManager jdbcPatientsTreatmentsManager = new JDBCPatientTreatmentManager(manager);
     	Patient patient = null;
     	try {
     		Statement stmt = manager.getConnection().createStatement();
@@ -55,12 +58,16 @@ public class JDBCPatientManager implements PatientManager {
             //Clinician clinician = jdbcClinicianManager.getClinicianByid(clinician_id);
             rs.close();
 			stmt.close();
+			
+			List<Patients_Clinician> patientsClinicians = jdbcPatientsCliniciansManager.getPatientsCliniciansByPatientid(id);
+			List<PatientTreatment> patientstreatments = jdbcPatientsTreatmentsManager.getPatientsTreatmentsByPatientid(id);
+            patient = new Patient(name, surname, date, phone, email, credit_card, patientstreatments, patientsClinicians);
             
 	        
 	        
 	
 			
-			patient = new Patient(name, surname, date, phone, email, credit_card, clinician);
+			patient = new Patient(name, surname, date, phone, email, credit_card,patientstreatments,patientsClinicians);
     	}catch(Exception e) 
 		{
 			e.printStackTrace();
@@ -105,7 +112,6 @@ public class JDBCPatientManager implements PatientManager {
                         rs.getInt("phone"),
                         rs.getString("mail"),
                         rs.getInt("credit_card")
-                        
                 );
                 list.add(p);
             }

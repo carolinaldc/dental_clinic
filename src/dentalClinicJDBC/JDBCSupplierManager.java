@@ -11,25 +11,26 @@ import dentalClinicPOJOS.Supplier;
 public class JDBCSupplierManager {
 	
 
-	    private Connection c;
+	    //private Connection c;
 	    private JDBCManager conMan;
 
 	    public JDBCSupplierManager(JDBCManager connectionManager) {
 	        this.conMan = connectionManager;
-	        this.c = connectionManager.getConnection();
+	        //this.c = connectionManager.getConnection();
 	    }
 	    
 	   
+	    //TODO tampoco estoy segura de que este bien
 	    public void addSupplier(Supplier supplier) {
 	        try {
 	            String sql = "INSERT INTO Suppliers (name, surname, phone, email, address, material_id) VALUES (?, ?, ?, ?, ?, ?)";
-	            PreparedStatement ps = c.prepareStatement(sql);
+	            PreparedStatement ps = conMan.getConnection().prepareStatement(sql);
 	            ps.setString(1, supplier.getName());
 	            ps.setString(2, supplier.getSurname());
 	            ps.setInt(3, supplier.getPhone());
 	            ps.setString(4, supplier.getEmail());
 	            ps.setString(5, supplier.getAddress());
-	            ps.setInt(6, supplier.getMaterial().getId()); // Assuming Material has an ID
+	            //ps.setInt(6, supplier.getMaterial().getId()); // Assuming Material has an ID
 	            ps.executeUpdate();
 	            ps.close();
 	        } catch (SQLException e) {
@@ -39,10 +40,11 @@ public class JDBCSupplierManager {
 	    }
 	   
 	    public List<Supplier> getAllSuppliers() {
+	    	JDBCMaterialManager jdbcMaterialManager = new JDBCMaterialManager(conMan);
 	        List<Supplier> suppliers = new ArrayList<>();
 	        try {
 	            String sql = "SELECT supplier_id, name, surname, phone, email, address, material_id FROM Suppliers";
-	            PreparedStatement ps = c.prepareStatement(sql);
+	            PreparedStatement ps = conMan.getConnection().prepareStatement(sql);
 	            ResultSet rs = ps.executeQuery();
 
 	            while (rs.next()) {
@@ -55,7 +57,8 @@ public class JDBCSupplierManager {
 	                int materialId = rs.getInt("material_id");
 
 	             
-	                Material material = getMaterialById(materialId);
+	                
+	                List<Material> material = jdbcMaterialManager.getAllMaterialsById(materialId);
 
 	                Supplier supplier = new Supplier(name, surname, phone, email, address, material);
 	                supplier.setSupplier_id(supplierId);
@@ -71,17 +74,17 @@ public class JDBCSupplierManager {
 	        return suppliers;
 	    }
 
-
+	    //TODO ns si esto esta bien
 	    public void updateSupplier(Supplier supplier) {
 	        try {
 	            String sql = "UPDATE Suppliers SET name = ?, surname = ?, phone = ?, email = ?, address = ?, material_id = ? WHERE supplier_id = ?";
-	            PreparedStatement ps = c.prepareStatement(sql);
+	            PreparedStatement ps = conMan.getConnection().prepareStatement(sql);
 	            ps.setString(1, supplier.getName());
 	            ps.setString(2, supplier.getSurname());
 	            ps.setInt(3, supplier.getPhone());
 	            ps.setString(4, supplier.getEmail());
 	            ps.setString(5, supplier.getAddress());
-	            ps.setInt(6, supplier.getMaterial().getId());
+	            //ps.setInt(6, supplier.getMaterial().getId());
 	            ps.setInt(7, supplier.getSupplier_id());
 	            ps.executeUpdate();
 	            ps.close();
@@ -95,7 +98,7 @@ public class JDBCSupplierManager {
 	    public void deleteSupplier(int supplierId) {
 	        try {
 	            String sql = "DELETE FROM Suppliers WHERE supplier_id = ?";
-	            PreparedStatement ps = c.prepareStatement(sql);
+	            PreparedStatement ps = conMan.getConnection().prepareStatement(sql);
 	            ps.setInt(1, supplierId);
 	            ps.executeUpdate();
 	            ps.close();
@@ -110,12 +113,5 @@ public class JDBCSupplierManager {
 	        return new Material(materialId, null, materialId); 
 	    }
 
-	    public JDBCManager getConMan() {
-	        return conMan;
-	    }
-
-	    public void setConMan(JDBCManager conMan) {
-	        this.conMan = conMan;
-	    }
 	}
 
