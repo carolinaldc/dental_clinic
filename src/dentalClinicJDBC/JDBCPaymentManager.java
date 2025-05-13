@@ -56,27 +56,13 @@ public class JDBCPaymentManager implements PaymentManager {
                 Date date = rs.getDate("date");
                 Integer treatmentId = rs.getInt("treatment_id");
                 
-                String methodStr = rs.getString("payment_method");
-                Method methodEnum;
-                try {
-                    methodEnum = Method.valueOf(methodStr.trim().toUpperCase());
-                } catch (IllegalArgumentException | NullPointerException e) {
-                    methodEnum = Method.CASH;
-                }
-                
-                String statusStr = rs.getString("status");
-                Status statusEnum;
-                try {
-                    statusEnum = Status.valueOf(statusStr.trim().toUpperCase());
-                } catch (IllegalArgumentException | NullPointerException e) {
-                    statusEnum = Status.PENDING;
-                }
-
-
+                String method = rs.getString("payment_method");
+                String status = rs.getString("status");
                 String patient = rs.getString("patient");
+                
 
                 //Preguntar a katerina como pasar Objeto a SQL y si lo de los enumerados esta bien
-                Payment payment = new Payment(amount, date, methodEnum ,statusEnum , patient);
+                Payment payment = new Payment(amount, date, method ,status , patient);
                 payments.add(payment);
             }
 
