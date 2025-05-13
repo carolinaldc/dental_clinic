@@ -31,8 +31,8 @@ public class TreatmentUI {
             System.out.println("Enter price:");
             int price = Integer.parseInt(reader.readLine());
 
-            Room room = chooseRoom(); // Replace with real logic
-            List<Clinician> clinicians = chooseClinicians(); // Replace with real logic
+            Room room = chooseRoom(); 
+            List<Clinician> clinicians = chooseClinicians(); 
 
             Treatment treatment = new Treatment(name, desc, price);
             treatment.setRoom(room);

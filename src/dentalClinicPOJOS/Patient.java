@@ -77,6 +77,10 @@ public class Patient implements Serializable {
 		this.credit_card = credit_card;
 	}
 
+	public Patient(int patientId) {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Integer getId() {
 		return patient_id;
 	}

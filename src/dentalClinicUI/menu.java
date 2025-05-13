@@ -29,7 +29,7 @@ import dentalClinicXML.XMLManagerImpl;
 
 public class menu {
 	private static TreatmentUI treatmentUI;
-	
+	private static AppointmentUI appointmentUI;
 	
 	private static JDBCManager jdbcmanager;
 	private static PatientManager patientManager;
@@ -53,7 +53,7 @@ public class menu {
 				System.out.println("Choose an option:");
 				System.out.println("1. Login");
 				System.out.println("2. Register");
-				System.out.println("2. Exit");
+				System.out.println("0. Exit");
 				
 			
 				choice = Integer.parseInt(reader.readLine());
@@ -85,15 +85,15 @@ public class menu {
 			
 			User user = usermanager.checkPassword(mail, password);
 			
-			if(user != null & user.getRole().getDescription().equals("Patient")) {
+			if(user != null && user.getRole().getDescription().equals("Patient")) {
 				System.out.println("Login Successful!");
 				patientMenu(user.getEmail());
-			}else if(user != null & user.getRole().getDescription().equals("Clinician")) {
+			}else if(user != null && user.getRole().getDescription().equals("Clinician")) {
 				System.out.println("Login Successful!");
 				clinicianMenu(user.getEmail());
-			}else if(user == null) 
+			}else { 
 				System.out.println("There is no user with these credentials");
-			
+			}
 			
 		}catch(IOException e) {
 			e.printStackTrace();
@@ -110,13 +110,11 @@ public class menu {
 			userType = Integer.parseInt(reader.readLine());
 			
 			if (userType == 1) {
-				addNewUser(null, null, null, null, null, userType, null, userType, null);
-	            //enterPatientData();
-	            //patientMenu();
+				addNewUser(userType, null, null, null, null, null, null, null, null);
+	            patientMenu(null);
 	        } else if (userType == 2) {
-	        	addNewUser(null, null, null, null, null, userType, null, userType, null);
-	            //enterClinicianData();
-	            //clinicianMenu();
+	        	addNewUser(userType, null, null, null, null, null, null, null, null);
+	            clinicianMenu(null);
 	        } else {
 	            System.out.println("Invalid choice");
 	            registerPage();//le hace repetir
@@ -128,11 +126,7 @@ public class menu {
 
     public static void patientMenu(String email) {
     	
-    	
-        
-    	//lo que puso katerina
-    	//patientManager.getPatient(email);
-    	//
+    	patientManager.getPatient(email);
     	
     	xmlmanager.patient2xml(1);
     	File file = new File("./xmls/external_clinician.xml");
@@ -143,8 +137,7 @@ public class menu {
     	System.out.println("Choose an option:");
         System.out.println("1. Profile");
         System.out.println("2. Appointments");
-        System.out.println("3. Treatments");
-        System.out.println("4. Log Out");
+        System.out.println("3. Log Out");
 
         int choice;
         try {
@@ -155,13 +148,9 @@ public class menu {
                 patientProfileMenu();
                 break;
             case 2:
-                patientAppointmentsMenu();
+            	appointmentMenu();
                 break;
             case 3:
-                //TODO: este no sabia como hacerlo
-                //patientMenu();
-                break;
-            case 4:
                 //logOut();
                 break;
             default:
@@ -195,37 +184,6 @@ public class menu {
 		}
     }
 
-    public static void patientAppointmentsMenu() {
-        System.out.println("Choose an option:");
-        System.out.println("1. Book Appointment");
-        System.out.println("2. Modify Appointment");
-        System.out.println("3. Cancel Appointment");
-
-        int choice;
-        try {
-        	choice = Integer.parseInt(reader.readLine());
-
-        	switch (choice) {
-            case 1:
-                //bookAppointment();
-                break;
-            case 2:
-                //choseAppointment();
-                //modifyAppointment();
-                break;
-            case 3:
-                //choseAppointment();
-                //cancelAppointment();
-                break;
-            default:
-                System.out.println("Invalid choice");
-                patientAppointmentsMenu();
-        	}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-    }
-
     public static void clinicianMenu(String email) {
         
     	clinicianManager.getClinician(email);
@@ -246,10 +204,10 @@ public class menu {
                 //editProfile();
                 break;
             case 2:
-                clinicianAppointmentsMenu();
+                appointmentMenu();
                 break;
             case 3:
-                clinicianTreatmentsMenu();
+            	treatmentMenu();
                 break;
             case 4:
                 clinicianPatientsMenu();
@@ -266,71 +224,45 @@ public class menu {
 		}
     }
 
-    public static void clinicianAppointmentsMenu() {
+    public static void appointmentMenu() {
         System.out.println("Choose an option:");
-        System.out.println("1. All My Appointments");
-        System.out.println("2. Today's Appointments");
-
-        int choice;
-        try {
-        	choice = Integer.parseInt(reader.readLine());
-
-            if (choice == 1) {
-                //viewAllAppointmentsList();
-                clinicianAppointmentsOptions();
-            } else if (choice == 2) {
-                //viewTodaysAppointmentsList();
-            } else {
-                System.out.println("Invalid choice");
-                clinicianAppointmentsMenu();
-            }
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-    }
-
-    public static void clinicianAppointmentsOptions() {
-        System.out.println("Choose an option:");
-        System.out.println("1. Book");
-        System.out.println("2. Modify");
-        System.out.println("3. Cancel");
-        System.out.println("4. Show Details");
+        System.out.println("1. Book an Appointment");
+        System.out.println("2. Modify an Appointment");
+        System.out.println("3. Cancel an Appointment");
+        System.out.println("4. Show List of Appointment");
 
         int choice;
         try {
         	choice = Integer.parseInt(reader.readLine());
 
             switch (choice) {
-            case 1:
-                //bookAppointment();
-                break;
-            case 2:
-                //choseAppointment();
-                //modifyAppointment();
-                break;
-            case 3:
-                //choseAppointment();
-                //cancelAppointment();
-                break;
-            case 4:
-                //patientDetails();
-                //treatmentDetails();
-                break;
-            default:
-                System.out.println("Invalid choice");
-                clinicianAppointmentsOptions();
+                case 1:
+                	appointmentUI.bookAppointment();
+                    break;
+                case 2:
+                	appointmentUI.modifyAppointment();
+                    break;
+                case 3:
+                	appointmentUI.cancelAppointment();
+                    break;
+                case 4:
+                	appointmentUI.viewAppointmentsList();
+                    break;    
+                default:
+                    System.out.println("Invalid choice");
+                    treatmentMenu();
             }
 		}catch(Exception e){
 			e.printStackTrace();
 		}
     }
 
-    public static void clinicianTreatmentsMenu() {
+    public static void treatmentMenu() {
         System.out.println("Choose an option:");
-        System.out.println("1. Book Treatment");
-        System.out.println("2. Modify Treatment");
-        System.out.println("3. Cancel Treatment");
-        System.out.println("4. Show List of Treatments");
+        System.out.println("1. Create a new Treatment");
+        System.out.println("2. Modify a Treatment");
+        System.out.println("3. Delete a Treatment");
+        System.out.println("4. Show List of possible Treatments");
 
         int choice;
         try {
@@ -351,13 +283,13 @@ public class menu {
                     break;
                 default:
                     System.out.println("Invalid choice");
-                    clinicianTreatmentsMenu();
+                    treatmentMenu();
             }
 		}catch(Exception e){
 			e.printStackTrace();
 		}
     }
-
+    
     public static void clinicianPatientsMenu() {
         System.out.println("Choose an option:");
         System.out.println("1. Show All My Patients");
@@ -388,15 +320,15 @@ public class menu {
     }
         
 
-    private static void addNewUser(String userType, String name, String surname, String speciality, Date dob, Integer phone, String email, Integer credit_card,
+    private static void addNewUser(int userType, String name, String surname, String speciality, Date dob, Integer phone, String email, Integer credit_card,
 			String password) throws java.sql.SQLException, Exception {
     	
     	MessageDigest md = MessageDigest.getInstance("MD5");
 		md.update(password.getBytes());
 		byte[] pw = md.digest();
 		
-		//TODO: tengo que crear un roleID ppara que tenga sentido esto???
-		if (userType.equals("Clinician")) {
+		//TODO: tengo que crear un roleID para que tenga sentido esto???
+		if (userType == 1) {
 			try {
 				Role clinicianRole = usermanager.getRole(2);
 	            usermanager.newUser(new User(email, pw, clinicianRole));
@@ -405,7 +337,7 @@ public class menu {
 				e.printStackTrace();
 			}
 
-		} else if (userType.equals("Patient")) {
+		} else if (userType == 2) {
 			try {
 				Role patientRole = usermanager.getRole(1);
 	            usermanager.newUser(new User(email, pw, patientRole));

@@ -37,6 +37,13 @@ public class Treatment implements Serializable {
 
 
 
+	public Treatment(int treatmentId) {
+		// TODO Auto-generated constructor stub
+	}
+
+
+
+
 	public String getDescription() {
 		return description;
 	}

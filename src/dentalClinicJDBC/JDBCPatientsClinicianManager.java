@@ -43,9 +43,5 @@ public class JDBCPatientsClinicianManager implements PatientsClinicianManager {
 			e.printStackTrace();
 		}
     	return clinician;
-    }
-	
-	
-	
-	
+    }	
 }
