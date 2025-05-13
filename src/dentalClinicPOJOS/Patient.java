@@ -6,20 +6,43 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import dentalClinicXMLUtils.SQLDateAdapter;
 
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name="Patient")
+@XmlType(propOrder = {"name", "surname", "dob","email", "credit_card", "clinician"})
 public class Patient implements Serializable {
 
 	private static final long serialVersionUID = -2651925648311189667L;
+	@XmlTransient
 	private Integer patient_id;
+	@XmlElement
 	private String name; 
+	@XmlElement
 	private String surname; 
+	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date dob; 
-	private Integer phone; 
+	@XmlAttribute
+	private Integer phone;
+	@XmlElement
 	private String email; 
+	@XmlAttribute
 	private Emergency emergency; 
+	@XmlElement
 	private Integer credit_card; 
+	@XmlElement
 	private Clinician clinician;
+	@XmlTransient
 	private List<PatientTreatment> appointment;
 	
 	public enum Emergency {
@@ -41,6 +64,7 @@ public class Patient implements Serializable {
 		this.credit_card = credit_card;
 		this.emergency = urgency;
 	}
+	
 	
 
 	public Integer getId() {

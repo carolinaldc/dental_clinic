@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Patient telephone="649673">
+    <name>Lucia</name>
+    <surname>Lopez</surname>
+    <dob>2000-07-04</dob>
+    <email>lucia@mail.com</email>
+    <credit_card>12345678</credit_card>
+</Patient>

@@ -11,5 +11,6 @@ public interface PatientManager {
     void deletePatient(int id);
     void updatePatient(Patient p);
 	Patient getPatient(String email);
-	void addPatient(Patient patient);	  
+	void addPatient(Patient patient);
+	Patient getPatientByid(int id);	  
 }

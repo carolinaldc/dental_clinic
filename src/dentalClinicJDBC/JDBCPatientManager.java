@@ -32,6 +32,47 @@ public class JDBCPatientManager implements PatientManager {
         }
     }
 
+    
+    //HE creado uno nuevo paracido a lo que hizo katerina en XMLManager y decidimos que queremos
+    @Override
+    public Patient getPatientByid(int id) {
+    	
+    	Patient patient = null;
+    	try {
+    		Statement stmt = manager.getConnection().createStatement();
+			String sql =  "SELECT * FROM Patients WHERE id=" + id;
+			
+			ResultSet rs= stmt.executeQuery(sql);
+			
+			String name = rs.getString("name");
+			String surname = rs.getString("surname");
+			Date date = rs.getDate("dob");
+			Integer phone = rs.getInt("telephone");
+			Integer credit_card = rs.getInt("credit_card");
+			String email = rs.getString("email");
+			
+			String urgencyStr = rs.getString("emergency");
+            Emergency urgencyEnum;
+            try {
+                urgencyEnum = Emergency.valueOf(urgencyStr.trim().toUpperCase());
+            } catch (IllegalArgumentException | NullPointerException e) {
+                urgencyEnum = Emergency.LOW; // or a default
+            }
+			
+            //int clinician_id = rs.getInt("clinician_id");
+            
+			rs.close();
+			stmt.close();
+			
+			patient = new Patient(name, surname, date, phone, email, credit_card,urgencyEnum);
+    	}catch(Exception e) 
+		{
+			e.printStackTrace();
+		}
+    	return patient;
+    }
+    
+    
     @Override
     public Patient getPatientById(int id) {
         String sql = "SELECT * FROM patients WHERE id = ?";

@@ -14,5 +14,6 @@ public interface ClinicianManager {
     void deleteClinician(int id);
     void updateClinician(Clinician cl);
 	List<Clinician> listClinicians();
+	Clinician getClinicianByid(int id);
 }
 

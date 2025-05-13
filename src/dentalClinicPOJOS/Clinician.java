@@ -4,18 +4,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name="Clinician")
+@XmlType(propOrder = {"name","surname","email","phone"})
 public class Clinician implements Serializable {
 		
 		private static final long serialVersionUID = -2637321372475755L;
+		@XmlTransient
 		private Integer clinician_id; 
+		@XmlElement
 		private String name; 
+		@XmlElement
 		private String surname; 
+		@XmlAttribute
 		private String speciality;
-		private Integer phone; 
+		@XmlElement
+		private Integer phone;
+		@XmlElement
 		private String email; 
+		@XmlTransient
 		private List<Patient> patients;
+		@XmlTransient
 		private List<Treatment> treatments;
 		
 		
@@ -28,6 +46,16 @@ public class Clinician implements Serializable {
 		public Clinician(Integer clinician_id, String name, String surname, String speciality, String email, Integer phone) {
 			super();
 			this.clinician_id = clinician_id;
+			this.name = name;
+			this.surname = surname;
+			this.speciality = speciality;
+			this.email = email;
+			this.phone = phone;
+		
+		}
+		
+		public Clinician(String name, String surname, String speciality, String email, Integer phone) {
+			super();
 			this.name = name;
 			this.surname = surname;
 			this.speciality = speciality;

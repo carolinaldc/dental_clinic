@@ -6,6 +6,8 @@ import java.util.List;
 
 import dentalClinicIFaces.ClinicianManager;
 import dentalClinicPOJOS.Clinician;
+import dentalClinicPOJOS.Patient;
+import dentalClinicPOJOS.Patient.Emergency;
 
 public class JDBCClinicianManager implements ClinicianManager {
 
@@ -14,6 +16,8 @@ public class JDBCClinicianManager implements ClinicianManager {
     public JDBCClinicianManager(JDBCManager manager) {
         this.manager = manager;
     }
+    
+   
 
     @Override
     public void addClinician(Clinician clinician) {
@@ -59,6 +63,35 @@ public class JDBCClinicianManager implements ClinicianManager {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	 //He creado este metodo para hacer lo de katerina de XML
+	@Override
+    public Clinician getClinicianByid(int id) {
+    	
+		Clinician clinician = null;
+    	try {
+    		Statement stmt = manager.getConnection().createStatement();
+    		String sql = "SELECT * FROM Clinicians WHERE id=" + id;
+			
+			ResultSet rs= stmt.executeQuery(sql);
+			
+			String name = rs.getString("name");
+			String surname = rs.getString("surname");
+			Integer phone = rs.getInt("telephone");
+			String email = rs.getString("email");
+			String specialty = rs.getString("specialty");
+            
+			
+			rs.close();
+			stmt.close();
+			
+			clinician = new Clinician(name, surname, specialty, email, phone);
+    	}catch(Exception e) 
+		{
+			e.printStackTrace();
+		}
+    	return clinician;
+    }
 
 	
     @Override

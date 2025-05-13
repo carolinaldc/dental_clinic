@@ -1,6 +1,7 @@
 package dentalClinicUI;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
@@ -13,14 +14,17 @@ import java.util.List;
 import dentalClinicIFaces.ClinicianManager;
 import dentalClinicIFaces.PatientManager;
 import dentalClinicIFaces.UserManager;
+import dentalClinicIFaces.XMLManager;
 import dentalClinicJDBC.JDBCManager;
 import dentalClinicJDBC.JDBCClinicianManager;
 import dentalClinicJDBC.JDBCPatientManager;
 import dentalClinicJDBC.JDBCPatientManager;
 import dentalClinicJPA.JPAUserManager;
+import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Patient;
 import dentalClinicPOJOS.Role;
 import dentalClinicPOJOS.User;
+import dentalClinicXML.XMLManagerImpl;
 
 
 public class menu {
@@ -31,7 +35,7 @@ public class menu {
 	private static ClinicianManager clinicianManager;
 	private static UserManager usermanager;
 	private static BufferedReader reader = new BufferedReader (new InputStreamReader(System.in));
-	//private static XMLManager xmlmanager;
+	private static XMLManager xmlmanager;
 
 
 	public static void main(String[] args) {
@@ -41,7 +45,7 @@ public class menu {
 		jdbcmanager = new JDBCManager();
 		patientManager = new JDBCPatientManager(jdbcmanager);
 		usermanager = new JPAUserManager();
-		//xmlmanager = new XMLManagerImpl();
+		xmlmanager = new XMLManagerImpl();
 		clinicianManager = new JDBCClinicianManager(jdbcmanager);
 		
 		int choice=0;
@@ -125,10 +129,18 @@ public class menu {
     }
 
     public static void patientMenu(String email) {
+    	
+    	
         
     	//lo que puso katerina
-    	patientManager.getPatient(email);
+    	//patientManager.getPatient(email);
     	//
+    	
+    	xmlmanager.patient2xml(1);
+    	File file = new File("./xmls/external_clinician.xml");
+    	Clinician c = xmlmanager.xml2Clinician(file);
+ 		
+    	clinicianManager.addClinician(c);	
     	
     	System.out.println("Choose an option:");
         System.out.println("1. Profile");

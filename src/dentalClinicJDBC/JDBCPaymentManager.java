@@ -1,6 +1,7 @@
 package dentalClinicJDBC;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,6 +10,8 @@ import java.util.List;
 
 import dentalClinicIFaces.PaymentManager;
 import dentalClinicPOJOS.Payment;
+import dentalClinicPOJOS.Payment.Method;
+import dentalClinicPOJOS.Payment.Status;
 import dentalClinicPOJOS.PatientTreatment;
 
 public class JDBCPaymentManager implements PaymentManager {
@@ -48,16 +51,32 @@ public class JDBCPaymentManager implements PaymentManager {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                int id = rs.getInt("payment_id");
-                double amount = rs.getDouble("amount");
-                java.sql.Date date = rs.getDate("date");
-                int treatmentId = rs.getInt("treatment_id");
-                String method = rs.getString("payment_method"); 
+                Integer id = rs.getInt("payment_id");
+                Double amount = rs.getDouble("amount");
+                Date date = rs.getDate("date");
+                Integer treatmentId = rs.getInt("treatment_id");
+                
+                String methodStr = rs.getString("payment_method");
+                Method methodEnum;
+                try {
+                    methodEnum = Method.valueOf(methodStr.trim().toUpperCase());
+                } catch (IllegalArgumentException | NullPointerException e) {
+                    methodEnum = Method.CASH;
+                }
+                
+                String statusStr = rs.getString("status");
+                Status statusEnum;
+                try {
+                    statusEnum = Status.valueOf(statusStr.trim().toUpperCase());
+                } catch (IllegalArgumentException | NullPointerException e) {
+                    statusEnum = Status.PENDING;
+                }
 
-                String status = rs.getString("status");
+
                 String patient = rs.getString("patient");
 
-                Payment payment = new Payment( amount, date, method ,status , patient);
+                //Preguntar a katerina como pasar Objeto a SQL y si lo de los enumerados esta bien
+                Payment payment = new Payment(amount, date, methodEnum ,statusEnum , patient);
                 payments.add(payment);
             }
 
