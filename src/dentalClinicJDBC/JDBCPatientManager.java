@@ -51,7 +51,7 @@ public class JDBCPatientManager implements PatientManager {
 			String email = rs.getString("email");
 			
             int clinician_id = rs.getInt("clinician_id");
-            Clinician clinician = jdbcClinicianManager.getClinicianByid(clinician_id);
+            //Clinician clinician = jdbcClinicianManager.getClinicianByid(clinician_id);
             rs.close();
 			stmt.close();
             
