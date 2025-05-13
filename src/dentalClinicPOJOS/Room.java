@@ -9,20 +9,19 @@ public class Room implements Serializable {
 
     private int room_id; // cambiado a int para coincidir con la tabla SQL
     private String description;
-    private Status status;
+    private String status;
 
-    public enum Status {
-        AVAILABLE, OCCUPIED
-    }
+   
+   
 
     // Constructor sin ID (por ejemplo, para insertar)
-    public Room(String description, Status status) {
+    public Room(String description, String status) {
         this.description = description;
         this.status = status;
     }
 
     // Constructor con ID (por ejemplo, para leer desde la BD)
-    public Room(int room_id, String description, Status status) {
+    public Room(int room_id, String description, String status) {
         this.room_id = room_id;
         this.description = description;
         this.status = status;
@@ -45,11 +44,11 @@ public class Room implements Serializable {
         this.description = description;
     }
 
-    public Status getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

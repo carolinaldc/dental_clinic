@@ -37,7 +37,7 @@ public class Patient implements Serializable {
 	@XmlElement
 	private String email; 
 	@XmlAttribute
-	private Emergency emergency; 
+	private String emergency; 
 	@XmlElement
 	private Integer credit_card; 
 	@XmlElement
@@ -45,16 +45,14 @@ public class Patient implements Serializable {
 	@XmlTransient
 	private List<PatientTreatment> appointment;
 	
-	public enum Emergency {
-		LOW, MEDIUM, HIGH
-	}
+	//ahora tenemos que preguntar si es urgente o no
 	
 	public Patient() {
 		super();
 		appointment = new ArrayList<PatientTreatment>();
 	}
 	
-	public Patient(String name, String surname, Date dob, Integer phone, String email, Integer credit_card, Emergency urgency) {
+	public Patient(String name, String surname, Date dob, Integer phone, String email, Integer credit_card, String emergency) {
 		super();
 		this.name = name;
 		this.surname = surname;
@@ -62,7 +60,7 @@ public class Patient implements Serializable {
 		this.phone = phone;
 		this.email = email;
 		this.credit_card = credit_card;
-		this.emergency = urgency;
+		this.emergency = emergency;
 	}
 	
 	
@@ -126,11 +124,11 @@ public class Patient implements Serializable {
 	}
 
 
-	public Emergency getUrgency() {
+	public String getUrgency() {
 		return emergency;
 	}
 
-	public void setUrgency(Emergency urgency) {
+	public void setUrgency(String urgency) {
 		this.emergency = urgency;
 	}
 
