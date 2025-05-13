@@ -14,6 +14,7 @@ public class Treatment implements Serializable {
 	private Room room;
 	private List<Clinician> clinician; 
 	private List<PatientTreatment> appointment;
+	private List<Material> materials ; 
 	
 
 	public Treatment() {

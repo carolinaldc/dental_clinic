@@ -40,10 +40,10 @@ public class Patient implements Serializable {
 	private String emergency; 
 	@XmlElement
 	private Integer credit_card; 
-	@XmlElement
-	private Clinician clinician;
 	@XmlTransient
 	private List<PatientTreatment> appointment;
+	private List<Patients_Clinician> treats ; 
+	
 	
 	//ahora tenemos que preguntar si es urgente o no
 	

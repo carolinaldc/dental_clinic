@@ -1,6 +1,7 @@
 package dentalClinicPOJOS;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 public class Supplier implements Serializable {
@@ -11,10 +12,10 @@ public class Supplier implements Serializable {
     private Integer phone;
     private String email;
     private String address;
-    private Material material; 
+    private List<Material> material;
 
     // Constructor con parámetros
-    public Supplier(String name, String surname, Integer phone, String email, String address, Material material) {
+    public Supplier(String name, String surname, Integer phone, String email, String address, List<Material> material) {
         this.name = name;
         this.surname = surname;
         this.phone = phone;

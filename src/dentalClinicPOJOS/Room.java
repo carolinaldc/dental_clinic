@@ -1,6 +1,7 @@
 package dentalClinicPOJOS;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 public class Room implements Serializable {
@@ -10,7 +11,7 @@ public class Room implements Serializable {
     private int room_id; // cambiado a int para coincidir con la tabla SQL
     private String description;
     private String status;
-
+    private List <Treatment> treatments ; 
    
    
 
