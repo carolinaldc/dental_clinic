@@ -28,8 +28,9 @@ import dentalClinicXML.XMLManagerImpl;
 
 
 public class menu {
-
-
+	private static TreatmentUI treatmentUI;
+	
+	
 	private static JDBCManager jdbcmanager;
 	private static PatientManager patientManager;
 	private static ClinicianManager clinicianManager;
@@ -39,9 +40,6 @@ public class menu {
 
 
 	public static void main(String[] args) {
-
-		// TODO Auto-generated method stub
-		
 		jdbcmanager = new JDBCManager();
 		patientManager = new JDBCPatientManager(jdbcmanager);
 		usermanager = new JPAUserManager();
@@ -112,11 +110,11 @@ public class menu {
 			userType = Integer.parseInt(reader.readLine());
 			
 			if (userType == 1) {
-				addNewUser();
+				addNewUser(null, null, null, null, null, userType, null, userType, null);
 	            //enterPatientData();
 	            //patientMenu();
 	        } else if (userType == 2) {
-	        	addNewUser();
+	        	addNewUser(null, null, null, null, null, userType, null, userType, null);
 	            //enterClinicianData();
 	            //clinicianMenu();
 	        } else {
@@ -230,7 +228,6 @@ public class menu {
 
     public static void clinicianMenu(String email) {
         
-    	//lo que puso katerina
     	clinicianManager.getClinician(email);
     	
         System.out.println("Choose an option:");
@@ -335,27 +332,22 @@ public class menu {
         System.out.println("3. Cancel Treatment");
         System.out.println("4. Show List of Treatments");
 
-
         int choice;
         try {
         	choice = Integer.parseInt(reader.readLine());
 
             switch (choice) {
                 case 1:
-                    //addTreatment();
+                	treatmentUI.addTreatment();
                     break;
                 case 2:
-                    //viewTreatmentsList();
-                    //chooseTreatment();
-                    //modifyTreatment();
+                	treatmentUI.modifyTreatment();
                     break;
                 case 3:
-                    //viewTreatmentsList();
-                    //chooseTreatment();
-                    //deleteTreatment();
+                	treatmentUI.deleteTreatment();
                     break;
                 case 4:
-                    //viewTreatmentsList();
+                	treatmentUI.viewTreatmentsList();
                     break;
                 default:
                     System.out.println("Invalid choice");
@@ -371,7 +363,6 @@ public class menu {
         System.out.println("1. Show All My Patients");
         System.out.println("2. Show Today's Patients");
         System.out.println("3. Show Tomorrow's Patients");
-
 
         int choice;
         try {
@@ -393,39 +384,38 @@ public class menu {
             }
 		}catch(Exception e){
 			e.printStackTrace();
-		}
-        
-        
-        
-        
+		} 
     }
-    
-  //TODO no hemos hecho el addPatient
-    
-    private static void addNewUser() {
+        
+
+    private static void addNewUser(String userType, String name, String surname, String speciality, Date dob, Integer phone, String email, Integer credit_card,
+			String password) throws java.sql.SQLException, Exception {
     	
-    	try {
-    		System.out.println("Introduce email:");
-    		String mail = reader.readLine();
-    		System.out.println("Introduce password:");
-    		String password = reader.readLine();
-    		MessageDigest md = MessageDigest.getInstance("MD5");
-			md.update(password.getBytes());
-			byte[] digest = md.digest();
-			
-			System.out.println("Which is your role?:");
-			List<Role> roles = usermanager.getRoles();
-			System.out.println(roles.toString());
-			Integer role = Integer.parseInt(reader.readLine());				
-			Role rol = usermanager.getRole(role);
-			
-			User user = new User(mail,digest,rol);
-			usermanager.newUser(user);
-    		
-    	}catch(Exception e)
-		{
-			e.printStackTrace();
+    	MessageDigest md = MessageDigest.getInstance("MD5");
+		md.update(password.getBytes());
+		byte[] pw = md.digest();
+		
+		//TODO: tengo que crear un roleID ppara que tenga sentido esto???
+		if (userType.equals("Clinician")) {
+			try {
+				Role clinicianRole = usermanager.getRole(2);
+	            usermanager.newUser(new User(email, pw, clinicianRole));
+	            clinicianManager.addClinician(new Clinician(name, surname, speciality, email, phone));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		} else if (userType.equals("Patient")) {
+			try {
+				Role patientRole = usermanager.getRole(1);
+	            usermanager.newUser(new User(email, pw, patientRole));
+	            patientManager.addPatient(new Patient(name, surname, dob, phone, email, credit_card));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}else{
+			 throw new IllegalArgumentException("Invalid user type");
 		}
-    	
-    }
+	}
+
 }

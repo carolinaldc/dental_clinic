@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import dentalClinicIFaces.TreatmentManager;
+
 public class JDBCManager {
 	
 	private Connection c = null;
@@ -191,6 +193,10 @@ public class JDBCManager {
 		{	
 			e.printStackTrace();
 		}
+	}
+
+	public TreatmentManager getTreatmentManager() {
+		return null;
 	}
 	
 }
