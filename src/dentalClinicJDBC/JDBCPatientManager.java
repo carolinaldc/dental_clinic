@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dentalClinicIFaces.PatientManager;
+import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Patient;
 import dentalClinicPOJOS.Patient.Emergency;
 
@@ -36,7 +37,7 @@ public class JDBCPatientManager implements PatientManager {
     //HE creado uno nuevo paracido a lo que hizo katerina en XMLManager y decidimos que queremos
     @Override
     public Patient getPatientByid(int id) {
-    	
+    	JDBCClinicianManager jdbcClinicianManager = new JDBCClinicianManager(manager);
     	Patient patient = null;
     	try {
     		Statement stmt = manager.getConnection().createStatement();
@@ -59,12 +60,16 @@ public class JDBCPatientManager implements PatientManager {
                 urgencyEnum = Emergency.LOW; // or a default
             }
 			
-            //int clinician_id = rs.getInt("clinician_id");
-            
-			rs.close();
+            int clinician_id = rs.getInt("clinician_id");
+            Clinician clinician = jdbcClinicianManager.getClinicianByid(clinician_id);
+            rs.close();
 			stmt.close();
+            
+	        
+	        
+	
 			
-			patient = new Patient(name, surname, date, phone, email, credit_card,urgencyEnum);
+			patient = new Patient(name, surname, date, phone, email, credit_card,urgencyEnum, clinician);
     	}catch(Exception e) 
 		{
 			e.printStackTrace();

@@ -23,14 +23,12 @@ public class XMLManagerImpl implements XMLManager {
 		 
 		manager = new JDBCManager();
 		JDBCPatientManager jdbcPatientManager = new JDBCPatientManager(manager); 
-		JDBCClinicianManager jdbcClinicianManager = new JDBCClinicianManager(manager);
+		
 		try {
 			
 			
 	        Patient patient = jdbcPatientManager.getPatientByid(id);
-	        //Preguntar a Katerina si esto esta bien 
-	        Clinician clinician = jdbcClinicianManager.getClinicianByid(id);
-	        patient.setClinician(clinician);
+	        
 	        
 	        JAXBContext jaxbcontext =  JAXBContext.newInstance(Patient.class);
 			Marshaller marshaller = jaxbcontext.createMarshaller();
