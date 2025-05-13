@@ -74,9 +74,15 @@ public class Supplier implements Serializable {
         this.address = address;
     }
 
-  
+    public List<Material> getMaterial() {
+		return material;
+	}
 
-    @Override
+	public void setMaterial(List<Material> material) {
+		this.material = material;
+	}
+
+	@Override
     public int hashCode() {
         return Objects.hash(address, email, material, name, phone, supplier_id, surname);
     }
