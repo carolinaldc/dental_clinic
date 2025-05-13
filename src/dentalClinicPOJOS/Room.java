@@ -15,7 +15,11 @@ public class Room implements Serializable {
    
    
 
-    // Constructor sin ID (por ejemplo, para insertar)
+    public Room() {
+		super();
+	}
+
+	// Constructor sin ID (por ejemplo, para insertar)
     public Room(String description, String status) {
         this.description = description;
         this.status = status;
