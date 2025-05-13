@@ -7,7 +7,6 @@ import dentalClinicPOJOS.Patient;
 
 public interface PatientManager {
     List<Patient> listPatients();
-    Patient getPatientById(int id);
     void deletePatient(int id);
     void updatePatient(Patient p);
 	Patient getPatient(String email);

@@ -50,7 +50,8 @@ public class JDBCPatientManager implements PatientManager {
 			Integer credit_card = rs.getInt("credit_card");
 			String email = rs.getString("email");
 			
-            int clinician_id = rs.getInt("clinician_id");
+			//DO IT FOR PATIENTCLINICIANS
+            //int clinician_id = rs.getInt("clinician_id");
             //Clinician clinician = jdbcClinicianManager.getClinicianByid(clinician_id);
             rs.close();
 			stmt.close();
@@ -59,7 +60,7 @@ public class JDBCPatientManager implements PatientManager {
 	        
 	
 			
-			patient = new Patient(name, surname, date, phone, email, credit_card,urgencyEnum, clinician);
+			patient = new Patient(name, surname, date, phone, email, credit_card, clinician);
     	}catch(Exception e) 
 		{
 			e.printStackTrace();
@@ -68,28 +69,27 @@ public class JDBCPatientManager implements PatientManager {
     }
     
     
-    @Override
-    public Patient getPatientById(int id) {
-        String sql = "SELECT * FROM patients WHERE id = ?";
-        try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return new Patient(
-                    rs.getString("name"),
-                    rs.getString("surname"),
-                    rs.getDate("birth_date"),
-                    rs.getInt("phone"),
-                    rs.getString("mail"),
-                    rs.getInt("credit_card")
-                    
-                );
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+    //@Override
+    //public Patient getPatientById(int id) {
+    //   String sql = "SELECT * FROM patients WHERE id = ?";
+    //   try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+    //      ps.setInt(1, id);
+    //      ResultSet rs = ps.executeQuery();
+    //      if (rs.next()) {
+    //          return new Patient(
+    //             rs.getString("name"),
+    //               rs.getString("surname"),
+    //              rs.getDate("birth_date"),
+    //               rs.getInt("phone"),
+    //               rs.getString("mail"),
+    //               rs.getInt("credit_card")
+    //           );
+    //       }
+    //  } catch (SQLException e) {
+    //       e.printStackTrace();
+    //   }
+    //   return null;
+    //}
 
     @Override
     public List<Patient> listPatients() {
