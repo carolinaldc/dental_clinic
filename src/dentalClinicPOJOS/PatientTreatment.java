@@ -88,6 +88,11 @@ public class PatientTreatment implements Serializable {
 				+ comment + "]";
 	}
 
+	public String getAppointmentDate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 	
 	

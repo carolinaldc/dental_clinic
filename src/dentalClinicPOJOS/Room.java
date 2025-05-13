@@ -73,4 +73,9 @@ public class Room implements Serializable {
         return "Room [id=" + room_id + ", description=" + description + ", status=" + status + "]";
     }
 
+	public int getId_room() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
