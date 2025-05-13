@@ -13,7 +13,7 @@ public class PatientTreatment implements Serializable {
     private Treatment treatment;
     private Date date;
     private String comment;
-//list of clinicians
+
     public PatientTreatment(String comment, Date date, Treatment treatment, Patient patient) {
         super();
         this.comment = comment;
