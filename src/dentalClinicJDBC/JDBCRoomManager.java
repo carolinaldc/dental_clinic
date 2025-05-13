@@ -65,7 +65,7 @@ public class JDBCRoomManager {
 	            PreparedStatement ps = c.prepareStatement(sql);
 	            ps.setString(1, room.getDescription());
 	            ps.setString(2, room.getStatus().toString());
-	            ps.setInt(3, room.getId());
+	            ps.setInt(3, room.getId_room());
 	            ps.executeUpdate();
 	            ps.close();
 	        } catch (SQLException e) {
@@ -96,5 +96,5 @@ public class JDBCRoomManager {
 	        this.conMan = conMan;
 	    }
 	}
-
+}
 }

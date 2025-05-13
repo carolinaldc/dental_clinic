@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dentalClinicIFaces.PatientManager;
+import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Patient;
-import dentalClinicPOJOS.Patient.Emergency;
 
 public class JDBCPatientManager implements PatientManager {
     private JDBCManager manager;
@@ -25,7 +25,6 @@ public class JDBCPatientManager implements PatientManager {
             ps.setInt(4, p.getPhone());
             ps.setString(5, p.getEmail());
             ps.setInt(6, p.getCredit_card());
-            ps.setString(7, p.getUrgency().name());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -36,7 +35,7 @@ public class JDBCPatientManager implements PatientManager {
     //HE creado uno nuevo paracido a lo que hizo katerina en XMLManager y decidimos que queremos
     @Override
     public Patient getPatientByid(int id) {
-    	
+    	JDBCClinicianManager jdbcClinicianManager = new JDBCClinicianManager(manager);
     	Patient patient = null;
     	try {
     		Statement stmt = manager.getConnection().createStatement();
@@ -51,20 +50,16 @@ public class JDBCPatientManager implements PatientManager {
 			Integer credit_card = rs.getInt("credit_card");
 			String email = rs.getString("email");
 			
-			String urgencyStr = rs.getString("emergency");
-            Emergency urgencyEnum;
-            try {
-                urgencyEnum = Emergency.valueOf(urgencyStr.trim().toUpperCase());
-            } catch (IllegalArgumentException | NullPointerException e) {
-                urgencyEnum = Emergency.LOW; // or a default
-            }
-			
-            //int clinician_id = rs.getInt("clinician_id");
-            
-			rs.close();
+            int clinician_id = rs.getInt("clinician_id");
+            //Clinician clinician = jdbcClinicianManager.getClinicianByid(clinician_id);
+            rs.close();
 			stmt.close();
+            
+	        
+	        
+	
 			
-			patient = new Patient(name, surname, date, phone, email, credit_card,urgencyEnum);
+			patient = new Patient(name, surname, date, phone, email, credit_card,urgencyEnum, clinician);
     	}catch(Exception e) 
 		{
 			e.printStackTrace();
@@ -86,8 +81,8 @@ public class JDBCPatientManager implements PatientManager {
                     rs.getDate("birth_date"),
                     rs.getInt("phone"),
                     rs.getString("mail"),
-                    rs.getInt("credit_card"),
-                    Emergency.valueOf(rs.getString("emergency").toUpperCase())
+                    rs.getInt("credit_card")
+                    
                 );
             }
         } catch (SQLException e) {
@@ -109,8 +104,8 @@ public class JDBCPatientManager implements PatientManager {
                         rs.getDate("birth_date"),
                         rs.getInt("phone"),
                         rs.getString("mail"),
-                        rs.getInt("credit_card"),
-                        Emergency.valueOf(rs.getString("emergency").toUpperCase())
+                        rs.getInt("credit_card")
+                        
                 );
                 list.add(p);
             }
@@ -141,7 +136,6 @@ public class JDBCPatientManager implements PatientManager {
             ps.setInt(4, p.getPhone());
             ps.setString(5, p.getEmail());
             ps.setInt(6, p.getCredit_card());
-            ps.setString(7, p.getUrgency().name());
             ps.setInt(8,p.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -162,8 +156,7 @@ public class JDBCPatientManager implements PatientManager {
                         rs.getDate("birth_date"),
                         rs.getInt("phone"),
                         rs.getString("email"),
-                        rs.getInt("credit_card"),
-                        Emergency.valueOf(rs.getString("emergency").toUpperCase())
+                        rs.getInt("credit_card")
                 );
             }
         } catch (SQLException e) {

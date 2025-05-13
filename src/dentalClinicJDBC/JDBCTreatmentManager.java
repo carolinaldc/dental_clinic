@@ -1,4 +1,4 @@
--package dentalClinicJDBC;
+package dentalClinicJDBC;
 
 import java.sql.*;
 import java.util.ArrayList;

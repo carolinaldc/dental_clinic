@@ -7,7 +7,6 @@ import java.util.List;
 import dentalClinicIFaces.ClinicianManager;
 import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Patient;
-import dentalClinicPOJOS.Patient.Emergency;
 
 public class JDBCClinicianManager implements ClinicianManager {
 
