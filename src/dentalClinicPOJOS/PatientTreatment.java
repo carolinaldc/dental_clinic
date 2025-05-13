@@ -13,7 +13,7 @@ public class PatientTreatment implements Serializable {
     private Treatment treatment;
     private Date date;
     private String comment;
-
+//list of clinicians
     public PatientTreatment(String comment, Date date, Treatment treatment, Patient patient) {
         super();
         this.comment = comment;
@@ -86,6 +86,11 @@ public class PatientTreatment implements Serializable {
 	public String toString() {
 		return "PatientTreatment [patient=" + patient + ", treatment=" + treatment + ", date=" + date + ", comment="
 				+ comment + "]";
+	}
+
+	public String getAppointmentDate() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

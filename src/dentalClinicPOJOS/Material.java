@@ -1,4 +1,5 @@
 package dentalClinicPOJOS;
+import java.util.List;
 import java.util.Objects;
 import java.io.Serializable;
 
@@ -7,6 +8,8 @@ public class Material implements Serializable{
 	private Integer materials_id ;
 	private String name ; 
 	private Integer stock;
+	private Supplier supplier ; 
+	private List<Treatment> treatment; 
 	
 	public Material(int id,String name,Integer stock) {
 		super();

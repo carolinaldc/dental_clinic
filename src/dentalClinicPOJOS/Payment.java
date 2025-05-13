@@ -11,19 +11,12 @@ public class Payment implements Serializable {
     private Integer payment_id;
     private Double amount;
     private Date payment_date;
-    private Method payment_method;
-    private Status status;
+    private String payment_method;
+    private String status;
     private Patient patient;
 
-    public enum Method {
-        CASH, CARD, BIZUM
-    }
 
-    public enum Status {
-        PENDING, COMPLETED, CANCELLED
-    }
-
-    public Payment(Double amount, Date date, Method method, Status status, Patient patient) {
+    public Payment(Double amount, Date date, String method, String status, Patient patient) {
         super();
     	this.amount = amount;
     	this.payment_date = date;
@@ -53,19 +46,19 @@ public class Payment implements Serializable {
         this.payment_date = date;
     }
 
-    public Method getMethod() {
+    public String getMethod() {
         return payment_method;
     }
 
-    public void setMethod(Method method) {
+    public void setMethod(String method) {
         this.payment_method = method;
     }
 
-    public Status getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

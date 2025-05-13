@@ -35,6 +35,7 @@ public class Clinician implements Serializable {
 		private List<Patient> patients;
 		@XmlTransient
 		private List<Treatment> treatments;
+		private List<Patients_Clinician> treats ; 
 		
 		
 		public Clinician() {
