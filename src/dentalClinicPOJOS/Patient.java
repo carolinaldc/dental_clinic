@@ -36,12 +36,11 @@ public class Patient implements Serializable {
 	private Integer phone;
 	@XmlElement
 	private String email; 
-	@XmlAttribute
-	private String emergency; 
 	@XmlElement
 	private Integer credit_card; 
 	@XmlTransient
 	private List<PatientTreatment> appointment;
+	@XmlTransient
 	private List<Patients_Clinician> treats ; 
 	
 	
@@ -52,7 +51,7 @@ public class Patient implements Serializable {
 		appointment = new ArrayList<PatientTreatment>();
 	}
 	
-	public Patient(String name, String surname, Date dob, Integer phone, String email, Integer credit_card, String emergency) {
+	public Patient(String name, String surname, Date dob, Integer phone, String email, Integer credit_card, List<PatientTreatment> appointment,List<Patients_Clinician> treats) {
 		super();
 		this.name = name;
 		this.surname = surname;
@@ -60,7 +59,9 @@ public class Patient implements Serializable {
 		this.phone = phone;
 		this.email = email;
 		this.credit_card = credit_card;
-		this.emergency = emergency;
+		this.appointment = appointment ; 
+		this.treats = treats ; 
+		
 	}
 	
 	
@@ -124,23 +125,8 @@ public class Patient implements Serializable {
 	}
 
 
-	public String getUrgency() {
-		return emergency;
-	}
-
-	public void setUrgency(String urgency) {
-		this.emergency = urgency;
-	}
-
 	
-	
-	public Clinician getClinician() {
-		return clinician;
-	}
 
-	public void setClinician(Clinician clinician) {
-		this.clinician = clinician;
-	}
 
 	public List<PatientTreatment> getAppointment() {
 		return appointment;
@@ -150,10 +136,12 @@ public class Patient implements Serializable {
 		this.appointment = appointment;
 	}
 
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(appointment, clinician, credit_card, dob, email, patient_id, name, phone, surname, emergency);
+		return Objects.hash(appointment, credit_card, dob, email, name, patient_id, phone, surname, treats);
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -164,18 +152,27 @@ public class Patient implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Patient other = (Patient) obj;
-		return Objects.equals(appointment, other.appointment) && Objects.equals(clinician, other.clinician)
-				&& Objects.equals(credit_card, other.credit_card) && Objects.equals(dob, other.dob)
-				&& Objects.equals(email, other.email) && Objects.equals(patient_id, other.patient_id)
-				&& Objects.equals(name, other.name) && Objects.equals(phone, other.phone)
-				&& Objects.equals(surname, other.surname) && emergency == other.emergency;
+		return Objects.equals(appointment, other.appointment) && Objects.equals(credit_card, other.credit_card)
+				&& Objects.equals(dob, other.dob) && Objects.equals(email, other.email)
+				&& Objects.equals(name, other.name) && Objects.equals(patient_id, other.patient_id)
+				&& Objects.equals(phone, other.phone) && Objects.equals(surname, other.surname)
+				&& Objects.equals(treats, other.treats);
 	}
+
+	
 
 	@Override
 	public String toString() {
-		return "Patient [name=" + name + ", surname=" + surname + ", phone=" + phone + ", email=" + email
-				+ ", credit_card=" + credit_card + ", urgency=" + emergency + ", dob=" + dob + ", clinician=" + clinician
-				+ "]";
+		return "Patient [name=" + name + ", surname=" + surname + ", dob=" + dob + ", phone=" + phone + ", email="
+				+ email + ", credit_card=" + credit_card + ", appointment=" + appointment + ", treats=" + treats + "]";
+	}
+
+	public List<Patients_Clinician> getTreats() {
+		return treats;
+	}
+
+	public void setTreats(List<Patients_Clinician> treats) {
+		this.treats = treats;
 	}
 
 	
