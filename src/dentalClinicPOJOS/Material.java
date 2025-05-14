@@ -11,11 +11,14 @@ public class Material implements Serializable{
 	private Supplier supplier ; 
 	private List<Treatment> treatment; 
 	
-	public Material(int id,String name,Integer stock) {
-		super();
-		this.stock = stock;
-		this.name = name;
-	}
+	   public Material(int id, String name, Integer stock) {
+	        super();
+	        this.materials_id = id; 
+	        this.name = name;
+	        this.stock = stock;
+	    }
+
+
 
 	public String getDescription() {
 		return name;
