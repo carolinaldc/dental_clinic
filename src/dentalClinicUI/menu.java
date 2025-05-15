@@ -30,6 +30,8 @@ import dentalClinicXML.XMLManagerImpl;
 public class menu {
 	private static TreatmentUI treatmentUI;
 	private static AppointmentUI appointmentUI;
+	private static PatientUI patiententUI;
+	private static ClinicianUI clinicianUI;
 	
 	private static JDBCManager jdbcmanager;
 	private static PatientManager patientManager;
@@ -45,6 +47,10 @@ public class menu {
 		usermanager = new JPAUserManager();
 		xmlmanager = new XMLManagerImpl();
 		clinicianManager = new JDBCClinicianManager(jdbcmanager);
+		
+		patiententUI = new PatientUI(patientManager);
+		clinicianUI = new ClinicianUI(clinicianManager);
+
 		
 		int choice=0;
 		try {
@@ -105,15 +111,26 @@ public class menu {
         System.out.println("1. Patient");
         System.out.println("2. Clinician");
 
-        int userType;
 		try {
-			userType = Integer.parseInt(reader.readLine());
+			int userType = Integer.parseInt(reader.readLine());
+			System.out.println("Introduce mail:");
+			String mail = reader.readLine();
+			System.out.println("Introduce password");
+			String password = reader.readLine();
 			
 			if (userType == 1) {
-				addNewUser(userType, null, null, null, null, null, null, null, null);
-	            patientMenu(null);
+				patiententUI.addPatient(); 
+				Role patientRole = usermanager.getRole(1);
+				createUser(mail, password, patientRole);
+				patientMenu(mail);
+
+				//addNewUser(userType, null, null, null, null, null, null, null, null);
+	            //patientMenu(null);
 	        } else if (userType == 2) {
-	        	addNewUser(userType, null, null, null, null, null, null, null, null);
+	        	clinicianUI.addClinician(); 
+				Role clinicianRole = usermanager.getRole(2);
+				createUser(mail, password, clinicianRole);
+				patientMenu(mail);
 	            clinicianMenu(null);
 	        } else {
 	            System.out.println("Invalid choice");
@@ -155,7 +172,7 @@ public class menu {
                 break;
             default:
                 System.out.println("Invalid choice");
-                //patientMenu();
+                patientMenu(email);
         	}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -172,9 +189,9 @@ public class menu {
         	choice = Integer.parseInt(reader.readLine());
 
         	if (choice == 1) {
-                //editProfile();
+        		patiententUI.modifyPatient();
 	        } else if (choice == 2) {
-                //deleteProfile();
+	        	patiententUI.deletePatient();
 	        } else {
 	            System.out.println("Invalid choice");
                 patientProfileMenu();
@@ -183,6 +200,7 @@ public class menu {
 			e.printStackTrace();
 		}
     }
+  
 
     public static void clinicianMenu(String email) {
         
@@ -201,7 +219,7 @@ public class menu {
 
             switch (choice) {
             case 1:
-                //editProfile();
+            	clinicianProfileMenu();
                 break;
             case 2:
                 appointmentMenu();
@@ -224,6 +242,28 @@ public class menu {
 		}
     }
 
+    public static void clinicianProfileMenu() {
+        System.out.println("Choose an option:");
+        System.out.println("1. Edit Profile");
+        System.out.println("2. Delete Profile");
+
+        int choice;
+        try {
+        	choice = Integer.parseInt(reader.readLine());
+
+        	if (choice == 1) {
+        		clinicianUI.modifyClinician();
+	        } else if (choice == 2) {
+	        	clinicianUI.deleteClinician();
+	        } else {
+	            System.out.println("Invalid choice");
+                patientProfileMenu();
+	        }
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+    }
+    
     public static void appointmentMenu() {
         System.out.println("Choose an option:");
         System.out.println("1. Book an Appointment");
@@ -302,7 +342,7 @@ public class menu {
 
             switch (choice) {
             case 1:
-                //viewAllPatientsList();
+                //viewPatientsList();
                 break;
             case 2:
                 //viewTodaysPatientsList();
@@ -332,7 +372,7 @@ public class menu {
 			try {
 				Role clinicianRole = usermanager.getRole(2);
 	            usermanager.newUser(new User(email, pw, clinicianRole));
-	            clinicianManager.addClinician(new Clinician(name, surname, speciality, email, phone));
+	            clinicianManager.addClinician(new Clinician(name, surname, speciality, phone));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -341,7 +381,7 @@ public class menu {
 			try {
 				Role patientRole = usermanager.getRole(1);
 	            usermanager.newUser(new User(email, pw, patientRole));
-	            patientManager.addPatient(new Patient(name, surname, dob, phone, email, credit_card));
+	            patientManager.addPatient(new Patient(name, surname, dob, phone, credit_card));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -349,5 +389,19 @@ public class menu {
 			 throw new IllegalArgumentException("Invalid user type");
 		}
 	}
+    
+    private static void createUser(String email, String password, Role role) throws Exception {
+        if (email == null || password == null || role == null) {
+            throw new IllegalArgumentException("Email, password, and role must not be null.");
+        }
+
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(password.getBytes());
+        byte[] pw = md.digest();
+
+        User user = new User(email, pw, role);
+        usermanager.newUser(user);
+    }
+
 
 }

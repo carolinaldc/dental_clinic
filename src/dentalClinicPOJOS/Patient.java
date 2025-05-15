@@ -77,6 +77,15 @@ public class Patient implements Serializable {
 		this.credit_card = credit_card;
 	}
 
+	public Patient(String name, String surname, Date dob, Integer phone, Integer credit_card) {
+		super();
+		this.name = name;
+		this.surname = surname;
+		this.dob = dob;
+		this.phone = phone;
+		this.credit_card = credit_card;
+	}
+	
 	public Patient(int patientId) {
 		// TODO Auto-generated constructor stub
 	}
