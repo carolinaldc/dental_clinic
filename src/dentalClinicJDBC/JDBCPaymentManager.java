@@ -10,24 +10,23 @@ import java.util.List;
 
 import dentalClinicIFaces.PaymentManager;
 import dentalClinicPOJOS.Payment;
-import dentalClinicPOJOS.Payment.Method;
-import dentalClinicPOJOS.Payment.Status;
+import dentalClinicPOJOS.Patient;
 import dentalClinicPOJOS.PatientTreatment;
 
 public class JDBCPaymentManager implements PaymentManager {
-	private Connection c;
+	//private Connection c;
     private JDBCManager conMan;
 
     public JDBCPaymentManager(JDBCManager connectionManager) {
-        this.setConMan(connectionManager);
-        this.c = connectionManager.getConnection();
+        this.conMan = connectionManager;
+        //this.c = connectionManager.getConnection();
     }
     
     @Override
     public void addPayment(Payment payment) {
         try {
             String sql = "INSERT INTO payments (payment_id, amount, payment_date, payment_method,status) VALUES (?, ?, ?)";
-            PreparedStatement ps = c.prepareStatement(sql);
+            PreparedStatement ps = conMan.getConnection().prepareStatement(sql);
             
             ps.setDouble(1, payment.getAmount());
             ps.setDate(2, new java.sql.Date(payment.getDate().getTime()));  // Conversión de Date
@@ -45,9 +44,10 @@ public class JDBCPaymentManager implements PaymentManager {
     @Override
     public List<Payment> getAllPayments() {
         List<Payment> payments = new ArrayList<>();
+        JDBCPatientManager jdbcPatientsCliniciansManager = new JDBCPatientManager(conMan);
         try {
             String sql = "SELECT * FROM payments";
-            PreparedStatement ps = c.prepareStatement(sql);
+            PreparedStatement ps = conMan.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -58,7 +58,9 @@ public class JDBCPaymentManager implements PaymentManager {
                 
                 String method = rs.getString("payment_method");
                 String status = rs.getString("status");
-                String patient = rs.getString("patient");
+                
+                Integer patient_Id = rs.getInt("patient_id");
+                Patient patient = jdbcPatientsCliniciansManager.getPatientByid(patient_Id);
                 
 
                 //Preguntar a katerina como pasar Objeto a SQL y si lo de los enumerados esta bien
@@ -80,7 +82,7 @@ public class JDBCPaymentManager implements PaymentManager {
     public void deletePayment(int paymentId) {
         try {
             String sql = "DELETE FROM payments WHERE payment_id = ?";
-            PreparedStatement ps = c.prepareStatement(sql);
+            PreparedStatement ps = conMan.getConnection().prepareStatement(sql);
             ps.setInt(1, paymentId);
             ps.executeUpdate();
             ps.close();
@@ -90,14 +92,15 @@ public class JDBCPaymentManager implements PaymentManager {
         }
     }
 
+    //TODO ns si esto esta bien
     @Override
     public void updatePayment(Payment payment) {
         try {
             String sql = "UPDATE payments SET amount = ?, date = ?, treatment_id = ? WHERE payment_id = ?";
-            PreparedStatement ps = c.prepareStatement(sql);
+            PreparedStatement ps = conMan.getConnection().prepareStatement(sql);
             ps.setDouble(1, payment.getAmount());
             ps.setDate(2, payment.getDate());
-            ps.setInt(3, payment.getTreatment().getId());
+            //ps.setInt(3, payment.getTreatment().getId());
             ps.setInt(4, payment.getId());
             ps.executeUpdate();
             ps.close();
@@ -107,12 +110,5 @@ public class JDBCPaymentManager implements PaymentManager {
         }
     }
 
-    public JDBCManager getConMan() {
-        return conMan;
-    }
-
-    public void setConMan(JDBCManager conMan) {
-        this.conMan = conMan;
-    }
 }
 

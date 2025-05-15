@@ -22,8 +22,28 @@ public class Treatment implements Serializable {
 		clinician = new ArrayList<Clinician>();
 		appointment = new ArrayList<PatientTreatment>();
 	}
+	
+	
 
 	
+	public Treatment(String name, String description, Integer price) {
+		super();
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		
+	}
+
+
+
+
+	public Treatment(int treatmentId) {
+		// TODO Auto-generated constructor stub
+	}
+
+
+
+
 	public String getDescription() {
 		return description;
 	}

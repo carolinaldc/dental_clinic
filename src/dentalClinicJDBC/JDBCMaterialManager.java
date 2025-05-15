@@ -13,19 +13,20 @@ import dentalClinicPOJOS.Supplier;
 import dentalClinicPOJOS.Treatment;
 
 public class JDBCMaterialManager implements MaterialManager {
-    private Connection c;
-    private JDBCManager conMan;
+    
+	//private Connection c;
+	private JDBCManager conMan;
 
     public JDBCMaterialManager(JDBCManager connectionManager) {
-        this.setConMan(connectionManager);
-        this.c = connectionManager.getConnection();
+        this.conMan = connectionManager;
+        //this.c = connectionManager.getConnection();
     }
 
     @Override 
     public void addMaterial(Material material) {
         try {
             String sql = "INSERT INTO materials (name, stock) VALUES (?, ?)";
-            PreparedStatement ps = c.prepareStatement(sql);
+            PreparedStatement ps = conMan.getConnection().prepareStatement(sql);
             ps.setString(1, material.getName());
             ps.setInt(2, material.getStock());
             ps.executeUpdate();
@@ -45,7 +46,38 @@ public class JDBCMaterialManager implements MaterialManager {
            
             String sql = "SELECT material_id, name, stock FROM materials";
 
-            PreparedStatement ps = c.prepareStatement(sql);
+            PreparedStatement ps = conMan.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                
+                int id = rs.getInt("material_id");  
+                String name = rs.getString("name");
+                int stock = rs.getInt("stock");
+
+                
+                Material material = new Material(id, name, stock);
+                materials.add(material);
+            }
+            
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println("Error retrieving materials");
+            e.printStackTrace();
+        }
+        return materials;
+    }
+    
+    @Override
+    public List<Material> getAllMaterialsById(int idTreatment) {
+        List<Material> materials = new ArrayList<>();
+        try {
+           
+            String sql = "SELECT * FROM materials WHERE treatment_id =" + idTreatment;
+            
+
+            PreparedStatement ps = conMan.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             
             while (rs.next()) {
@@ -68,12 +100,15 @@ public class JDBCMaterialManager implements MaterialManager {
         return materials;
     }
 
+    
+
+    
 
     @Override
     public void updateMaterial(Material material) {
         try {
             String sql = "UPDATE materials SET material_name = ?, quantity = ?, supplier_id = ? WHERE material_id = ?";
-            PreparedStatement ps = c.prepareStatement(sql);
+            PreparedStatement ps = conMan.getConnection().prepareStatement(sql);
             ps.setString(1, material.getName());
             ps.setInt(2, material.getStock());
            
@@ -89,7 +124,7 @@ public class JDBCMaterialManager implements MaterialManager {
     public void deleteMaterial(int materialId) {
         try {
             String sql = "DELETE FROM materials WHERE material_id = ?";
-            PreparedStatement ps = c.prepareStatement(sql);
+            PreparedStatement ps = conMan.getConnection().prepareStatement(sql);
             ps.setInt(1, materialId);
             ps.executeUpdate();
             ps.close();
@@ -103,7 +138,7 @@ public class JDBCMaterialManager implements MaterialManager {
     public void linkMaterialToTreatment(int materialId, int treatmentId) {
         try {
             String sql = "INSERT INTO treatment_material (treatment_id, material_id) VALUES (?, ?)";
-            PreparedStatement ps = c.prepareStatement(sql);
+            PreparedStatement ps = conMan.getConnection().prepareStatement(sql);
             ps.setInt(1, treatmentId);
             ps.setInt(2, materialId);
             ps.executeUpdate();
@@ -114,11 +149,5 @@ public class JDBCMaterialManager implements MaterialManager {
         }
     }
 
-    public JDBCManager getConMan() {
-        return conMan;
-    }
-
-    public void setConMan(JDBCManager conMan) {
-        this.conMan = conMan;
-    }
+    
 }

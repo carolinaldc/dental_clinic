@@ -65,6 +65,21 @@ public class Patient implements Serializable {
 	}
 	
 	
+	
+
+	public Patient(String name, String surname, Date dob, Integer phone, String email, Integer credit_card) {
+		super();
+		this.name = name;
+		this.surname = surname;
+		this.dob = dob;
+		this.phone = phone;
+		this.email = email;
+		this.credit_card = credit_card;
+	}
+
+	public Patient(int patientId) {
+		// TODO Auto-generated constructor stub
+	}
 
 	public Integer getId() {
 		return patient_id;

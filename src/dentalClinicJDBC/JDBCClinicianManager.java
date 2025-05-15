@@ -56,6 +56,7 @@ public class JDBCClinicianManager implements ClinicianManager {
         return clinicians;
     }
 
+    
 
 	@Override
 	public void getClinician(String email) {
@@ -70,7 +71,7 @@ public class JDBCClinicianManager implements ClinicianManager {
 		Clinician clinician = null;
     	try {
     		Statement stmt = manager.getConnection().createStatement();
-    		String sql = "SELECT * FROM Clinicians WHERE id=" + id;
+    		String sql = "SELECT * FROM Clinician WHERE id=" + id;
 			
 			ResultSet rs= stmt.executeQuery(sql);
 			
@@ -91,6 +92,7 @@ public class JDBCClinicianManager implements ClinicianManager {
 		}
     	return clinician;
     }
+	
 
 	
     @Override

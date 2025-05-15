@@ -1,6 +1,7 @@
 package dentalClinicIFaces;
 
 import java.util.List;
+
 import dentalClinicPOJOS.Patients_Clinician;
 
 public interface PatientsClinicianManager {
@@ -20,4 +21,5 @@ public interface PatientsClinicianManager {
     void deletePatientClinician(int id);
 	
 	
+
 }

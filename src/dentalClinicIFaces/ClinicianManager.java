@@ -7,7 +7,7 @@ import dentalClinicPOJOS.Clinician;
 
 
 public interface ClinicianManager {
-	void getClinician(String email);
+	
 	void addClinician(Clinician clinician);
    	Clinician getClinicianById(int id);
    	//List<Clinician> getAllClinicians(); TODO
@@ -15,5 +15,7 @@ public interface ClinicianManager {
     void updateClinician(Clinician cl);
 	List<Clinician> listClinicians();
 	Clinician getClinicianByid(int id);
+	Clinician getClinicianByEmail(String email);
+
 }
 

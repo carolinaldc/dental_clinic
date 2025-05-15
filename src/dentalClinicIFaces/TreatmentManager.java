@@ -2,6 +2,7 @@ package dentalClinicIFaces;
 
 
 import java.util.List;
+
 import dentalClinicPOJOS.Treatment;
 
 public interface TreatmentManager {
@@ -9,4 +10,5 @@ public interface TreatmentManager {
     List<Treatment> getAllTreatments();
     void updateTreatment(Treatment treatment);
     void deleteTreatment(int treatmentId);
+	Treatment getTreatmentByid(int id);
 }
