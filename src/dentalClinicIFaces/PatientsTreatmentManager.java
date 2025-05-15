@@ -8,13 +8,13 @@ public interface PatientsTreatmentManager {
 
 	List<PatientTreatment> getPatientsTreatmentsByPatientid(int patientId);
 
-	void addPatientTreatment(PatientTreatment newAppointment);
+	//void addPatientTreatment(PatientTreatment newAppointment);
 
-	void updatePatientTreatment(PatientTreatment appointmentToModify);
+	//void updatePatientTreatment(PatientTreatment appointmentToModify);
 
-	PatientTreatment getPatientTreatmentById(int appointmentId);
+	//PatientTreatment getPatientTreatmentById(int appointmentId);
 
-	void removePatientTreatment(PatientTreatment appointmentToCancel);
+	//void removePatientTreatment(PatientTreatment appointmentToCancel);
 
-	List<PatientTreatment> getAllPatientTreatments();
+	//List<PatientTreatment> getAllPatientTreatments();
 }

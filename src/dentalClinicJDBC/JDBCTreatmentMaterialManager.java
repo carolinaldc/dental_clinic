@@ -1,5 +1,5 @@
 package dentalClinicJDBC;
-package dentalClinicJDBC;
+
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -75,7 +75,7 @@ public class JDBCTreatmentMaterialManager {
             String sql = "UPDATE Treatment_materials SET treatment_id = ?, materials_id = ?, description = ?, tools = ? WHERE id = ?";
             PreparedStatement ps = c.prepareStatement(sql);
             ps.setInt(1, tm.getTreatment().getTreatment_id());
-            ps.setInt(2, tm.getMaterial().getMaterials_id());
+            ps.setInt(2, tm.getMaterial().getId());
             ps.setString(3, tm.getDescription());
             ps.setString(4, tm.getTools());
             ps.setInt(5, tm.getId());

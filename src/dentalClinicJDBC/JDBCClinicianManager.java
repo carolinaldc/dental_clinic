@@ -58,11 +58,11 @@ public class JDBCClinicianManager implements ClinicianManager {
 
     
 
-	@Override
-	public void getClinician(String email) {
+	//()@Override
+	//public void getClinician(String email) {
 		// TODO Auto-generated method stub
 		
-	}
+	//}
 	
 	 //He creado este metodo para hacer lo de katerina de XML
 	@Override
