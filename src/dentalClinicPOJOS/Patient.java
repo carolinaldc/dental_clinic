@@ -41,7 +41,7 @@ public class Patient implements Serializable {
 	@XmlTransient
 	private List<PatientTreatment> appointment;
 	@XmlTransient
-	private List<Patients_Clinician> treats ; 
+	private List<Patients_Clinician> appointments ; 
 	
 	private Payment payment; 
 	
@@ -51,7 +51,7 @@ public class Patient implements Serializable {
 		appointment = new ArrayList<PatientTreatment>();
 	}
 	
-	public Patient(String name, String surname, Date dob, Integer phone, String email, Integer credit_card, List<PatientTreatment> appointment,List<Patients_Clinician> treats) {
+	public Patient(String name, String surname, Date dob, Integer phone, String email, Integer credit_card, List<PatientTreatment> appointment,List<Patients_Clinician> appointments) {
 		super();
 		this.name = name;
 		this.surname = surname;
@@ -60,10 +60,9 @@ public class Patient implements Serializable {
 		this.email = email;
 		this.credit_card = credit_card;
 		this.appointment = appointment ; 
-		this.treats = treats ; 
+		this.appointments = appointments ; 
 		
 	}
-	
 	
 	
 
@@ -147,10 +146,7 @@ public class Patient implements Serializable {
 	public void setDob(Date dob) {
 		this.dob = dob;
 	}
-
-
 	
-
 
 	public List<PatientTreatment> getAppointment() {
 		return appointment;
@@ -163,7 +159,7 @@ public class Patient implements Serializable {
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(appointment, credit_card, dob, email, name, patient_id, phone, surname, treats);
+		return Objects.hash(appointment, credit_card, dob, email, name, patient_id, phone, surname, appointments);
 	}
 
 
@@ -180,38 +176,21 @@ public class Patient implements Serializable {
 				&& Objects.equals(dob, other.dob) && Objects.equals(email, other.email)
 				&& Objects.equals(name, other.name) && Objects.equals(patient_id, other.patient_id)
 				&& Objects.equals(phone, other.phone) && Objects.equals(surname, other.surname)
-				&& Objects.equals(treats, other.treats);
+				&& Objects.equals(appointments, other.appointments);
 	}
 
-	
 
 	@Override
 	public String toString() {
 		return "Patient [name=" + name + ", surname=" + surname + ", dob=" + dob + ", phone=" + phone + ", email="
-				+ email + ", credit_card=" + credit_card + ", appointment=" + appointment + ", treats=" + treats + "]";
+				+ email + ", credit_card=" + credit_card + ", appointment=" + appointment + ", appointments=" + appointments + "]";
 	}
 
-	public List<Patients_Clinician> getTreats() {
-		return treats;
+	public List<Patients_Clinician> getAppointments() {
+		return appointments;
 	}
 
-	public void setTreats(List<Patients_Clinician> treats) {
-		this.treats = treats;
+	public void setAppointments(List<Patients_Clinician> appointments) {
+		this.appointments = appointments;
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }

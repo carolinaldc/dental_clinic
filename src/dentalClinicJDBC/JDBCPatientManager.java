@@ -42,14 +42,14 @@ public class JDBCPatientManager implements PatientManager {
     	Patient patient = null;
     	try {
     		Statement stmt = manager.getConnection().createStatement();
-			String sql =  "SELECT * FROM Patients WHERE id=" + id;
+    		String sql =  "SELECT * FROM patients WHERE patient_id=" + id;
 			
 			ResultSet rs= stmt.executeQuery(sql);
 			
 			String name = rs.getString("name");
 			String surname = rs.getString("surname");
-			Date date = rs.getDate("dob");
-			Integer phone = rs.getInt("telephone");
+			Date date = rs.getDate("birth_date"); 
+			Integer phone = rs.getInt("phone");
 			Integer credit_card = rs.getInt("credit_card");
 			String email = rs.getString("email");
 			
