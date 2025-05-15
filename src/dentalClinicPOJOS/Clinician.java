@@ -187,10 +187,6 @@ public class Clinician implements Serializable {
 			return "Clinician [id=" + clinician_id + ", name=" + name + ", surname=" + surname + ", email=" + email + ", phone="
 					+ phone + ", speciality=" + speciality + ", patients=" + patients + ", treatments=" + treatments
 					+ "]";
-		}
-
-
-		
-		
+		}	
 
 	}

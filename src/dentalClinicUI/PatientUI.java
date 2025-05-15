@@ -32,13 +32,10 @@ public class PatientUI {
             System.out.println("Enter phone number:");
             int phone = Integer.parseInt(reader.readLine());
 
-            System.out.println("Enter email:");
-            String email = reader.readLine();
-
             System.out.println("Enter credit card number:");
             int creditCard = Integer.parseInt(reader.readLine());
 
-            Patient patient = new Patient(name, surname, dob, phone, email, creditCard);
+            Patient patient = new Patient(name, surname, dob, phone, creditCard);
             patientManager.addPatient(patient);
             System.out.println("Patient added successfully.");
 
