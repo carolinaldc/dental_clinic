@@ -93,6 +93,32 @@ public class JDBCClinicianManager implements ClinicianManager {
     	return clinician;
     }
 	
+	@Override 
+	public Clinician getClinicianByEmail(String email) {
+		Clinician clinician = null;
+    	try {
+    		Statement stmt = manager.getConnection().createStatement();
+    		String sql = "SELECT * FROM Clinician WHERE email =" + email;
+			
+			ResultSet rs= stmt.executeQuery(sql);
+			
+			String name = rs.getString("name");
+			String surname = rs.getString("surname");
+			Integer phone = rs.getInt("telephone");
+			//Integer clinician_id = rs.getInt("clinician_id");
+			String specialty = rs.getString("specialty");
+            
+			
+			rs.close();
+			stmt.close();
+			
+			clinician = new Clinician(name, surname, specialty, email, phone);
+    	}catch(Exception e) 
+		{
+			e.printStackTrace();
+		}
+    	return clinician;
+	}
 
 	
     @Override

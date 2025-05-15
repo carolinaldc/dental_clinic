@@ -186,7 +186,7 @@ public class menu {
 
     public static void clinicianMenu(String email) {
         
-    	clinicianManager.getClinician(email);
+    	clinicianManager.getClinicianByEmail(email);
     	
         System.out.println("Choose an option:");
         System.out.println("1. Profile");

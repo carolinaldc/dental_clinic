@@ -16,6 +16,7 @@ public interface ClinicianManager {
    	void updateClinician(Clinician cl);
    	//List<Clinician> getAllClinicians(); TODOvoid updateClinician(Clinician cl);
 	//Clinician getClinicianByEmail(String email); TODO
+	Clinician getClinicianByEmail(String email);
 
 }
 
