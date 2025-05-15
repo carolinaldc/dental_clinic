@@ -9,12 +9,13 @@ import dentalClinicPOJOS.Clinician;
 public interface ClinicianManager {
 	
 	void addClinician(Clinician clinician);
-   	Clinician getClinicianById(int id);
-   	//List<Clinician> getAllClinicians(); TODO
-    void deleteClinician(int id);
-    void updateClinician(Clinician cl);
 	List<Clinician> listClinicians();
 	Clinician getClinicianByid(int id);
+   	Clinician getClinicianById(int id);
+   	void deleteClinician(int id);
+   	void updateClinician(Clinician cl);
+   	//List<Clinician> getAllClinicians(); TODOvoid updateClinician(Clinician cl);
+	//Clinician getClinicianByEmail(String email); TODO
 	Clinician getClinicianByEmail(String email);
 
 }

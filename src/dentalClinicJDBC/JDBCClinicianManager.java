@@ -58,11 +58,11 @@ public class JDBCClinicianManager implements ClinicianManager {
 
     
 
-	@Override
-	public void getClinician(String email) {
+	//()@Override
+	//public void getClinician(String email) {
 		// TODO Auto-generated method stub
 		
-	}
+	//}
 	
 	 //He creado este metodo para hacer lo de katerina de XML
 	@Override
@@ -93,6 +93,32 @@ public class JDBCClinicianManager implements ClinicianManager {
     	return clinician;
     }
 	
+	@Override 
+	public Clinician getClinicianByEmail(String email) {
+		Clinician clinician = null;
+    	try {
+    		Statement stmt = manager.getConnection().createStatement();
+    		String sql = "SELECT * FROM Clinician WHERE email =" + email;
+			
+			ResultSet rs= stmt.executeQuery(sql);
+			
+			String name = rs.getString("name");
+			String surname = rs.getString("surname");
+			Integer phone = rs.getInt("telephone");
+			//Integer clinician_id = rs.getInt("clinician_id");
+			String specialty = rs.getString("specialty");
+            
+			
+			rs.close();
+			stmt.close();
+			
+			clinician = new Clinician(name, surname, specialty, email, phone);
+    	}catch(Exception e) 
+		{
+			e.printStackTrace();
+		}
+    	return clinician;
+	}
 
 	
     @Override
