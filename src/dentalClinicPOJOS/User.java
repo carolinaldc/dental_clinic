@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -25,6 +26,7 @@ public class User implements Serializable {
 	@GeneratedValue(generator = "users")
 	@TableGenerator(name = "users", table= "sqlite_sequence", pkColumnName = "name", valueColumnName= "seq", pkColumnValue = "users")
 	private Integer id;
+	@Column(unique = true) //para que no puedan haber dos usuarios con el mismo correo
 	private String email;
 	@Lob
 	private byte[] password;

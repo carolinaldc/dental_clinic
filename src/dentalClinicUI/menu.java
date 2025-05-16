@@ -106,40 +106,49 @@ public class menu {
 		}
 	}
 
-    public static void registerPage() {
-        System.out.println("Register as:");
-        System.out.println("1. Patient");
-        System.out.println("2. Clinician");
+	public static void registerPage() {
+	    System.out.println("Register as:");
+	    System.out.println("1. Patient");
+	    System.out.println("2. Clinician");
 
-		try {
-			int userType = Integer.parseInt(reader.readLine());
-			System.out.println("Introduce mail:");
-			String mail = reader.readLine();
-			System.out.println("Introduce password");
-			String password = reader.readLine();
-			
-			if (userType == 1) {
-				patiententUI.addPatient(); 
-				Role patientRole = usermanager.getRole(1);
-				createUser(mail, password, patientRole);
-				patientMenu(mail);
+	    try {
+	        String input = reader.readLine();
+	        int userType;
 
-				//addNewUser(userType, null, null, null, null, null, null, null, null);
-	            //patientMenu(null);
-	        } else if (userType == 2) {
-	        	clinicianUI.addClinician(); 
-				Role clinicianRole = usermanager.getRole(2);
-				createUser(mail, password, clinicianRole);
-				patientMenu(mail);
-	            clinicianMenu(null);
-	        } else {
-	            System.out.println("Invalid choice");
-	            registerPage();//le hace repetir
+	        try {
+	            userType = Integer.parseInt(input);
+	        } catch (NumberFormatException e) {
+	            System.out.println("Invalid input. Please enter 1 for Patient or 2 for Clinician");
+	            registerPage(); // Retry
+	            return;
 	        }
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-    }
+
+	        System.out.println("Introduce mail:");
+	        String email = reader.readLine();
+	        System.out.println("Introduce password:");
+	        String password = reader.readLine();
+
+	        try {
+	        	Role role = usermanager.getRole(userType);
+	        	createUser(email, password, role);
+
+	        	if (userType == 1) {
+	        		patiententUI.addPatient();
+	        		patientMenu(email);
+	        	} else {
+	        		clinicianUI.addClinician();
+	        		clinicianMenu(email);
+	        	}
+	        }catch(Exception e) {
+	        	System.out.println("Error during registration.");
+	        	e.printStackTrace();
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
+
 
     public static void patientMenu(String email) {
     	
@@ -168,7 +177,7 @@ public class menu {
             	appointmentMenu();
                 break;
             case 3:
-                //logOut();
+                main(null); //log out??
                 break;
             default:
                 System.out.println("Invalid choice");
@@ -231,12 +240,12 @@ public class menu {
                 clinicianPatientsMenu();
                 break;
             case 5:
-                //logOut();
+                main(null); //log out??
                 break;
             default:
                 System.out.println("Invalid choice");
                 clinicianMenu(email);
-        }
+            }
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -359,7 +368,7 @@ public class menu {
 		} 
     }
         
-
+    
     private static void addNewUser(int userType, String name, String surname, String speciality, Date dob, Integer phone, String email, Integer credit_card,
 			String password) throws java.sql.SQLException, Exception {
     	
@@ -367,8 +376,7 @@ public class menu {
 		md.update(password.getBytes());
 		byte[] pw = md.digest();
 		
-		//TODO: tengo que crear un roleID para que tenga sentido esto???
-		if (userType == 1) {
+		if (userType == 2) {
 			try {
 				Role clinicianRole = usermanager.getRole(2);
 	            usermanager.newUser(new User(email, pw, clinicianRole));
@@ -377,7 +385,7 @@ public class menu {
 				e.printStackTrace();
 			}
 
-		} else if (userType == 2) {
+		} else if (userType == 1) {
 			try {
 				Role patientRole = usermanager.getRole(1);
 	            usermanager.newUser(new User(email, pw, patientRole));
@@ -392,15 +400,14 @@ public class menu {
     
     private static void createUser(String email, String password, Role role) throws Exception {
         if (email == null || password == null || role == null) {
-            throw new IllegalArgumentException("Email, password, and role must not be null.");
+            throw new IllegalArgumentException("Email, password, and role cant not be null");
         }
 
         MessageDigest md = MessageDigest.getInstance("MD5");
         md.update(password.getBytes());
         byte[] pw = md.digest();
 
-        User user = new User(email, pw, role);
-        usermanager.newUser(user);
+        usermanager.newUser(new User(email, pw, role));
     }
 
 

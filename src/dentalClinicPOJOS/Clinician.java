@@ -80,8 +80,8 @@ public class Clinician implements Serializable {
 			this.clinician_id = id;
 		}
 
-		public int getId() {
-			return clinician_id;
+		public Integer getId() {
+		    return clinician_id;
 		}
 		
 		public void setId(Integer id) {
