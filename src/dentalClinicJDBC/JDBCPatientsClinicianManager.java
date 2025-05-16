@@ -28,7 +28,7 @@ public class JDBCPatientsClinicianManager implements PatientsClinicianManager {
 	@Override
 	public void addPatientClinician(Patients_Clinician pc) {
         try {
-            String sql = "INSERT INTO Patients_Clinician (patient_id, clinician_id, visit_info, date) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO Patients_clinicians (patient_id, clinician_id, visit_info, date) VALUES (?, ?, ?, ?)";
             PreparedStatement ps = manager.getConnection().prepareStatement(sql);
             ps.setInt(1, pc.getPatient().getId());
             ps.setInt(2, pc.getClinician().getId());
@@ -47,7 +47,7 @@ public class JDBCPatientsClinicianManager implements PatientsClinicianManager {
 	public List<Patients_Clinician> getAllPatientsClinicians() {
         List<Patients_Clinician> relations = new ArrayList<>();
         try {
-            String sql = "SELECT id, patient_id, clinician_id, visit_info, date FROM Patients_Clinician";
+            String sql = "SELECT id, patient_id, clinician_id, visit_info, date FROM Patients_clinicians";
             PreparedStatement ps = manager.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
@@ -81,7 +81,7 @@ public class JDBCPatientsClinicianManager implements PatientsClinicianManager {
 	public Patients_Clinician getPatientClinicianById(int id) {
         Patients_Clinician pc = null;
         try {
-            String sql = "SELECT id, patient_id, clinician_id, visit_info, date FROM Patients_Clinician WHERE id = ?";
+            String sql = "SELECT id, patient_id, clinician_id, visit_info, date FROM Patients_clinicians WHERE id = ?";
             PreparedStatement ps = manager.getConnection().prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -113,7 +113,7 @@ public class JDBCPatientsClinicianManager implements PatientsClinicianManager {
 	@Override
 	public void updatePatientClinician(Patients_Clinician pc) {
         try {
-            String sql = "UPDATE Patients_Clinician SET patient_id = ?, clinician_id = ?, visit_info = ?, date = ? WHERE id = ?";
+            String sql = "UPDATE Patients_clinicians SET patient_id = ?, clinician_id = ?, visit_info = ?, date = ? WHERE id = ?";
             PreparedStatement ps = manager.getConnection().prepareStatement(sql);
             ps.setInt(1, pc.getPatient().getId());
             ps.setInt(2, pc.getClinician().getId());
@@ -132,7 +132,7 @@ public class JDBCPatientsClinicianManager implements PatientsClinicianManager {
 	@Override
 	public void deletePatientClinician(int id) {
         try {
-            String sql = "DELETE FROM Patients_Clinician WHERE id = ?";
+            String sql = "DELETE FROM Patients_clinicians WHERE id = ?";
             PreparedStatement ps = manager.getConnection().prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
@@ -150,7 +150,7 @@ public class JDBCPatientsClinicianManager implements PatientsClinicianManager {
 
 	    try {
 	        Statement stmt = manager.getConnection().createStatement();
-	        String sql = "SELECT * FROM Patients_Clinician WHERE patient_id = " + patientId;
+	        String sql = "SELECT * FROM Patients_clinicians WHERE patient_id = " + patientId;
 	        ResultSet rs = stmt.executeQuery(sql);
 
 	        JDBCClinicianManager jdbcClinicianManager = new JDBCClinicianManager(manager);

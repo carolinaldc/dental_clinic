@@ -19,7 +19,7 @@ public class JDBCPatientManager implements PatientManager {
 
     @Override
     public void addPatient(Patient p) {
-        String sql = "INSERT INTO patients (name, surname, birth_date, phone, email, credit_card, urgency) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO patients (name, surname, dob, phone, email, credit_card) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
         	ps.setString(1, p.getName());
             ps.setString(2, p.getSurname());
@@ -48,7 +48,7 @@ public class JDBCPatientManager implements PatientManager {
 			
 			String name = rs.getString("name");
 			String surname = rs.getString("surname");
-			Date date = rs.getDate("birth_date"); 
+			Date date = rs.getDate("dob"); 
 			Integer phone = rs.getInt("phone");
 			Integer credit_card = rs.getInt("credit_card");
 			String email = rs.getString("email");
@@ -108,7 +108,7 @@ public class JDBCPatientManager implements PatientManager {
                 Patient p = new Patient(
                 		rs.getString("name"),
                         rs.getString("surname"),
-                        rs.getDate("birth_date"),
+                        rs.getDate("dob"),
                         rs.getInt("phone"),
                         rs.getString("mail"),
                         rs.getInt("credit_card")
@@ -123,7 +123,7 @@ public class JDBCPatientManager implements PatientManager {
 
     @Override
     public void deletePatient(int id) {
-        String sql = "DELETE FROM patients WHERE id = ?";
+        String sql = "DELETE FROM patients WHERE patient_id = ?";
         try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
@@ -134,7 +134,7 @@ public class JDBCPatientManager implements PatientManager {
 
     @Override
     public void updatePatient(Patient p) {
-        String sql = "UPDATE patients SET name = ?, surname = ?, birth_date = ?, phonw = ? , email = ?, credit_card = ?, urgency = ?, WHERE id = ?";
+        String sql = "UPDATE patients SET name = ?, surname = ?, dob = ?, phonw = ? , email = ?, credit_card = ?, WHERE patient_id = ?";
         try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
         	ps.setString(1, p.getName());
             ps.setString(2, p.getSurname());
@@ -159,7 +159,7 @@ public class JDBCPatientManager implements PatientManager {
                 return new Patient(
                 		rs.getString("name"),
                         rs.getString("surname"),
-                        rs.getDate("birth_date"),
+                        rs.getDate("dob"),
                         rs.getInt("phone"),
                         rs.getString("email"),
                         rs.getInt("credit_card")
