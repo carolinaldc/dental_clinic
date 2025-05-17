@@ -20,7 +20,7 @@ import dentalClinicXMLUtils.SQLDateAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="Patient")
-@XmlType(propOrder = { "name", "surname", "dob", "phoneNumber", "creditCardNumber", "payment" })
+@XmlType(propOrder = { "name", "surname", "dob", "phone", "email", "credit_card", "payment" })
 
 
 public class Patient implements Serializable {

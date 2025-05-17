@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="Clinician")
-@XmlType(propOrder = {"name","surname","email","phone"})
+@XmlType(propOrder = {"name","surname","speciality", "email","phone"})
 public class Clinician implements Serializable {
 		
 		private static final long serialVersionUID = -2637321372475755L;
@@ -35,7 +35,9 @@ public class Clinician implements Serializable {
 		private List<Patient> patients;
 		@XmlTransient
 		private List<Treatment> treatments;
-		private List<Patients_Clinician> treats ; 
+		@XmlTransient
+		private List<Patients_Clinician> appointments;
+
 		
 		
 		public Clinician() {
@@ -184,8 +186,8 @@ public class Clinician implements Serializable {
 
 		@Override
 		public String toString() {
-			return "Clinician [id=" + clinician_id + ", name=" + name + ", surname=" + surname + ", email=" + email + ", phone="
-					+ phone + ", speciality=" + speciality + ", patients=" + patients + ", treatments=" + treatments
+			return "Clinician [id=" + clinician_id + ", name=" + name + ", surname=" + surname + ", speciality=" + speciality + ", email=" + email + ", phone="
+					+ phone + ", patients=" + patients + ", treatments=" + treatments
 					+ "]";
 		}	
 
