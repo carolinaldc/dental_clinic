@@ -31,7 +31,7 @@ public class JDBCPatientsClinicianManager implements PatientsClinicianManager {
             String sql = "INSERT INTO Patients_clinicians (patient_id, clinician_id, visit_info, date) VALUES (?, ?, ?, ?)";
             PreparedStatement ps = manager.getConnection().prepareStatement(sql);
             ps.setInt(1, pc.getPatient().getId());
-            ps.setInt(2, pc.getClinician().getId());
+            ps.setInt(2, pc.getClinician().getClinicianId());
             ps.setString(3, pc.getVisitInfo());
             ps.setDate(4, pc.getDate());
             ps.executeUpdate();
@@ -61,7 +61,7 @@ public class JDBCPatientsClinicianManager implements PatientsClinicianManager {
                 Patient patient = new Patient();
                 patient.setId(patientId);  
                 Clinician clinician = new Clinician();
-                clinician.setId(clinicianId);
+                clinician.setClinicianId(clinicianId);
 
                 Patients_Clinician pc = new Patients_Clinician(visitInfo, date, clinician, patient);
                 pc.setId(id);
@@ -95,7 +95,7 @@ public class JDBCPatientsClinicianManager implements PatientsClinicianManager {
                 Patient patient = new Patient();
                 patient.setId(patientId);
                 Clinician clinician = new Clinician();
-                clinician.setId(clinicianId);
+                clinician.setClinicianId(clinicianId);
 
                 pc = new Patients_Clinician(visitInfo, date, clinician, patient);
                 pc.setId(id);
@@ -116,7 +116,7 @@ public class JDBCPatientsClinicianManager implements PatientsClinicianManager {
             String sql = "UPDATE Patients_clinicians SET patient_id = ?, clinician_id = ?, visit_info = ?, date = ? WHERE id = ?";
             PreparedStatement ps = manager.getConnection().prepareStatement(sql);
             ps.setInt(1, pc.getPatient().getId());
-            ps.setInt(2, pc.getClinician().getId());
+            ps.setInt(2, pc.getClinician().getClinicianId());
             ps.setString(3, pc.getVisitInfo());
             ps.setDate(4, pc.getDate());
             ps.setInt(5, pc.getId());

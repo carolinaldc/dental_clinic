@@ -41,7 +41,7 @@ public class JDBCClinicianManager implements ClinicianManager {
 
             while (rs.next()) {
                 Clinician c = new Clinician(
-                    rs.getInt("id"),
+                    rs.getInt("clinician_id"),
                     rs.getString("name"),
                     rs.getString("specialty")
                 );
@@ -76,7 +76,7 @@ public class JDBCClinicianManager implements ClinicianManager {
 			
 			String name = rs.getString("name");
 			String surname = rs.getString("surname");
-			Integer phone = rs.getInt("telephone");
+			Integer phone = rs.getInt("phone");
 			String email = rs.getString("email");
 			String specialty = rs.getString("specialty");
             
@@ -159,7 +159,7 @@ public class JDBCClinicianManager implements ClinicianManager {
         		"UPDATE clinicians SET name=?, specialty=? WHERE clinician_id=?")) {
             ps.setString(1, cl.getName());
             ps.setString(2, cl.getSpeciality());
-            ps.setInt(3, cl.getId());
+            ps.setInt(3, cl.getClinicianId());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

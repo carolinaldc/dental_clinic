@@ -42,7 +42,7 @@ public class JDBCTreatmentManager implements TreatmentManager {
                 String clinicianSql = "INSERT INTO TreatmentClinicians (treatment_id, clinician_id) VALUES (?, ?)";
                 PreparedStatement psClinician = conMan.getConnection().prepareStatement(clinicianSql);
                 psClinician.setInt(1, treatment.getTreatment_id());
-                psClinician.setInt(2, clinician.getId()); 
+                psClinician.setInt(2, clinician.getClinicianId()); 
                 psClinician.executeUpdate();
             }
 
@@ -126,7 +126,7 @@ public class JDBCTreatmentManager implements TreatmentManager {
                 String clinicianSql = "INSERT INTO TreatmentClinicians (treatment_id, clinician_id) VALUES (?, ?)";
                 PreparedStatement psClinician = conMan.getConnection().prepareStatement(clinicianSql);
                 psClinician.setInt(1, treatment.getTreatment_id());
-                psClinician.setInt(2, clinician.getId());
+                psClinician.setInt(2, clinician.getClinicianId());
                 psClinician.executeUpdate();
             }
 
