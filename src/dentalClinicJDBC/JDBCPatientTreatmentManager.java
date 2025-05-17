@@ -70,7 +70,7 @@ public class JDBCPatientTreatmentManager implements PatientsTreatmentManager {
 	@Override
 	public void addPatientTreatment(PatientTreatment newAppointment) {
 	    try {
-	        String sql = "INSERT INTO Patient_treatments (comment, date, treatment_id, patient_id) VALUES (?, ?, ?, ?)";
+	        String sql = "INSERT INTO Patient_treatments (comments, date, treatment_id, patient_id) VALUES (?, ?, ?, ?)";
 	        PreparedStatement pstmt = manager.getConnection().prepareStatement(sql);
 	        pstmt.setString(1, newAppointment.getComment());
 	        pstmt.setDate(2, new java.sql.Date(newAppointment.getDate().getTime()));

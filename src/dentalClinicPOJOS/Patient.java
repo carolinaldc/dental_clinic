@@ -41,7 +41,7 @@ public class Patient implements Serializable {
 	@XmlElement
 	private Integer credit_card; 
 	@XmlTransient
-	private List<PatientTreatment> appointment;
+	private List<PatientTreatment> treatments;
 	@XmlTransient
 	private List<Patients_Clinician> appointments ; 
 	
@@ -50,10 +50,10 @@ public class Patient implements Serializable {
 	
 	public Patient() {
 		super();
-		appointment = new ArrayList<PatientTreatment>();
+		treatments = new ArrayList<PatientTreatment>();
 	}
 	
-	public Patient(String name, String surname, Date dob, Integer phone, String email, Integer credit_card, List<PatientTreatment> appointment,List<Patients_Clinician> appointments) {
+	public Patient(String name, String surname, Date dob, Integer phone, String email, Integer credit_card, List<PatientTreatment> treatments,List<Patients_Clinician> appointments) {
 		super();
 		this.name = name;
 		this.surname = surname;
@@ -61,7 +61,7 @@ public class Patient implements Serializable {
 		this.phone = phone;
 		this.email = email;
 		this.credit_card = credit_card;
-		this.appointment = appointment ; 
+		this.treatments = treatments ; 
 		this.appointments = appointments ; 
 		
 	}
@@ -150,18 +150,25 @@ public class Patient implements Serializable {
 	}
 	
 
-	public List<PatientTreatment> getAppointment() {
-		return appointment;
+	public List<PatientTreatment> getTreatments() {
+		return treatments;
 	}
 
-	public void setAppointment(List<PatientTreatment> appointment) {
-		this.appointment = appointment;
+	public void setTreatments(List<PatientTreatment> treatments) {
+		this.treatments = treatments;
 	}
 
+	public List<Patients_Clinician> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(List<Patients_Clinician> appointments) {
+		this.appointments = appointments;
+	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(appointment, credit_card, dob, email, name, patient_id, phone, surname, appointments);
+		return Objects.hash(treatments, credit_card, dob, email, name, patient_id, phone, surname, appointments);
 	}
 
 
@@ -174,7 +181,7 @@ public class Patient implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Patient other = (Patient) obj;
-		return Objects.equals(appointment, other.appointment) && Objects.equals(credit_card, other.credit_card)
+		return Objects.equals(treatments, other.treatments) && Objects.equals(credit_card, other.credit_card)
 				&& Objects.equals(dob, other.dob) && Objects.equals(email, other.email)
 				&& Objects.equals(name, other.name) && Objects.equals(patient_id, other.patient_id)
 				&& Objects.equals(phone, other.phone) && Objects.equals(surname, other.surname)
@@ -184,15 +191,7 @@ public class Patient implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Patient [name=" + name + ", surname=" + surname + ", dob=" + dob + ", phone=" + phone + ", email="
-				+ email + ", credit_card=" + credit_card + ", appointment=" + appointment + ", appointments=" + appointments + "]";
-	}
-
-	public List<Patients_Clinician> getAppointments() {
-		return appointments;
-	}
-
-	public void setAppointments(List<Patients_Clinician> appointments) {
-		this.appointments = appointments;
+		return "Patient [id=" + patient_id + ", name=" + name + ", surname=" + surname + ", dob=" + dob + ", phone=" + phone + ", email="
+				+ email + ", credit_card=" + credit_card + ", appointment=" + treatments + ", appointments=" + appointments + "]";
 	}
 }

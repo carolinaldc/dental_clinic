@@ -110,7 +110,7 @@ public class JDBCPatientManager implements PatientManager {
                         rs.getString("surname"),
                         rs.getDate("dob"),
                         rs.getInt("phone"),
-                        rs.getString("mail"),
+                        rs.getString("email"),
                         rs.getInt("credit_card")
                 );
                 list.add(p);
@@ -156,18 +156,21 @@ public class JDBCPatientManager implements PatientManager {
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new Patient(
-                		rs.getString("name"),
-                        rs.getString("surname"),
-                        rs.getDate("dob"),
-                        rs.getInt("phone"),
-                        rs.getString("email"),
-                        rs.getInt("credit_card")
+                Patient p = new Patient(
+                    rs.getString("name"),
+                    rs.getString("surname"),
+                    rs.getDate("dob"),
+                    rs.getInt("phone"),
+                    rs.getString("email"),
+                    rs.getInt("credit_card")
                 );
+                p.setId(rs.getInt("patient_id")); 
+                return p;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
+
 }

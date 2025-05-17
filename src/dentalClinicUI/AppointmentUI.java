@@ -3,6 +3,8 @@ package dentalClinicUI;
 import dentalClinicPOJOS.Patient;
 import dentalClinicPOJOS.PatientTreatment;
 import dentalClinicPOJOS.Treatment;
+import dentalClinicIFaces.ClinicianManager;
+import dentalClinicIFaces.PatientManager;
 import dentalClinicIFaces.PatientsTreatmentManager;
 import dentalClinicJDBC.JDBCManager;
 import dentalClinicJDBC.JDBCPatientTreatmentManager;
@@ -16,7 +18,17 @@ import java.util.List;
 public class AppointmentUI {
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private static PatientsTreatmentManager treatmentManager = new JDBCPatientTreatmentManager(new JDBCManager());
-    public void bookAppointment() {
+    
+    private PatientManager patientManager;
+    private ClinicianManager clinicianManager;
+    
+    public AppointmentUI(PatientManager patientManager, ClinicianManager clinicianManager) {
+    	this.patientManager = patientManager;
+    	this.clinicianManager = clinicianManager ;;
+    }
+
+
+	public void bookAppointment() {
         try {
             System.out.println("Enter Patient ID:");
             int patientId = Integer.parseInt(reader.readLine());

@@ -11,14 +11,20 @@ import java.util.List;
 
 public class PatientUI {
     private PatientManager patientManager;
+    private Patient currentPatient;
     private BufferedReader reader;
 
     public PatientUI(PatientManager patientManager) {
         this.patientManager = patientManager;
         this.reader = new BufferedReader(new InputStreamReader(System.in));
     }
+    public void setCurrentPatient(Patient patient) {
+        this.currentPatient = patient;
+        System.out.println("Current patient set: " + patient.getName() + " (ID: " + patient.getId() + ")");
+    }
 
-    public void addPatient() {
+
+    public void addPatient(String email) {
         try {
             System.out.println("Enter name:");
             String name = reader.readLine();
@@ -35,10 +41,10 @@ public class PatientUI {
             System.out.println("Enter credit card number (9 digits):");
             int creditCard = Integer.parseInt(reader.readLine());
 
-            Patient patient = new Patient(name, surname, dob, phone, creditCard);
+            Patient patient = new Patient(name, surname, dob, phone, email, creditCard);
             patientManager.addPatient(patient);
             System.out.println("Patient added successfully.");
-
+            this.currentPatient = patientManager.getPatient(email); 
         } catch (IOException | IllegalArgumentException e) {
             System.out.println("Error adding patient.");
             e.printStackTrace();
@@ -55,7 +61,7 @@ public class PatientUI {
             }
         }
     }
-
+/*
     public void deletePatient() {
         try {
             viewPatientsList();
@@ -68,7 +74,26 @@ public class PatientUI {
             System.out.println("Invalid input.");
         }
     }
+*/
+    public void deletePatient() {
+        if (currentPatient == null) {
+            System.out.println("No patient is currently selected.");
+            return;
+        }
 
+        System.out.println("Attempting to delete patient with ID: " + currentPatient.getId());
+
+        try {
+            patientManager.deletePatient(currentPatient.getId());
+            System.out.println("Patient deleted: " + currentPatient.getName() + " " + currentPatient.getSurname());
+            currentPatient = null;
+        } catch (Exception e) {
+            System.out.println("Error deleting patient: " + e.getMessage());
+        }
+    }
+
+
+    
     public void modifyPatient() {
         try {
             viewPatientsList();

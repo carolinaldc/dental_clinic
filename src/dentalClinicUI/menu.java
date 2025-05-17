@@ -50,6 +50,7 @@ public class menu {
 		
 		patiententUI = new PatientUI(patientManager);
 		clinicianUI = new ClinicianUI(clinicianManager);
+		appointmentUI = new AppointmentUI(patientManager, clinicianManager); 
 
 		
 		int choice=0;
@@ -133,7 +134,7 @@ public class menu {
 	        	createUser(email, password, role);
 
 	        	if (userType == 1) {
-	        		patiententUI.addPatient();
+	        		patiententUI.addPatient(email);
 	        		patientMenu(email);
 	        	} else {
 	        		clinicianUI.addClinician();
@@ -151,8 +152,14 @@ public class menu {
 
 
     public static void patientMenu(String email) {
-    	
-    	patientManager.getPatient(email);
+
+    	Patient patient = patientManager.getPatient(email);
+    	if (patient == null) {
+    	    System.out.println("No patient found with email: " + email);
+    	    return;
+    	}
+    	patiententUI.setCurrentPatient(patient);
+
     	
     	xmlmanager.patient2xml(1);
     	File file = new File("./xmls/external_clinician.xml");
