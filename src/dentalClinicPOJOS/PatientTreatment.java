@@ -92,8 +92,5 @@ public class PatientTreatment implements Serializable {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
-	
 	
 }

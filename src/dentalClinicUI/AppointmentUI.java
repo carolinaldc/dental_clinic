@@ -6,6 +6,7 @@ import dentalClinicPOJOS.Treatment;
 import dentalClinicIFaces.ClinicianManager;
 import dentalClinicIFaces.PatientManager;
 import dentalClinicIFaces.PatientsTreatmentManager;
+import dentalClinicIFaces.TreatmentManager;
 import dentalClinicJDBC.JDBCManager;
 import dentalClinicJDBC.JDBCPatientTreatmentManager;
 
@@ -17,19 +18,31 @@ import java.util.List;
 
 public class AppointmentUI {
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-    private static PatientsTreatmentManager treatmentManager = new JDBCPatientTreatmentManager(new JDBCManager());
+    private static PatientsTreatmentManager appointmentManager = new JDBCPatientTreatmentManager(new JDBCManager());
     
     private PatientManager patientManager;
     private ClinicianManager clinicianManager;
+    private TreatmentManager treatmentManager;
     
-    public AppointmentUI(PatientManager patientManager, ClinicianManager clinicianManager) {
+    public AppointmentUI(PatientManager patientManager, ClinicianManager clinicianManager, TreatmentManager treatmentManager) {
     	this.patientManager = patientManager;
-    	this.clinicianManager = clinicianManager ;;
+    	this.clinicianManager = clinicianManager ;
+    	this.treatmentManager = treatmentManager;
     }
 
 
-	public void bookAppointment() {
+    public void bookAppointment() {
         try {
+            if (patientManager.listPatients().isEmpty()) {
+                System.out.println("No Patients available. Please add patients before booking an appointment.");
+                return;
+            }
+
+            if (treatmentManager.getAllTreatments().isEmpty()) {
+                System.out.println("No Treatments available. Please add treatments before booking an appointment.");
+                return;
+            }
+
             System.out.println("Enter Patient ID:");
             int patientId = Integer.parseInt(reader.readLine());
 
@@ -41,7 +54,6 @@ public class AppointmentUI {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date date = sdf.parse(dateStr);
 
-
             System.out.println("Enter Comments:");
             String comment = reader.readLine();
 
@@ -50,7 +62,7 @@ public class AppointmentUI {
 
             PatientTreatment newAppointment = new PatientTreatment(comment, date, treatment, patient);
             
-            treatmentManager.addPatientTreatment(newAppointment); 
+            appointmentManager.addPatientTreatment(newAppointment); 
 
             System.out.println("Appointment successfully booked!");
         } catch (Exception e) {
@@ -58,28 +70,67 @@ public class AppointmentUI {
         }
     }
 
+
     public void modifyAppointment() {
         try {
-            System.out.println("Enter Appointment ID to modify:");
-            int appointmentId = Integer.parseInt(reader.readLine());
+            List<PatientTreatment> appointments = appointmentManager.getAllPatientTreatments();
+        	if (appointments != null && !appointments.isEmpty()) {
+        		for (PatientTreatment appointment : appointments) {
+                    System.out.println(appointment);
+                }
+        		
+        		System.out.println("Enter Appointment ID to modify:");
+                int appointmentId = Integer.parseInt(reader.readLine());
 
-            System.out.println("Enter new date for the appointment (yyyy-MM-dd):");
-            String newDateStr = reader.readLine();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date newDate = sdf.parse(newDateStr);
+                PatientTreatment appointmentToModify = appointmentManager.getPatientTreatmentById(appointmentId);
+                int choice=0;
+        		try {
+        			System.out.println("What do you want to modify: ");
+    	            System.out.println("1. patient ");
+    	            System.out.println("2. clinician ");
+    	            System.out.println("3. treatment");
+    	            System.out.println("4. date");
+    	            System.out.println("5. comment");
+    				
+    				choice = Integer.parseInt(reader.readLine());
 
-
-            System.out.println("Enter new comment for the appointment:");
-            String newComment = reader.readLine();
-
-            PatientTreatment appointmentToModify = treatmentManager.getPatientTreatmentById(appointmentId);
-            if (appointmentToModify != null) {
-            	appointmentToModify.setDate(newDate);
-            	appointmentToModify.setComment(newComment);
-            	treatmentManager.updatePatientTreatment(appointmentToModify);
-            	System.out.println("Appointment successfully modified!");
+    				switch (choice) {
+    					case 1:
+    			            System.out.println("Enter new patient ID:");
+    			            //viewListPatients();
+    			            //Patient newPatient = reader.readLine();
+    			            //if (!newPatient.trim().isEmpty()) appointmentToModify.setPatient(newPatient);
+    						break;
+    					case 2:
+    			            System.out.println("Enter new treatment ID:");
+    			            //viewListClinicians();
+    			            //Clinician newClinician = reader.readLine();
+    			            //if (!newClinician.trim().isEmpty()) appointmentToModify.setClinician(newClinician);
+    						break;
+    					case 3:
+    			            System.out.println("Enter new treatment ID:");
+    			            //viewListTreatments();
+    			            //Treatment newTreatment = reader.readLine();
+    			            //if (!newTreatment.trim().isEmpty()) appointmentToModify.setTreatment(newTreatment);
+    						break;
+    					case 4:
+    			            System.out.println("Enter new date for the appointment (yyyy-MM-dd):");
+    			            String newDateStr = reader.readLine();
+    			            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    			            Date newDate = sdf.parse(newDateStr);
+    			            //if (!newDate.trim().isEmpty()) appointmentToModify.setDate(newDate);
+    						break;
+    					case 5:
+    			            System.out.println("Enter new comment for the appointment:");
+    			            String newComment = reader.readLine();
+    			            if (!newComment.trim().isEmpty()) appointmentToModify.setComment(newComment);
+    						break;
+    				}
+        		}catch(Exception e){
+        			e.printStackTrace();
+        		}
             } else {
-                System.out.println("Appointment not found.");
+                System.out.println("No appointments found.");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,24 +139,29 @@ public class AppointmentUI {
 
     public void cancelAppointment() {
         try {
-            System.out.println("Enter Appointment ID to cancel:");
-            int appointmentId = Integer.parseInt(reader.readLine());
+        	List<PatientTreatment> appointments = appointmentManager.getAllPatientTreatments();
+            if (appointments != null && !appointments.isEmpty()) {
+                 for (PatientTreatment appointment : appointments) {
+                     System.out.println(appointment);
+                 }
+                 System.out.println("Enter Appointment ID:");
+                 int appointmentId = Integer.parseInt(reader.readLine());
 
-            PatientTreatment appointmentToCancel = treatmentManager.getPatientTreatmentById(appointmentId);
-            if (appointmentToCancel != null) {
-                treatmentManager.removePatientTreatment(appointmentToCancel);
-                System.out.println("Appointment successfully canceled!");
-            } else {
-                System.out.println("Appointment not found.");
-            }
+                 PatientTreatment appointmentToCancel = appointmentManager.getPatientTreatmentById(appointmentId);
+                 appointmentManager.removePatientTreatment(appointmentToCancel);
+                 System.out.println("Appointment successfully canceled!");
+             } else {
+                 System.out.println("No appointments found.");
+             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    
     public void viewAppointmentsList() {
         try {
-           List<PatientTreatment> appointments = treatmentManager.getAllPatientTreatments();
+           List<PatientTreatment> appointments = appointmentManager.getAllPatientTreatments();
            if (appointments != null && !appointments.isEmpty()) {
                 for (PatientTreatment appointment : appointments) {
                     System.out.println(appointment);
@@ -117,4 +173,5 @@ public class AppointmentUI {
             e.printStackTrace();
         }
     }
+    
 }

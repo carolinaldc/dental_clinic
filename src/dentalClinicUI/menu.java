@@ -13,11 +13,15 @@ import java.util.List;
 
 import dentalClinicIFaces.ClinicianManager;
 import dentalClinicIFaces.PatientManager;
+import dentalClinicIFaces.PatientsTreatmentManager;
+import dentalClinicIFaces.TreatmentManager;
 import dentalClinicIFaces.UserManager;
 import dentalClinicIFaces.XMLManager;
 import dentalClinicJDBC.JDBCManager;
 import dentalClinicJDBC.JDBCClinicianManager;
 import dentalClinicJDBC.JDBCPatientManager;
+import dentalClinicJDBC.JDBCPatientTreatmentManager;
+import dentalClinicJDBC.JDBCTreatmentManager;
 import dentalClinicJDBC.JDBCPatientManager;
 import dentalClinicJPA.JPAUserManager;
 import dentalClinicPOJOS.Clinician;
@@ -36,6 +40,8 @@ public class menu {
 	private static JDBCManager jdbcmanager;
 	private static PatientManager patientManager;
 	private static ClinicianManager clinicianManager;
+	private static PatientsTreatmentManager patientsTreatmentManager;
+	private static TreatmentManager treatmentManager;
 	private static UserManager usermanager;
 	private static BufferedReader reader = new BufferedReader (new InputStreamReader(System.in));
 	private static XMLManager xmlmanager;
@@ -47,10 +53,12 @@ public class menu {
 		usermanager = new JPAUserManager();
 		xmlmanager = new XMLManagerImpl();
 		clinicianManager = new JDBCClinicianManager(jdbcmanager);
+		patientsTreatmentManager = new JDBCPatientTreatmentManager(jdbcmanager);
+		treatmentManager = new JDBCTreatmentManager(jdbcmanager);
 		
 		patiententUI = new PatientUI(patientManager);
 		clinicianUI = new ClinicianUI(clinicianManager);
-		appointmentUI = new AppointmentUI(patientManager, clinicianManager); 
+		//appointmentUI = new AppointmentUI(patientManager, clinicianManager, patientsTreatmentManager, treatmentManager); 
 
 		
 		int choice=0;
@@ -75,6 +83,7 @@ public class menu {
 					case 0:				
 						jdbcmanager.closeConnection();
 						usermanager.disconnect();
+						System.exit(0); 
 						break;
 				}
 			}while(choice!=0);
