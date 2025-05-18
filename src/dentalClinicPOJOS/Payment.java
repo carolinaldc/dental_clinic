@@ -4,14 +4,25 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.Objects;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Payment implements Serializable {
 
     private static final long serialVersionUID = -2637321372475755L;
     
+    @XmlAttribute
     private Integer payment_id;
+    @XmlElement
     private Double amount;
+    @XmlElement
     private Date payment_date;
+    @XmlElement
     private String payment_method;
+    @XmlElement
     private String status;
     private Patient patient;
 

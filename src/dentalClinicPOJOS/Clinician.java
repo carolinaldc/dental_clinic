@@ -32,7 +32,7 @@ public class Clinician implements Serializable {
 		@XmlElement
 		private String email; 
 		@XmlTransient
-		private List<Patient> patients;
+		private List<Patient> patients; //creo que esto sobra
 		@XmlTransient
 		private List<Treatment> treatments;
 		@XmlTransient

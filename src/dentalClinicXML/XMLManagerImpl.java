@@ -28,7 +28,7 @@ public class XMLManagerImpl implements XMLManager {
 			
 	        Patient patient = jdbcPatientManager.getPatientByid(id);
 	        
-	      //export this Patient to a XML file
+	        //export this Patient to a XML file
 	        JAXBContext jaxbcontext =  JAXBContext.newInstance(Patient.class);
 			Marshaller marshaller = jaxbcontext.createMarshaller();
 			

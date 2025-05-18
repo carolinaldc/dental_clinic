@@ -44,7 +44,7 @@ public class Patient implements Serializable {
 	private List<PatientTreatment> treatments;
 	@XmlTransient
 	private List<Patients_Clinician> appointments ; 
-	
+	@XmlTransient
 	private Payment payment; 
 	
 	
