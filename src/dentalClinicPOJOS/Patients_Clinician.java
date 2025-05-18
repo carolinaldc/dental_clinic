@@ -3,13 +3,29 @@ import java.io.Serializable;
 import java.sql.Date; 
 import java.util.Objects;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name="Patients_Clinician")
+@XmlType(propOrder = {"visitInfo","date","clinician","patient"})
 public class Patients_Clinician implements Serializable{
 
 	private static final long serialVersionUID = 7404145314772486159L;
+	@XmlElement
 	private Patient patient ;  
+	@XmlElement
 	private Clinician clinician ;  
+	@XmlElement
 	private Date date ;  
+	@XmlAttribute
 	private String visitInfo ;  
+	@XmlTransient
 	private Integer id ;
 	
 	public Patients_Clinician(String visitInfo, Date date, Clinician clinician, Patient patient) {

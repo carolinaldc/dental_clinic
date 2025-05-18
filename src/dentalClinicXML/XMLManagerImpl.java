@@ -1,10 +1,9 @@
 package dentalClinicXML;
 
-import dentalClinicJDBC.JDBCClinicianManager;
 import dentalClinicJDBC.JDBCManager;
 import dentalClinicJDBC.JDBCPatientManager;
-import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Patient;
+import dentalClinicPOJOS.Patients_Clinician;
 
 import java.io.File;
 
@@ -29,7 +28,7 @@ public class XMLManagerImpl implements XMLManager {
 			
 	        Patient patient = jdbcPatientManager.getPatientByid(id);
 	        
-	        
+	      //export this Patient to a XML file
 	        JAXBContext jaxbcontext =  JAXBContext.newInstance(Patient.class);
 			Marshaller marshaller = jaxbcontext.createMarshaller();
 			
@@ -47,20 +46,20 @@ public class XMLManagerImpl implements XMLManager {
 	}
 
 	@Override
-	public Clinician xml2Clinician(File xml) {
+	public Patients_Clinician xml2PatientsClinician(File xml) {
 		
-		Clinician clinician = null;
+		Patients_Clinician patientsClinician = null;
 		try {
-			//read clinician from xml file
-			JAXBContext jaxbContext = JAXBContext.newInstance(Clinician.class);
+			//read Patients_Clinician from xml file
+			JAXBContext jaxbContext = JAXBContext.newInstance(Patients_Clinician.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			clinician = (Clinician) unmarshaller.unmarshal(xml);
+			patientsClinician = (Patients_Clinician) unmarshaller.unmarshal(xml);
 		}catch (Exception e)
 		{
 			e.printStackTrace();
 		}
 		
-		return clinician;
+		return patientsClinician;
 		
 	}
 
