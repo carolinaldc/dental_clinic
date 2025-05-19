@@ -8,23 +8,22 @@ public class Treatment implements Serializable {
 	
 	private static final long serialVersionUID = -7675148140680049781L;
 	private Integer treatment_id;
-	private String name;
+	private String name; //quitar name!!!!!
 	private String description;
 	private Integer price;
 	private Room room;
-	private List<Clinician> clinician; 
+	private Clinician clinician; 
+	private Patient patient;
 	private List<PatientTreatment> appointment;
-	private List<Material> materials ; 
+	private List<Material> materials ; //quitar materials??
 	
 
 	public Treatment() {
 		super();
-		clinician = new ArrayList<Clinician>();
+		clinician = new Clinician();
+		patient = new Patient();
 		appointment = new ArrayList<PatientTreatment>();
 	}
-	
-	
-
 	
 	public Treatment(String name, String description, Integer price) {
 		super();
@@ -34,15 +33,9 @@ public class Treatment implements Serializable {
 		
 	}
 
-
-
-
 	public Treatment(int treatmentId) {
 		// TODO Auto-generated constructor stub
 	}
-
-
-
 
 	public String getDescription() {
 		return description;
@@ -54,14 +47,22 @@ public class Treatment implements Serializable {
 	
 	
 
-	public List<Clinician> getClinician() {
+	public Clinician getClinician() {
 		return clinician;
 	}
 
-	public void setClinician(List<Clinician> clinician) {
+	public void setClinician(Clinician clinician) {
 		this.clinician = clinician;
 	}
 
+	public Patient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+	
 	public List<PatientTreatment> getAppointment() {
 		return appointment;
 	}
@@ -140,8 +141,4 @@ public class Treatment implements Serializable {
 		return "Treatment [name=" + name + ", description=" + description + ", price=" + price + ", room=" + room
 				+ ", clinician=" + clinician + ", appointment=" + appointment + "]";
 	}
-
-	
-
-	
 }

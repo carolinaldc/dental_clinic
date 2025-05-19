@@ -13,6 +13,7 @@ public class PatientTreatment implements Serializable {
     private Treatment treatment;
     private Date date;
     private String comment;
+    //hay que añadir clinician id !!!
 
     public PatientTreatment(String comment, Date date, Treatment treatment, Patient patient) {
         super();
