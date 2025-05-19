@@ -3,12 +3,16 @@ package dentalClinicIFaces;
 import java.io.File;
 
 import dentalClinicPOJOS.Clinician;
-import dentalClinicPOJOS.Patients_Clinician;
+import dentalClinicPOJOS.Material;
 
 public interface XMLManager {
 
-	void patient2xml(Integer id);
+	public void clinician2xml(Integer id);
 
-	Patients_Clinician xml2PatientsClinician(File xml);
+	public Clinician xml2Clinician(File xml);
+	
+	public void material2xml(Integer id);
+	
+	public Material xml2Material(File xml);
 
 }

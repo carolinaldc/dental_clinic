@@ -4,23 +4,38 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name="Supplier")
+@XmlType(propOrder = {"supplierName", "phone", "email"})
 public class Supplier implements Serializable {
 	
     private static final long serialVersionUID = 869952558751098968L;
     
+    @XmlTransient
     private Integer supplier_id;
-    private String name;
+    @XmlElement
+    private String supplierName;
+    @XmlElement
     private Integer phone;
+    @XmlElement
     private String email;
+    @XmlTransient
     private List<Material> material;
     
 	public Supplier() {
 		super();
 	}
 
-	public Supplier(String name, Integer phone, String email, List<Material> material) {
+	public Supplier(String supplierName, Integer phone, String email, List<Material> material) {
 		super();
-		this.name = name;
+		this.supplierName = supplierName;
 		this.phone = phone;
 		this.email = email;
 		this.material = material;
@@ -34,12 +49,12 @@ public class Supplier implements Serializable {
 		this.supplier_id = supplier_id;
 	}
 
-	public String getName() {
-		return name;
+	public String getSupplierName() {
+		return supplierName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setSupplierName(String supplierName) {
+		this.supplierName = supplierName;
 	}
 
 	public Integer getPhone() {
@@ -68,7 +83,7 @@ public class Supplier implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, material, name, phone, supplier_id);
+		return Objects.hash(email, material, supplierName, phone, supplier_id);
 	}
 
 	@Override
@@ -81,12 +96,12 @@ public class Supplier implements Serializable {
 			return false;
 		Supplier other = (Supplier) obj;
 		return Objects.equals(email, other.email) && Objects.equals(material, other.material)
-				&& Objects.equals(name, other.name) && Objects.equals(phone, other.phone)
+				&& Objects.equals(supplierName, other.supplierName) && Objects.equals(phone, other.phone)
 				&& Objects.equals(supplier_id, other.supplier_id);
 	}
 
 	@Override
 	public String toString() {
-		return "Supplier [name=" + name + ", phone=" + phone + ", email=" + email + ", material=" + material + "]";
+		return "Supplier [supplierName=" + supplierName + ", phone=" + phone + ", email=" + email + ", material=" + material + "]";
 	}
 }

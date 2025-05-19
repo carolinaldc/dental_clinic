@@ -1,15 +1,30 @@
 package dentalClinicPOJOS;
 import java.util.List;
 import java.util.Objects;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
 import java.io.Serializable;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name="Material")
+@XmlType(propOrder = {"supplier", "name"})
 public class Material implements Serializable{
 	
 	private static final long serialVersionUID = -6546395167641015440L;
 	
+	@XmlTransient
 	private Integer materials_id ;
+	@XmlElement
 	private String name ; 
+	@XmlElement
 	private Supplier supplier ; 
+	@XmlTransient
 	private List<Treatment> treatments;
 	
 	public Material() {

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE Material[
+<!ELEMENT Material (name,supplier)>
+	<!ELEMENT name (#PCDATA)>
+	<!ELEMENT supplier (supplierName,phone,email)>
+		<!ELEMENT supplierName (#PCDATA)>
+		<!ELEMENT phone (#PCDATA)>
+		<!ELEMENT email (#PCDATA)>
+
+]>
+
+<Material>
+	<name>Toothpaste</name>
+	<supplier>
+		<supplierName>CorteIngles</supplierName>
+		<phone>669780208</phone>
+		<email>corte@mail.com</email>
+	</supplier>
+</Material>

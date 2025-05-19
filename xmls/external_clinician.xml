@@ -1,32 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<!DOCTYPE Patients_Clinician[
-<!ELEMENT Patients_Clinician (date,clinician,patient)>
-	<!ATTLIST Patients_Clinician visitInfo CDATA #REQUIRED>
-	<!ELEMENT date (#PCDATA)>
-	<!ELEMENT clinician (name, surname, speciality, email, phone)>
-	<!ELEMENT patient (name, surname, dob, credit_card)>
+<!DOCTYPE Clinician[
+<!ELEMENT Clinician (name,surname, email, phone)>
+	<!ATTLIST Clinician speciality CDATA #REQUIRED>
 	<!ELEMENT name (#PCDATA)>
-  	<!ELEMENT surname (#PCDATA)>
-  	<!ELEMENT dob (#PCDATA)>
-  	<!ELEMENT credit_card (#PCDATA)>
-  	<!ELEMENT speciality (#PCDATA)>
-  	<!ELEMENT email (#PCDATA)>
-  	<!ELEMENT phone (#PCDATA)>
+	<!ELEMENT surname (#PCDATA)>
+	<!ELEMENT email (#PCDATA)>
+	<!ELEMENT phone (#PCDATA)>
 ]>
 
-<Patients_Clinician visitInfo="Checkup">
-	<date>2025-07-17</date>
-	<clinician>
-		<name>Sara</name>
-		<surname>Smith</surname>
-		<speciality>Smith</speciality>
-		<email>Smith</email>
-		<phone>Smith</phone>
-	</clinician>
-	<patient>
-		<name>John</name>
-		<surname>Doe</surname>
-		<dob>2020-02-02</dob>
-		<credit_card>213456892</credit_card>
-	</patient>	
-</Patients_Clinician>
+<Clinician speciality="Orthodontist">
+	<name>Lucia</name>
+	<surname>Sanchez</surname>
+	<email>lucia@gmail.com</email>
+	<phone>6237649</phone>	
+</Clinician>

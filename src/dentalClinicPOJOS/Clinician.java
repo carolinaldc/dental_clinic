@@ -12,17 +12,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name="Clincian")
+@XmlType(propOrder = {"name", "surname", "specialty","phone", "email"})
 public class Clinician implements Serializable {
 		
 		private static final long serialVersionUID = -2637321372475755L;
 		
+		@XmlTransient
 		private Integer clinician_id; 
+		@XmlElement
 		private String name; 
+		@XmlElement
 		private String surname; 
+		@XmlAttribute
 		private String speciality;
+		@XmlElement
 		private Integer phone;
+		@XmlElement
 		private String email; 
-
+		@XmlTransient
 		private List<Appointment> appointments;
 
 		public Clinician() {

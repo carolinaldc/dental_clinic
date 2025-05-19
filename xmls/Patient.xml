@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Patient phone="222222">
-    <name>Lucia</name>
-    <surname>Sanchez</surname>
-    <dob>2020-02-02</dob>
-    <credit_card>213456892</credit_card>
-</Patient>
