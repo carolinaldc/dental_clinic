@@ -12,6 +12,6 @@ public interface PatientManager {
 	public void deletePatient (Integer patient_id);
 	public void updatePatient(Integer patient_id);
 	public List <Patient> getListOfPatients();
-	public List <Patient> getPatientById(Integer patient_id); 
+	public Patient getPatientById(Integer patient_id); 
 
 }

@@ -13,10 +13,10 @@ import dentalClinicPOJOS.Treatment;
 public class JDBCTreatmentManager implements TreatmentManager {
 
     //private Connection c;
-    private JDBCManager conMan;
+    private JDBCManager manager;
 
     public JDBCTreatmentManager(JDBCManager connectionManager) {
-        this.conMan = connectionManager;
+        this.manager = connectionManager;
         //this.c = connectionManager.getConnection();
     }
     
@@ -32,8 +32,37 @@ public class JDBCTreatmentManager implements TreatmentManager {
 	public List <Treatment> getListOfTreatments(){
 		return null;
 	}
-	public List <Treatment> getTreatmentById(Integer treatment_id){
-		return null;
+	public Treatment getTreatmentById(Integer treatment_id){
+		
+		Treatment treatment = null;
+		manager = new JDBCManager();
+		JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
+		JDBCMaterialManager jdbcMaterialManager = new JDBCMaterialManager(manager);
+		
+		try {
+			
+			Statement stmt = manager.getConnection().createStatement();
+			String sql =  "SELECT * FROM Treatments WHERE treatment_id =" + treatment_id;
+			
+			ResultSet rs= stmt.executeQuery(sql);
+			
+			String name = rs.getString("name");
+			String description = rs.getString("description");
+			Integer price = rs.getInt("price");
+			List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfTreatments(treatment_id);
+			List<Material> materials = jdbcMaterialManager.getMaterialsOfTreatment(treatment_id);
+			
+			rs.close();
+			stmt.close();
+			
+			treatment = new Treatment(name, description,price, appointments, materials);
+			
+		}catch(Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return treatment;
 		
 	}
     

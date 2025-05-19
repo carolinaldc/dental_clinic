@@ -6,7 +6,9 @@ import java.util.List;
 
 import dentalClinicIFaces.PatientManager;
 import dentalClinicPOJOS.Clinician;
+import dentalClinicPOJOS.Material;
 import dentalClinicPOJOS.Patient;
+import dentalClinicPOJOS.Treatment;
 import dentalClinicPOJOS.Appointment;
 
 public class JDBCPatientManager implements PatientManager {
@@ -29,8 +31,40 @@ public class JDBCPatientManager implements PatientManager {
 	public List <Patient> getListOfPatients(){
 		return null;
 	}
-	public List <Patient> getPatientById(Integer patient_id){
-		return null;
+	public Patient getPatientById(Integer patient_id){
+		
+		Patient patient = null;
+		manager = new JDBCManager();
+		JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
+		JDBCMaterialManager jdbcMaterialManager = new JDBCMaterialManager(manager);
+		
+		try {
+			
+			Statement stmt = manager.getConnection().createStatement();
+			String sql =  "SELECT * FROM Patients WHERE patient_id =" + patient_id;
+			
+			ResultSet rs= stmt.executeQuery(sql);
+			
+			String name = rs.getString("name");
+			String surname = rs.getString("surname");
+			Date dob = rs.getDate("dob");
+			Integer phone = rs.getInt("phone");
+			String email = rs.getString("email");
+			Integer credit_card = rs.getInt("credit_card");
+			List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfPatient(patient_id);
+			
+			rs.close();
+			stmt.close();
+			
+			patient = new Patient(name, surname,dob, phone, email, credit_card, appointments);
+			
+		}catch(Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return patient;
+	
 	}
     
     /*

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dentalClinicIFaces.ClinicianManager;
+import dentalClinicPOJOS.Appointment;
 import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Patient;
 
@@ -27,8 +28,35 @@ public class JDBCClinicianManager implements ClinicianManager {
    	}
    	
 	public Clinician getClinicianByid(Integer clinician_id) {
-		return null;
+		
+		Clinician clinician = null;
+		manager = new JDBCManager();
+		JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql =  "SELECT * FROM Clinicians WHERE clinician_id =" + clinician_id;
+			
+			ResultSet rs= stmt.executeQuery(sql);
+			
+			String name = rs.getString("name");
+			String surname = rs.getString("surname");
+			String speciality = rs.getString("speciality");
+			Integer phone = rs.getInt("phone");
+			String email = rs.getString("email");
+			List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfClinician(clinician_id);
+			rs.close();
+			stmt.close();
+			
+			clinician = new Clinician(name, surname,speciality, phone, email, appointments);
+		}catch(Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return clinician;
 	}
+	
 	public List<Clinician> getListOfClinicians(){
 		return null;
 	}

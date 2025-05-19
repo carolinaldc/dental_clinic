@@ -12,5 +12,5 @@ public interface TreatmentManager {
 	public void deleteTreatment (Integer treatment_id);
 	public void updateTreatment(Integer treatment_id);
 	public List <Treatment> getListOfTreatments();
-	public List <Treatment> getTreatmentById(Integer treatment_id); 
+	public Treatment getTreatmentById(Integer treatment_id); 
 }

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dentalClinicIFaces.SupplierManager;
+import dentalClinicPOJOS.Appointment;
+import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Material;
 import dentalClinicPOJOS.Supplier;
 
@@ -12,10 +14,10 @@ public class JDBCSupplierManager {
 	
 
 	    //private Connection c;
-	    private JDBCManager conMan;
+	    private JDBCManager manager;
 
 	    public JDBCSupplierManager(JDBCManager connectionManager) {
-	        this.conMan = connectionManager;
+	        this.manager = connectionManager;
 	        //this.c = connectionManager.getConnection();
 	    }
 	    
@@ -30,7 +32,32 @@ public class JDBCSupplierManager {
 		}
 
 		public Supplier getSupplierByid(Integer supplier_id) {
-			return null;
+			
+			Supplier supplier = null;
+			manager = new JDBCManager();
+			JDBCMaterialManager jdbcMaterialManager = new JDBCMaterialManager(manager);
+			
+			try {
+				Statement stmt = manager.getConnection().createStatement();
+				String sql =  "SELECT * FROM Supplier WHERE supplier_id =" + supplier_id;
+				
+				ResultSet rs= stmt.executeQuery(sql);
+				
+				String supplierName = rs.getString("supplierName");
+				Integer phone = rs.getInt("phone");
+				String email = rs.getString("email");
+				List<Material> materials = jdbcMaterialManager.getMaterialsOfSupplier(supplier_id);
+				rs.close();
+				stmt.close();
+				
+				supplier = new Supplier(supplierName, phone,email, materials);
+			}catch(Exception e) 
+			{
+				e.printStackTrace();
+			}
+			
+			return supplier;
+			
 		}
 		public List<Supplier> getListOfSuppliers(){
 			return null;

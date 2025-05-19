@@ -12,6 +12,7 @@ public interface MaterialManager {
 
 	public Material getMaterialByid(Integer material_id);
 	public List<Material> getListOfMaterials();
+	public List<Material> getMaterialsOfTreatment(Integer treatment_id);
 	
     //void linkMaterialToTreatment(int materialId, int treatmentId);
 }

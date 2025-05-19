@@ -1,24 +1,29 @@
 package dentalClinicJDBC;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import dentalClinicIFaces.MaterialManager;
+import dentalClinicPOJOS.Appointment;
+import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Material;
+import dentalClinicPOJOS.Patient;
 import dentalClinicPOJOS.Supplier;
 import dentalClinicPOJOS.Treatment;
 
 public class JDBCMaterialManager implements MaterialManager {
     
 	//private Connection c;
-	private JDBCManager conMan;
+	private JDBCManager manager;
 
     public JDBCMaterialManager(JDBCManager connectionManager) {
-        this.conMan = connectionManager;
+        this.manager = connectionManager;
         //this.c = connectionManager.getConnection();
     }
 
@@ -31,12 +36,78 @@ public class JDBCMaterialManager implements MaterialManager {
 	public void updateMaterial(Integer material_id) {
 		
 	}
+	
+	public List<Material> getMaterialsOfTreatment(Integer treatment_id){
+		List<Material> materials = new ArrayList<Material>();
+        JDBCSupplierManager jdbcSupplierManager = new JDBCSupplierManager(manager);
+        
+		try {
+			
+			Statement stmt = manager.getConnection().createStatement();
+    		String sql = "SELECT * FROM Materials WHERE treatment_id = " + treatment_id;
+			ResultSet rs= stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+	            String name = rs.getString("comment");
+	            
+	            //EN ESTE CASO NO HACE FALTA TENER TREATMENT EN LOS MATERIALES NO?
+	            //List<Treatment> treatments = jdbcTreatmentManager.getTreatmentById(treatment_id);
+	            Integer supplier_id = rs.getInt("supplier_id");
+	            Supplier supplier = jdbcSupplierManager.getSupplierByid(supplier_id);
+	            
+	            
+	            Material material = new Material(name, supplier);
+	            materials.add(material);
+			}
+			
+			rs.close();
+			stmt.close();
+			
+		}catch(Exception e) 
+		{
+			e.printStackTrace();
+		}
+		return materials;
+	}
+	
+	public List<Material> getMaterialsOfSupplier(Integer supplier_id){
+		List<Material> materials = new ArrayList<Material>();
+        JDBCSupplierManager jdbcSupplierManager = new JDBCSupplierManager(manager);
+        
+		try {
+			
+			Statement stmt = manager.getConnection().createStatement();
+    		String sql = "SELECT * FROM Materials WHERE supplier_id = " + supplier_id;
+			ResultSet rs= stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+	            String name = rs.getString("comment");
+	            
+	            //EN ESTE CASO NO HACE FALTA TENER TREATMENT EN LOS MATERIALES NO?
+	            //List<Treatment> treatments = jdbcTreatmentManager.getTreatmentById(treatment_id);
+	            Supplier supplier = jdbcSupplierManager.getSupplierByid(supplier_id);
+	            
+	            
+	            Material material = new Material(name, supplier);
+	            materials.add(material);
+			}
+			
+			rs.close();
+			stmt.close();
+			
+		}catch(Exception e) 
+		{
+			e.printStackTrace();
+		}
+		return materials;
+	}
 
 	public Material getMaterialByid(Integer material_id) {
 		return null;
 	}
 	public List<Material> getListOfMaterials(){
 		return null;
+		
 	}
 	
     /*

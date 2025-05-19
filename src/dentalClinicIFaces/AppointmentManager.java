@@ -12,6 +12,8 @@ public interface AppointmentManager {
 	public List <Appointment> getListOfAppointments();
 	public List <Appointment> getAppointmentOfPatient (Integer patient_id);
 	public List <Appointment> getAppointmentOfClinician (Integer clinician_id);
+	public List <Appointment> getAppointmentOfTreatments (Integer treatment_id);
+	//public Appointment getAppointmentById (Integer appointment_id);
 	
 
 }
