@@ -22,6 +22,24 @@ public class JDBCTreatmentManager implements TreatmentManager {
     }
     
     public void addTreatment(Treatment treatment) {
+    	
+    }
+	public void deleteTreatment (Integer treatment_id) {
+		
+	}
+	public void updateTreatment(Integer treatment_id) {
+		
+	}
+	public List <Treatment> getListOfTreatments(){
+		return null;
+	}
+	public List <Treatment> getTreatmentById(Integer treatment_id){
+		return null;
+		
+	}
+    
+    /*
+    public void addTreatment(Treatment treatment) {
         try {
             String sql = "INSERT INTO Treatments (name, description, price, room_id) VALUES (?, ?, ?, ?)";
             PreparedStatement ps = conMan.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -284,6 +302,7 @@ public class JDBCTreatmentManager implements TreatmentManager {
             e.printStackTrace();
         }
     }
+    */
 
 
 }

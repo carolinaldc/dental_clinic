@@ -8,7 +8,6 @@ import dentalClinicIFaces.PatientManager;
 import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Patient;
 import dentalClinicPOJOS.Appointment;
-import dentalClinicPOJOS.Patients_Clinician;
 
 public class JDBCPatientManager implements PatientManager {
     private JDBCManager manager;
@@ -17,6 +16,24 @@ public class JDBCPatientManager implements PatientManager {
         this.manager = manager;
     }
 
+    public void addPatient(Patient patient) {
+    	
+    }
+	public void deletePatient (Integer patient_id) {
+		
+	}
+	
+	public void updatePatient(Integer patient_id) {
+		
+	}
+	public List <Patient> getListOfPatients(){
+		return null;
+	}
+	public List <Patient> getPatientById(Integer patient_id){
+		return null;
+	}
+    
+    /*
     @Override
     public void addPatient(Patient p) {
         String sql = "INSERT INTO patients (name, surname, dob, phone, email, credit_card) VALUES (?, ?, ?, ?, ?, ?)";
@@ -172,5 +189,6 @@ public class JDBCPatientManager implements PatientManager {
         }
         return null;
     }
+    */
 
 }

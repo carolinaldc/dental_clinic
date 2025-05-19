@@ -6,11 +6,12 @@ import dentalClinicPOJOS.Appointment;
 
 public interface AppointmentManager {
 
-	List<Appointment> getPatientsTreatmentsByPatientid(int patientId);
+	public void addAppointment(Appointment o);
+	public void deleteAppointment (Integer appointment_id);
+	public void updateAppointment(Integer appointment_id);
+	public List <Appointment> getListOfAppointments();
+	public List <Appointment> getAppointmentOfPatient (Integer patient_id);
+	public List <Appointment> getAppointmentOfClinician (Integer clinician_id);
 	
-	void addPatientTreatment(Appointment newAppointment);
-	void updatePatientTreatment(Appointment appointmentToModify);
-	Appointment getPatientTreatmentById(int appointmentId);
-	void removePatientTreatment(Appointment appointmentToCancel);
-	List<Appointment> getAllPatientTreatments();
+
 }

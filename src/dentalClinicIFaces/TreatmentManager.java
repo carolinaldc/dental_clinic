@@ -5,10 +5,12 @@ import java.util.List;
 
 import dentalClinicPOJOS.Treatment;
 
+
 public interface TreatmentManager {
-    void addTreatment(Treatment treatment);
-    List<Treatment> getAllTreatments();
-    void updateTreatment(Treatment treatment);
-    void deleteTreatment(int treatmentId);
-	Treatment getTreatmentByid(int id);
+	
+	public void addTreatment(Treatment treatment);
+	public void deleteTreatment (Integer treatment_id);
+	public void updateTreatment(Integer treatment_id);
+	public List <Treatment> getListOfTreatments();
+	public List <Treatment> getTreatmentById(Integer treatment_id); 
 }

@@ -22,6 +22,31 @@ public class JDBCAppointmentManager implements AppointmentManager {
 		
 	}
 	
+	public void addAppointment(Appointment o) {
+		
+	}
+	
+	public void deleteAppointment (Integer appointment_id) {
+	}
+	
+	public void updateAppointment(Integer appointment_id) {
+	}
+	
+	public List <Appointment> getListOfAppointments(){
+		
+		return null;
+	}
+	
+	public List <Appointment> getAppointmentOfPatient (Integer patient_id){
+		return null;
+	}
+	
+	public List <Appointment> getAppointmentOfClinician (Integer clinician_id){
+		return null;
+	}
+	
+	//TODO: REVISAR
+	/*
 	@Override
     public List<Appointment> getPatientsTreatmentsByPatientid(int patientId) {
     	
@@ -38,17 +63,15 @@ public class JDBCAppointmentManager implements AppointmentManager {
 			{
 				
 				//int id = rs.getInt("id");
-	            int treatmentId = rs.getInt("treatment_id");
+	            Integer appointment_id = rs.getInt("appointment_id");
 	            String comment = rs.getString("comment");
 	            Date date = rs.getDate("date");
+	            Integer treatmentId = rs.getInt("appointment_id");
 				
 				
 	            Treatment treatment = jdbcTreatmentManager.getTreatmentByid(treatmentId);
-				
-	            Patient patient = new Patient();
-	            patient.setId(patientId);
-
-	            Appointment pt = new Appointment(comment, date, treatment,patient);
+	            Patient patient = jdbcPatientManager.getPatientByid(patientId)
+	            Appointment pt = new Appointment(appointment_id, date, comment,patient, treatment,clinician);
 	            patientsTreatments.add(pt);
 				
 				
@@ -65,12 +88,13 @@ public class JDBCAppointmentManager implements AppointmentManager {
 		}
     	return patientsTreatments;
     }
-	
+	*/
 
+	/*
 	@Override
-	public void addPatientTreatment(Appointment newAppointment) {
+	public void addAppointment(Appointment newAppointment) {
 	    try {
-	        String sql = "INSERT INTO Patient_treatments (comments, date, treatment_id, patient_id) VALUES (?, ?, ?, ?)";
+	        String sql = "INSERT INTO Patient_treatments (appointment_id,patient_id,treatment_ic,clinician_id, date, comments) VALUES (?, ?, ?, ?, ?, ?)";
 	        PreparedStatement pstmt = manager.getConnection().prepareStatement(sql);
 	        pstmt.setString(1, newAppointment.getComment());
 	        pstmt.setDate(2, new java.sql.Date(newAppointment.getDate().getTime()));
@@ -82,7 +106,9 @@ public class JDBCAppointmentManager implements AppointmentManager {
 	        e.printStackTrace();
 	    }
 	}
+	*/
 
+	/*
 	@Override
 	public void updatePatientTreatment(Appointment appointmentToModify) {
 	    try {
@@ -97,7 +123,9 @@ public class JDBCAppointmentManager implements AppointmentManager {
 	        e.printStackTrace();
 	    }
 	}
+	*/
 
+	/*
 	@Override
 	public Appointment getPatientTreatmentById(int appointmentId) {
 	    Appointment pt = null;
@@ -128,7 +156,9 @@ public class JDBCAppointmentManager implements AppointmentManager {
 	    }
 	    return pt;
 	}
+	*/
 
+	/*
 	@Override
 	public void removePatientTreatment(Appointment appointmentToCancel) {
 	    try {
@@ -141,7 +171,9 @@ public class JDBCAppointmentManager implements AppointmentManager {
 	        e.printStackTrace();
 	    }
 	}
+	*/
 
+	/*
 	@Override
 	public List<Appointment> getAllPatientTreatments() {
 	    List<Appointment> appointments = new ArrayList<>();
@@ -174,4 +206,12 @@ public class JDBCAppointmentManager implements AppointmentManager {
 	    }
 	    return appointments;
 	}
+	*/
+	
+	//TODO: crear, borrar, modificar, verTodos, getByid
+	
+				
+	
+
+	
 }
