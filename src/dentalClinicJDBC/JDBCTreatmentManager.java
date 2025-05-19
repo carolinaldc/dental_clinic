@@ -8,7 +8,6 @@ import dentalClinicIFaces.TreatmentManager;
 import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Material;
 import dentalClinicPOJOS.Appointment;
-import dentalClinicPOJOS.Room;
 import dentalClinicPOJOS.Treatment;
 
 public class JDBCTreatmentManager implements TreatmentManager {

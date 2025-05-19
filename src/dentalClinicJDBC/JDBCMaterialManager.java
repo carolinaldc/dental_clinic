@@ -22,6 +22,24 @@ public class JDBCMaterialManager implements MaterialManager {
         //this.c = connectionManager.getConnection();
     }
 
+    public void addMaterial(Material material) {
+    	
+    }
+	public void deleteMaterial(Integer material_id) {
+		
+	}
+	public void updateMaterial(Integer material_id) {
+		
+	}
+
+	public Material getMaterialByid(Integer material_id) {
+		return null;
+	}
+	public List<Material> getListOfMaterials(){
+		return null;
+	}
+	
+    /*
     @Override 
     public void addMaterial(Material material) {
         try {
@@ -148,6 +166,6 @@ public class JDBCMaterialManager implements MaterialManager {
             e.printStackTrace();
         }
     }
-
+*/
     
 }

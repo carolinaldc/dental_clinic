@@ -16,8 +16,24 @@ public class JDBCClinicianManager implements ClinicianManager {
         this.manager = manager;
     }
     
+    public void addClinician(Clinician clinician) {
+    	
+    }
+	public void deleteClinician(Integer clinician_id) {
+		
+	}
+   	public void updateClinician(Integer clinician_id) {
+   		
+   	}
+   	
+	public Clinician getClinicianByid(Integer clinician_id) {
+		return null;
+	}
+	public List<Clinician> getListOfClinicians(){
+		return null;
+	}
    
-
+/*
     @Override
     public void addClinician(Clinician clinician) {
         String sql = "INSERT INTO clinicians (name, specialty) VALUES (?, ?)";
@@ -166,6 +182,7 @@ public class JDBCClinicianManager implements ClinicianManager {
         }
     }
     
+    */
         
 }
 

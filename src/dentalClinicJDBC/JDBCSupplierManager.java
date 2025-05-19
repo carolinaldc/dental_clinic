@@ -19,7 +19,24 @@ public class JDBCSupplierManager {
 	        //this.c = connectionManager.getConnection();
 	    }
 	    
-	   
+	    public void addSupplier(Supplier supplier) {
+	    	
+	    }
+		public void deleteSupplier(Integer supplier_id) {
+			
+		}
+		public void updateSupplier(Integer supplier_id) {
+			
+		}
+
+		public Supplier getSupplierByid(Integer supplier_id) {
+			return null;
+		}
+		public List<Supplier> getListOfSuppliers(){
+			return null;
+		}
+	    
+	   /*
 	    //TODO tampoco estoy segura de que este bien
 	    public void addSupplier(Supplier supplier) {
 	        try {
@@ -112,6 +129,7 @@ public class JDBCSupplierManager {
 	       
 	        return new Material(materialId, null, materialId); 
 	    }
+	    */
 
 	}
 
