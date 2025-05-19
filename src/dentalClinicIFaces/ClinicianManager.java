@@ -2,21 +2,18 @@ package dentalClinicIFaces;
 
 
 import java.util.List;
+
 import dentalClinicPOJOS.Clinician;
 
 
 
 public interface ClinicianManager {
 	
-	void addClinician(Clinician clinician);
-	List<Clinician> listClinicians();
-	Clinician getClinicianByid(int id);
-   	Clinician getClinicianById(int id);
-   	void deleteClinician(int id);
-   	void updateClinician(Clinician cl);
-   	//List<Clinician> getAllClinicians(); TODOvoid updateClinician(Clinician cl);
-	//Clinician getClinicianByEmail(String email); TODO
-	Clinician getClinicianByEmail(String email);
-
+	public void addClinician(Clinician clinician);
+	public void deleteClinician(Integer clinician_id);
+   	public void updateClinician(Integer clinician_id);
+   	
+	public Clinician getClinicianByid(Integer clinician_id);
+	public List<Clinician> getListOfClinicians();
 }
 

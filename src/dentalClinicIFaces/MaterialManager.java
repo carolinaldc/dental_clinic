@@ -6,16 +6,12 @@ import dentalClinicPOJOS.Material;
 
 public interface MaterialManager {
 
-    void addMaterial(Material material);
+	public void addMaterial(Material material);
+	public void deleteMaterial(Integer material_id);
+	public void updateMaterial(Integer material_id);
 
-    List<Material> getAllMaterials();
-
-    void updateMaterial(Material material);
-
-    void deleteMaterial(int materialId);
-
-    void linkMaterialToTreatment(int materialId, int treatmentId);
-
-	List<Material> getAllMaterialsById(int id);
-
+	public Material getMaterialByid(Integer material_id);
+	public List<Material> getListOfMaterials();
+	
+    //void linkMaterialToTreatment(int materialId, int treatmentId);
 }
