@@ -41,7 +41,7 @@ public class Patient implements Serializable {
 	@XmlElement
 	private Integer credit_card; 
 	@XmlTransient
-	private List<PatientTreatment> treatments;
+	private List<Appointment> treatments;
 	@XmlTransient
 	private List<Patients_Clinician> appointments ; 
 	@XmlTransient
@@ -50,10 +50,10 @@ public class Patient implements Serializable {
 	
 	public Patient() {
 		super();
-		treatments = new ArrayList<PatientTreatment>();
+		treatments = new ArrayList<Appointment>();
 	}
 	
-	public Patient(String name, String surname, Date dob, Integer phone, String email, Integer credit_card, List<PatientTreatment> treatments,List<Patients_Clinician> appointments) {
+	public Patient(String name, String surname, Date dob, Integer phone, String email, Integer credit_card, List<Appointment> treatments,List<Patients_Clinician> appointments) {
 		super();
 		this.name = name;
 		this.surname = surname;
@@ -150,11 +150,11 @@ public class Patient implements Serializable {
 	}
 	
 
-	public List<PatientTreatment> getTreatments() {
+	public List<Appointment> getTreatments() {
 		return treatments;
 	}
 
-	public void setTreatments(List<PatientTreatment> treatments) {
+	public void setTreatments(List<Appointment> treatments) {
 		this.treatments = treatments;
 	}
 

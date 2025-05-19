@@ -1,14 +1,14 @@
 package dentalClinicUI;
 
 import dentalClinicPOJOS.Patient;
-import dentalClinicPOJOS.PatientTreatment;
+import dentalClinicPOJOS.Appointment;
 import dentalClinicPOJOS.Treatment;
 import dentalClinicIFaces.ClinicianManager;
 import dentalClinicIFaces.PatientManager;
-import dentalClinicIFaces.PatientsTreatmentManager;
+import dentalClinicIFaces.AppointmentManager;
 import dentalClinicIFaces.TreatmentManager;
 import dentalClinicJDBC.JDBCManager;
-import dentalClinicJDBC.JDBCPatientTreatmentManager;
+import dentalClinicJDBC.JDBCAppointmentManager;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class AppointmentUI {
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-    private static PatientsTreatmentManager appointmentManager = new JDBCPatientTreatmentManager(new JDBCManager());
+    private static AppointmentManager appointmentManager = new JDBCAppointmentManager(new JDBCManager());
     
     private PatientManager patientManager;
     private ClinicianManager clinicianManager;
@@ -60,7 +60,7 @@ public class AppointmentUI {
             Patient patient = new Patient(patientId); 
             Treatment treatment = new Treatment(treatmentId); 
 
-            PatientTreatment newAppointment = new PatientTreatment(comment, date, treatment, patient);
+            Appointment newAppointment = new Appointment(comment, date, treatment, patient);
             
             appointmentManager.addPatientTreatment(newAppointment); 
 
@@ -73,16 +73,16 @@ public class AppointmentUI {
 
     public void modifyAppointment() {
         try {
-            List<PatientTreatment> appointments = appointmentManager.getAllPatientTreatments();
+            List<Appointment> appointments = appointmentManager.getAllPatientTreatments();
         	if (appointments != null && !appointments.isEmpty()) {
-        		for (PatientTreatment appointment : appointments) {
+        		for (Appointment appointment : appointments) {
                     System.out.println(appointment);
                 }
         		
         		System.out.println("Enter Appointment ID to modify:");
                 int appointmentId = Integer.parseInt(reader.readLine());
 
-                PatientTreatment appointmentToModify = appointmentManager.getPatientTreatmentById(appointmentId);
+                Appointment appointmentToModify = appointmentManager.getPatientTreatmentById(appointmentId);
                 int choice=0;
         		try {
         			System.out.println("What do you want to modify: ");
@@ -139,15 +139,15 @@ public class AppointmentUI {
 
     public void cancelAppointment() {
         try {
-        	List<PatientTreatment> appointments = appointmentManager.getAllPatientTreatments();
+        	List<Appointment> appointments = appointmentManager.getAllPatientTreatments();
             if (appointments != null && !appointments.isEmpty()) {
-                 for (PatientTreatment appointment : appointments) {
+                 for (Appointment appointment : appointments) {
                      System.out.println(appointment);
                  }
                  System.out.println("Enter Appointment ID:");
                  int appointmentId = Integer.parseInt(reader.readLine());
 
-                 PatientTreatment appointmentToCancel = appointmentManager.getPatientTreatmentById(appointmentId);
+                 Appointment appointmentToCancel = appointmentManager.getPatientTreatmentById(appointmentId);
                  appointmentManager.removePatientTreatment(appointmentToCancel);
                  System.out.println("Appointment successfully canceled!");
              } else {
@@ -161,9 +161,9 @@ public class AppointmentUI {
     
     public void viewAppointmentsList() {
         try {
-           List<PatientTreatment> appointments = appointmentManager.getAllPatientTreatments();
+           List<Appointment> appointments = appointmentManager.getAllPatientTreatments();
            if (appointments != null && !appointments.isEmpty()) {
-                for (PatientTreatment appointment : appointments) {
+                for (Appointment appointment : appointments) {
                     System.out.println(appointment);
                 }
             } else {

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-public class PatientTreatment implements Serializable {
+public class Appointment implements Serializable {
 
     private static final long serialVersionUID = -2637321372475755L;
 
@@ -15,7 +15,7 @@ public class PatientTreatment implements Serializable {
     private String comment;
     //hay que añadir clinician id !!!
 
-    public PatientTreatment(String comment, Date date, Treatment treatment, Patient patient) {
+    public Appointment(String comment, Date date, Treatment treatment, Patient patient) {
         super();
         this.comment = comment;
         this.date = date;
@@ -77,7 +77,7 @@ public class PatientTreatment implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PatientTreatment other = (PatientTreatment) obj;
+		Appointment other = (Appointment) obj;
 		return Objects.equals(comment, other.comment) && Objects.equals(date, other.date)
 				&& Objects.equals(patient_appointment_id, other.patient_appointment_id) && Objects.equals(patient, other.patient)
 				&& Objects.equals(treatment, other.treatment);

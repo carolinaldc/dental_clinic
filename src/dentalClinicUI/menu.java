@@ -13,14 +13,14 @@ import java.util.List;
 
 import dentalClinicIFaces.ClinicianManager;
 import dentalClinicIFaces.PatientManager;
-import dentalClinicIFaces.PatientsTreatmentManager;
+import dentalClinicIFaces.AppointmentManager;
 import dentalClinicIFaces.TreatmentManager;
 import dentalClinicIFaces.UserManager;
 import dentalClinicIFaces.XMLManager;
 import dentalClinicJDBC.JDBCManager;
 import dentalClinicJDBC.JDBCClinicianManager;
 import dentalClinicJDBC.JDBCPatientManager;
-import dentalClinicJDBC.JDBCPatientTreatmentManager;
+import dentalClinicJDBC.JDBCAppointmentManager;
 import dentalClinicJDBC.JDBCTreatmentManager;
 import dentalClinicJDBC.JDBCPatientManager;
 import dentalClinicJPA.JPAUserManager;
@@ -41,7 +41,7 @@ public class menu {
 	private static JDBCManager jdbcmanager;
 	private static PatientManager patientManager;
 	private static ClinicianManager clinicianManager;
-	private static PatientsTreatmentManager patientsTreatmentManager;
+	private static AppointmentManager patientsTreatmentManager;
 	private static TreatmentManager treatmentManager;
 	private static UserManager usermanager;
 	private static BufferedReader reader = new BufferedReader (new InputStreamReader(System.in));
@@ -54,7 +54,7 @@ public class menu {
 		usermanager = new JPAUserManager();
 		xmlmanager = new XMLManagerImpl();
 		clinicianManager = new JDBCClinicianManager(jdbcmanager);
-		patientsTreatmentManager = new JDBCPatientTreatmentManager(jdbcmanager);
+		patientsTreatmentManager = new JDBCAppointmentManager(jdbcmanager);
 		treatmentManager = new JDBCTreatmentManager(jdbcmanager);
 		
 		patiententUI = new PatientUI(patientManager);

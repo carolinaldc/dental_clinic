@@ -7,7 +7,7 @@ import java.util.List;
 import dentalClinicIFaces.PatientManager;
 import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Patient;
-import dentalClinicPOJOS.PatientTreatment;
+import dentalClinicPOJOS.Appointment;
 import dentalClinicPOJOS.Patients_Clinician;
 
 public class JDBCPatientManager implements PatientManager {
@@ -38,7 +38,7 @@ public class JDBCPatientManager implements PatientManager {
     @Override
     public Patient getPatientByid(int id) {
     	JDBCPatientsClinicianManager jdbcPatientsCliniciansManager = new JDBCPatientsClinicianManager(manager);
-    	JDBCPatientTreatmentManager jdbcPatientsTreatmentsManager = new JDBCPatientTreatmentManager(manager);
+    	JDBCAppointmentManager jdbcPatientsTreatmentsManager = new JDBCAppointmentManager(manager);
     	Patient patient = null;
     	try {
     		Statement stmt = manager.getConnection().createStatement();
@@ -60,7 +60,7 @@ public class JDBCPatientManager implements PatientManager {
 			stmt.close();
 			
 			List<Patients_Clinician> patientsClinicians = jdbcPatientsCliniciansManager.getPatientsCliniciansByPatientid(id);
-			List<PatientTreatment> patientstreatments = jdbcPatientsTreatmentsManager.getPatientsTreatmentsByPatientid(id);
+			List<Appointment> patientstreatments = jdbcPatientsTreatmentsManager.getPatientsTreatmentsByPatientid(id);
             patient = new Patient(name, surname, date, phone, email, credit_card, patientstreatments, patientsClinicians);
             
 	        

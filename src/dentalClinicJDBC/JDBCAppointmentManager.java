@@ -7,25 +7,25 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import dentalClinicIFaces.PatientsTreatmentManager;
+import dentalClinicIFaces.AppointmentManager;
 import dentalClinicPOJOS.Patient;
-import dentalClinicPOJOS.PatientTreatment;
+import dentalClinicPOJOS.Appointment;
 import dentalClinicPOJOS.Treatment;
 
-public class JDBCPatientTreatmentManager implements PatientsTreatmentManager {
+public class JDBCAppointmentManager implements AppointmentManager {
 	
 	private JDBCManager manager;
 
-	public JDBCPatientTreatmentManager(JDBCManager manager) {
+	public JDBCAppointmentManager(JDBCManager manager) {
 		
 		this.manager = manager;
 		
 	}
 	
 	@Override
-    public List<PatientTreatment> getPatientsTreatmentsByPatientid(int patientId) {
+    public List<Appointment> getPatientsTreatmentsByPatientid(int patientId) {
     	
-		List<PatientTreatment> patientsTreatments = new ArrayList<PatientTreatment>();
+		List<Appointment> patientsTreatments = new ArrayList<Appointment>();
     	try {
     		Statement stmt = manager.getConnection().createStatement();
     		String sql = "SELECT * FROM Patient_treatments WHERE patient_id = " + patientId;
@@ -48,7 +48,7 @@ public class JDBCPatientTreatmentManager implements PatientsTreatmentManager {
 	            Patient patient = new Patient();
 	            patient.setId(patientId);
 
-	            PatientTreatment pt = new PatientTreatment(comment, date, treatment,patient);
+	            Appointment pt = new Appointment(comment, date, treatment,patient);
 	            patientsTreatments.add(pt);
 				
 				
@@ -68,7 +68,7 @@ public class JDBCPatientTreatmentManager implements PatientsTreatmentManager {
 	
 
 	@Override
-	public void addPatientTreatment(PatientTreatment newAppointment) {
+	public void addPatientTreatment(Appointment newAppointment) {
 	    try {
 	        String sql = "INSERT INTO Patient_treatments (comments, date, treatment_id, patient_id) VALUES (?, ?, ?, ?)";
 	        PreparedStatement pstmt = manager.getConnection().prepareStatement(sql);
@@ -84,7 +84,7 @@ public class JDBCPatientTreatmentManager implements PatientsTreatmentManager {
 	}
 
 	@Override
-	public void updatePatientTreatment(PatientTreatment appointmentToModify) {
+	public void updatePatientTreatment(Appointment appointmentToModify) {
 	    try {
 	        String sql = "UPDATE Patient_treatments SET comment = ?, date = ? WHERE id = ?";
 	        PreparedStatement pstmt = manager.getConnection().prepareStatement(sql);
@@ -99,8 +99,8 @@ public class JDBCPatientTreatmentManager implements PatientsTreatmentManager {
 	}
 
 	@Override
-	public PatientTreatment getPatientTreatmentById(int appointmentId) {
-	    PatientTreatment pt = null;
+	public Appointment getPatientTreatmentById(int appointmentId) {
+	    Appointment pt = null;
 	    try {
 	        String sql = "SELECT * FROM Patient_treatments WHERE id = ?";
 	        PreparedStatement pstmt = manager.getConnection().prepareStatement(sql);
@@ -117,7 +117,7 @@ public class JDBCPatientTreatmentManager implements PatientsTreatmentManager {
 	            Patient patient = new Patient();
 	            patient.setId(patientId);
 
-	            pt = new PatientTreatment(comment, date, treatment, patient);
+	            pt = new Appointment(comment, date, treatment, patient);
 	            pt.setId(appointmentId);
 	        }
 
@@ -130,7 +130,7 @@ public class JDBCPatientTreatmentManager implements PatientsTreatmentManager {
 	}
 
 	@Override
-	public void removePatientTreatment(PatientTreatment appointmentToCancel) {
+	public void removePatientTreatment(Appointment appointmentToCancel) {
 	    try {
 	        String sql = "DELETE FROM Patient_treatments WHERE id = ?";
 	        PreparedStatement pstmt = manager.getConnection().prepareStatement(sql);
@@ -143,8 +143,8 @@ public class JDBCPatientTreatmentManager implements PatientsTreatmentManager {
 	}
 
 	@Override
-	public List<PatientTreatment> getAllPatientTreatments() {
-	    List<PatientTreatment> appointments = new ArrayList<>();
+	public List<Appointment> getAllPatientTreatments() {
+	    List<Appointment> appointments = new ArrayList<>();
 	    try {
 	        Statement stmt = manager.getConnection().createStatement();
 	        ResultSet rs = stmt.executeQuery("SELECT * FROM Patient_treatments");
@@ -162,7 +162,7 @@ public class JDBCPatientTreatmentManager implements PatientsTreatmentManager {
 	            Patient patient = new Patient();
 	            patient.setId(patientId);
 
-	            PatientTreatment pt = new PatientTreatment(comment, date, treatment, patient);
+	            Appointment pt = new Appointment(comment, date, treatment, patient);
 	            pt.setId(id);
 	            appointments.add(pt);
 	        }

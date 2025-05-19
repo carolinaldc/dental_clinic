@@ -7,7 +7,7 @@ import dentalClinicJDBC.JDBCPatientManager;
 import dentalClinicJDBC.JDBCRoomManager;
 import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Patient;
-import dentalClinicPOJOS.PatientTreatment;
+import dentalClinicPOJOS.Appointment;
 import dentalClinicPOJOS.Room;
 import dentalClinicPOJOS.Treatment;
 

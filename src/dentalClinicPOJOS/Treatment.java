@@ -14,7 +14,7 @@ public class Treatment implements Serializable {
 	private Room room;
 	private Clinician clinician; 
 	private Patient patient;
-	private List<PatientTreatment> appointment;
+	private List<Appointment> appointment;
 	private List<Material> materials ; //quitar materials??
 	
 
@@ -22,7 +22,7 @@ public class Treatment implements Serializable {
 		super();
 		clinician = new Clinician();
 		patient = new Patient();
-		appointment = new ArrayList<PatientTreatment>();
+		appointment = new ArrayList<Appointment>();
 	}
 	
 	public Treatment(String name, String description, Integer price) {
@@ -63,11 +63,11 @@ public class Treatment implements Serializable {
 		this.patient = patient;
 	}
 	
-	public List<PatientTreatment> getAppointment() {
+	public List<Appointment> getAppointment() {
 		return appointment;
 	}
 
-	public void setAppointment(List<PatientTreatment> appointment) {
+	public void setAppointment(List<Appointment> appointment) {
 		this.appointment = appointment;
 	}
 	

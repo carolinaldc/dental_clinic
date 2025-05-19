@@ -7,7 +7,7 @@ import java.util.List;
 import dentalClinicIFaces.TreatmentManager;
 import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Material;
-import dentalClinicPOJOS.PatientTreatment;
+import dentalClinicPOJOS.Appointment;
 import dentalClinicPOJOS.Room;
 import dentalClinicPOJOS.Treatment;
 
@@ -47,7 +47,7 @@ public class JDBCTreatmentManager implements TreatmentManager {
             }
 
            
-            for (PatientTreatment appointment : treatment.getAppointment()) {
+            for (Appointment appointment : treatment.getAppointment()) {
                 String appointmentSql = "INSERT INTO PatientTreatments (treatment_id, patient_id, appointment_date) VALUES (?, ?, ?)";
                 PreparedStatement psAppointment = conMan.getConnection().prepareStatement(appointmentSql);
                 psAppointment.setInt(1, treatment.getTreatment_id());
@@ -93,7 +93,7 @@ public class JDBCTreatmentManager implements TreatmentManager {
                 treatment.setClinician(clinicians);
 
                
-                List<PatientTreatment> appointments = getAppointmentsByTreatmentId(treatmentId);
+                List<Appointment> appointments = getAppointmentsByTreatmentId(treatmentId);
                 treatment.setAppointment(appointments);
 
                 treatments.add(treatment);
@@ -132,7 +132,7 @@ public class JDBCTreatmentManager implements TreatmentManager {
 
          
             clearTreatmentAppointments(treatment.getTreatment_id());
-            for (PatientTreatment appointment : treatment.getAppointment()) {
+            for (Appointment appointment : treatment.getAppointment()) {
                 String appointmentSql = "INSERT INTO PatientTreatments (treatment_id, patient_id, appointment_date) VALUES (?, ?, ?)";
                 PreparedStatement psAppointment = conMan.getConnection().prepareStatement(appointmentSql);
                 psAppointment.setInt(1, treatment.getTreatment_id());
@@ -237,8 +237,8 @@ public class JDBCTreatmentManager implements TreatmentManager {
         return new Clinician(); 
     }
 
-    private List<PatientTreatment> getAppointmentsByTreatmentId(int treatmentId) {
-        List<PatientTreatment> appointments = new ArrayList<>();
+    private List<Appointment> getAppointmentsByTreatmentId(int treatmentId) {
+        List<Appointment> appointments = new ArrayList<>();
         try {
             String sql = "SELECT patient_id, appointment_date FROM PatientTreatments WHERE treatment_id = ?";
             PreparedStatement ps = conMan.getConnection().prepareStatement(sql);
