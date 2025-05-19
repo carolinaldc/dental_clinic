@@ -12,161 +12,94 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="Clinician")
-@XmlType(propOrder = {"name","surname","speciality", "email","phone"})
 public class Clinician implements Serializable {
 		
 		private static final long serialVersionUID = -2637321372475755L;
-		@XmlTransient
+		
 		private Integer clinician_id; 
-		@XmlElement
 		private String name; 
-		@XmlElement
 		private String surname; 
-		@XmlAttribute
 		private String speciality;
-		@XmlElement
 		private Integer phone;
-		@XmlElement
 		private String email; 
-		@XmlTransient
-		private List<Patient> patients; //creo que esto sobra
-		@XmlTransient
-		private List<Treatment> treatments;
-		@XmlTransient
-		private List<Patients_Clinician> appointments;
 
-		
-		
+		private List<Appointment> appointments;
+
 		public Clinician() {
 			super();
-			patients = new ArrayList<Patient>();
-			treatments = new ArrayList<Treatment>();
 		}
-		
-		public Clinician(Integer clinician_id, String name, String surname, String speciality, String email, Integer phone) {
+
+		public Clinician(String name, String surname, String speciality, Integer phone, String email,
+				List<Appointment> appointments) {
 			super();
+			this.name = name;
+			this.surname = surname;
+			this.speciality = speciality;
+			this.phone = phone;
+			this.email = email;
+			this.appointments = appointments;
+		}
+
+		public Integer getClinician_id() {
+			return clinician_id;
+		}
+
+		public void setClinician_id(Integer clinician_id) {
 			this.clinician_id = clinician_id;
-			this.name = name;
-			this.surname = surname;
-			this.speciality = speciality;
-			this.email = email;
-			this.phone = phone;
-		
-		}
-		
-		public Clinician(String name, String surname, String speciality, String email, Integer phone) {
-			super();
-			this.name = name;
-			this.surname = surname;
-			this.speciality = speciality;
-			this.email = email;
-			this.phone = phone;
-		
 		}
 
-		public Clinician(String name, String surname, String speciality, Integer phone) {
-			super();
-			this.name = name;
-			this.surname = surname;
-			this.speciality = speciality;
-			this.phone = phone;
-		}
-
-		public Clinician(Integer id, String name, String speciality) {
-			super();
-			this.name = name;
-			this.speciality = speciality;
-			this.clinician_id = id;
-		}
-
-		public Integer getClinicianId() {
-		    return clinician_id;
-		}
-
-		public void setClinicianId(Integer clinician_id) {
-		    this.clinician_id = clinician_id;
-		}
-		
 		public String getName() {
 			return name;
 		}
-
 
 		public void setName(String name) {
 			this.name = name;
 		}
 
-
 		public String getSurname() {
 			return surname;
 		}
-
 
 		public void setSurname(String surname) {
 			this.surname = surname;
 		}
 
+		public String getSpeciality() {
+			return speciality;
+		}
+
+		public void setSpeciality(String speciality) {
+			this.speciality = speciality;
+		}
+
+		public Integer getPhone() {
+			return phone;
+		}
+
+		public void setPhone(Integer phone) {
+			this.phone = phone;
+		}
 
 		public String getEmail() {
 			return email;
 		}
 
-
 		public void setEmail(String email) {
 			this.email = email;
 		}
 
-
-		public int getPhone() {
-			return phone;
+		public List<Appointment> getAppointments() {
+			return appointments;
 		}
 
-
-		public void setPhone(int phone) {
-			this.phone = phone;
+		public void setAppointments(List<Appointment> appointments) {
+			this.appointments = appointments;
 		}
-
-
-		public String getSpeciality() {
-			return speciality;
-		}
-
-
-		public void setSpeciality(String speciality) {
-			this.speciality = speciality;
-		}
-		
-		
-
-		public List<Patient> getPatients() {
-			return patients;
-		}
-
-
-		public void setPatients(List<Patient> patients) {
-			this.patients = patients;
-		}
-
-
-		public List<Treatment> getTreatments() {
-			return treatments;
-		}
-
-
-		public void setTreatments(List<Treatment> treatments) {
-			this.treatments = treatments;
-		}
-
-
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(email, clinician_id, name, patients, phone, speciality, surname, treatments);
+			return Objects.hash(appointments, clinician_id, email, name, phone, speciality, surname);
 		}
-
 
 		@Override
 		public boolean equals(Object obj) {
@@ -177,18 +110,15 @@ public class Clinician implements Serializable {
 			if (getClass() != obj.getClass())
 				return false;
 			Clinician other = (Clinician) obj;
-			return Objects.equals(email, other.email) && clinician_id == other.clinician_id && Objects.equals(name, other.name)
-					&& Objects.equals(patients, other.patients) && phone == other.phone
-					&& Objects.equals(speciality, other.speciality) && Objects.equals(surname, other.surname)
-					&& Objects.equals(treatments, other.treatments);
+			return Objects.equals(appointments, other.appointments) && Objects.equals(clinician_id, other.clinician_id)
+					&& Objects.equals(email, other.email) && Objects.equals(name, other.name)
+					&& Objects.equals(phone, other.phone) && Objects.equals(speciality, other.speciality)
+					&& Objects.equals(surname, other.surname);
 		}
-
 
 		@Override
 		public String toString() {
-			return "Clinician [id=" + clinician_id + ", name=" + name + ", surname=" + surname + ", speciality=" + speciality + ", email=" + email + ", phone="
-					+ phone + ", patients=" + patients + ", treatments=" + treatments
-					+ "]";
-		}	
-
+			return "Clinician [name=" + name + ", surname=" + surname + ", speciality=" + speciality + ", phone="
+					+ phone + ", email=" + email + ", appointments=" + appointments + "]";
+		}
 	}

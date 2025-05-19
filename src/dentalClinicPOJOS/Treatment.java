@@ -7,71 +7,27 @@ import java.io.Serializable;
 public class Treatment implements Serializable {
 	
 	private static final long serialVersionUID = -7675148140680049781L;
+	
 	private Integer treatment_id;
-	private String name; //quitar name!!!!!
+	private String name; 
 	private String description;
 	private Integer price;
-	private Room room;
-	private Clinician clinician; 
-	private Patient patient;
-	private List<Appointment> appointment;
-	private List<Material> materials ; //quitar materials??
+	private List<Appointment> appointments;
+	private List<Material> materials ;
 	
-
 	public Treatment() {
 		super();
-		clinician = new Clinician();
-		patient = new Patient();
-		appointment = new ArrayList<Appointment>();
 	}
-	
-	public Treatment(String name, String description, Integer price) {
+
+	public Treatment(String name, String description, Integer price, List<Appointment> appointments,
+			List<Material> materials) {
 		super();
 		this.name = name;
 		this.description = description;
 		this.price = price;
-		
+		this.appointments = appointments;
+		this.materials = materials;
 	}
-
-	public Treatment(int treatmentId) {
-		// TODO Auto-generated constructor stub
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	
-
-	public Clinician getClinician() {
-		return clinician;
-	}
-
-	public void setClinician(Clinician clinician) {
-		this.clinician = clinician;
-	}
-
-	public Patient getPatient() {
-		return patient;
-	}
-
-	public void setPatient(Patient patient) {
-		this.patient = patient;
-	}
-	
-	public List<Appointment> getAppointment() {
-		return appointment;
-	}
-
-	public void setAppointment(List<Appointment> appointment) {
-		this.appointment = appointment;
-	}
-	
-	
 
 	public Integer getTreatment_id() {
 		return treatment_id;
@@ -89,6 +45,14 @@ public class Treatment implements Serializable {
 		this.name = name;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public Integer getPrice() {
 		return price;
 	}
@@ -97,28 +61,26 @@ public class Treatment implements Serializable {
 		this.price = price;
 	}
 
-	public Room getRoom() {
-		return room;
+	public List<Appointment> getAppointments() {
+		return appointments;
 	}
 
-	public void setRoom(Room room) {
-		this.room = room;
+	public void setAppointments(List<Appointment> appointments) {
+		this.appointments = appointments;
 	}
 
 	public List<Material> getMaterials() {
 		return materials;
 	}
-	
+
 	public void setMaterials(List<Material> materials) {
 		this.materials = materials;
 	}
 
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(appointment, clinician, description, name, price, room, treatment_id);
+		return Objects.hash(appointments, description, materials, name, price, treatment_id);
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -129,16 +91,14 @@ public class Treatment implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Treatment other = (Treatment) obj;
-		return Objects.equals(appointment, other.appointment) && Objects.equals(clinician, other.clinician)
-				&& Objects.equals(description, other.description) && Objects.equals(name, other.name)
-				&& Objects.equals(price, other.price) && Objects.equals(room, other.room)
-				&& Objects.equals(treatment_id, other.treatment_id);
+		return Objects.equals(appointments, other.appointments) && Objects.equals(description, other.description)
+				&& Objects.equals(materials, other.materials) && Objects.equals(name, other.name)
+				&& Objects.equals(price, other.price) && Objects.equals(treatment_id, other.treatment_id);
 	}
-
 
 	@Override
 	public String toString() {
-		return "Treatment [name=" + name + ", description=" + description + ", price=" + price + ", room=" + room
-				+ ", clinician=" + clinician + ", appointment=" + appointment + "]";
-	}
+		return "Treatment [name=" + name + ", description=" + description + ", price=" + price + ", appointments="
+				+ appointments + ", materials=" + materials + "]";
+	} 
 }

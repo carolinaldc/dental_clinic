@@ -18,42 +18,25 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import dentalClinicXMLUtils.SQLDateAdapter;
 
 
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="Patient")
-@XmlType(propOrder = { "name", "surname", "dob", "phone", "email", "credit_card", "payment" })
-
-
 public class Patient implements Serializable {
 
 	private static final long serialVersionUID = -2651925648311189667L;
-	@XmlTransient
+
 	private Integer patient_id;
-	@XmlElement
 	private String name; 
-	@XmlElement
 	private String surname; 
-	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date dob; 
-	@XmlAttribute
 	private Integer phone;
-	@XmlElement
 	private String email; 
-	@XmlElement
 	private Integer credit_card; 
-	@XmlTransient
-	private List<Appointment> treatments;
-	@XmlTransient
-	private List<Patients_Clinician> appointments ; 
-	@XmlTransient
-	private Payment payment; 
-	
+	private List<Appointment> appointments;
 	
 	public Patient() {
 		super();
-		treatments = new ArrayList<Appointment>();
 	}
-	
-	public Patient(String name, String surname, Date dob, Integer phone, String email, Integer credit_card, List<Appointment> treatments,List<Patients_Clinician> appointments) {
+
+	public Patient(String name, String surname, Date dob, Integer phone, String email, Integer credit_card,
+			List<Appointment> appointments) {
 		super();
 		this.name = name;
 		this.surname = surname;
@@ -61,43 +44,15 @@ public class Patient implements Serializable {
 		this.phone = phone;
 		this.email = email;
 		this.credit_card = credit_card;
-		this.treatments = treatments ; 
-		this.appointments = appointments ; 
-		
-	}
-	
-	
-
-	public Patient(String name, String surname, Date dob, Integer phone, String email, Integer credit_card) {
-		super();
-		this.name = name;
-		this.surname = surname;
-		this.dob = dob;
-		this.phone = phone;
-		this.email = email;
-		this.credit_card = credit_card;
+		this.appointments = appointments;
 	}
 
-	public Patient(String name, String surname, Date dob, Integer phone, Integer credit_card) {
-		super();
-		this.name = name;
-		this.surname = surname;
-		this.dob = dob;
-		this.phone = phone;
-		this.credit_card = credit_card;
-	}
-	
-	public Patient(int patientId) {
-		// TODO Auto-generated constructor stub
-	}
-
-	public Integer getId() {
+	public Integer getPatient_id() {
 		return patient_id;
 	}
 
-
-	public void setId(Integer id) {
-		this.patient_id = id;
+	public void setPatient_id(Integer patient_id) {
+		this.patient_id = patient_id;
 	}
 
 	public String getName() {
@@ -116,11 +71,19 @@ public class Patient implements Serializable {
 		this.surname = surname;
 	}
 
-	public int getPhone() {
+	public Date getDob() {
+		return dob;
+	}
+
+	public void setDob(Date dob) {
+		this.dob = dob;
+	}
+
+	public Integer getPhone() {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(Integer phone) {
 		this.phone = phone;
 	}
 
@@ -132,45 +95,26 @@ public class Patient implements Serializable {
 		this.email = email;
 	}
 
-	public int getCredit_card() {
+	public Integer getCredit_card() {
 		return credit_card;
 	}
 
-	public void setCredit_card(int credit_card) {
+	public void setCredit_card(Integer credit_card) {
 		this.credit_card = credit_card;
 	}
 
-
-	public Date getDob() {
-		return dob;
-	}
-
-	public void setDob(Date dob) {
-		this.dob = dob;
-	}
-	
-
-	public List<Appointment> getTreatments() {
-		return treatments;
-	}
-
-	public void setTreatments(List<Appointment> treatments) {
-		this.treatments = treatments;
-	}
-
-	public List<Patients_Clinician> getAppointments() {
+	public List<Appointment> getAppointments() {
 		return appointments;
 	}
 
-	public void setAppointments(List<Patients_Clinician> appointments) {
+	public void setAppointments(List<Appointment> appointments) {
 		this.appointments = appointments;
 	}
-	
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(treatments, credit_card, dob, email, name, patient_id, phone, surname, appointments);
+		return Objects.hash(appointments, credit_card, dob, email, name, patient_id, phone, surname);
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -181,17 +125,15 @@ public class Patient implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Patient other = (Patient) obj;
-		return Objects.equals(treatments, other.treatments) && Objects.equals(credit_card, other.credit_card)
+		return Objects.equals(appointments, other.appointments) && Objects.equals(credit_card, other.credit_card)
 				&& Objects.equals(dob, other.dob) && Objects.equals(email, other.email)
 				&& Objects.equals(name, other.name) && Objects.equals(patient_id, other.patient_id)
-				&& Objects.equals(phone, other.phone) && Objects.equals(surname, other.surname)
-				&& Objects.equals(appointments, other.appointments);
+				&& Objects.equals(phone, other.phone) && Objects.equals(surname, other.surname);
 	}
-
 
 	@Override
 	public String toString() {
-		return "Patient [id=" + patient_id + ", name=" + name + ", surname=" + surname + ", dob=" + dob + ", phone=" + phone + ", email="
-				+ email + ", credit_card=" + credit_card + ", appointment=" + treatments + ", appointments=" + appointments + "]";
+		return "Patient [name=" + name + ", surname=" + surname + ", dob=" + dob + ", phone=" + phone + ", email="
+				+ email + ", credit_card=" + credit_card + ", appointments=" + appointments + "]";
 	}
 }

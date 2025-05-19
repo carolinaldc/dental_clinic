@@ -4,32 +4,33 @@ import java.util.Objects;
 import java.io.Serializable;
 
 public class Material implements Serializable{
+	
 	private static final long serialVersionUID = -6546395167641015440L;
+	
 	private Integer materials_id ;
 	private String name ; 
-	private Integer stock;
 	private Supplier supplier ; 
-	private List<Treatment> treatment; 
+	private List<Treatment> treatments;
 	
-	   public Material(int id, String name, Integer stock) {
-	        super();
-	        this.materials_id = id; 
-	        this.name = name;
-	        this.stock = stock;
-	    }
-
-
-
-	public String getDescription() {
-		return name;
+	public Material() {
+		super();
 	}
 
-	public void setDescription(String description) {
-		this.name = description;
+	public Material(String name, Supplier supplier, List<Treatment> treatments) {
+		super();
+		this.name = name;
+		this.supplier = supplier;
+		this.treatments = treatments;
 	}
 
-	
-	
+	public Integer getMaterials_id() {
+		return materials_id;
+	}
+
+	public void setMaterials_id(Integer materials_id) {
+		this.materials_id = materials_id;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -38,25 +39,25 @@ public class Material implements Serializable{
 		this.name = name;
 	}
 
-	public Integer getId() {
-		return materials_id;
+	public Supplier getSupplier() {
+		return supplier;
 	}
 
-	public void setId(Integer id) {
-		this.materials_id = id;
+	public void setSupplier(Supplier supplier) {
+		this.supplier = supplier;
 	}
 
-	public Integer getStock() {
-		return stock;
+	public List<Treatment> getTreatments() {
+		return treatments;
 	}
 
-	public void setStock(Integer stock) {
-		this.stock = stock;
+	public void setTreatments(List<Treatment> treatments) {
+		this.treatments = treatments;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(materials_id, name);
+		return Objects.hash(materials_id, name, supplier, treatments);
 	}
 
 	@Override
@@ -68,12 +69,12 @@ public class Material implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Material other = (Material) obj;
-		return materials_id == other.materials_id && Objects.equals(name, other.name);
+		return Objects.equals(materials_id, other.materials_id) && Objects.equals(name, other.name)
+				&& Objects.equals(supplier, other.supplier) && Objects.equals(treatments, other.treatments);
 	}
 
 	@Override
 	public String toString() {
-		return "Material [description=" + name + "]";
+		return "Material [name=" + name + ", supplier=" + supplier + ", treatments=" + treatments + "]";
 	} 
-
 }
