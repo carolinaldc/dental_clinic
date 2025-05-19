@@ -26,6 +26,7 @@ import dentalClinicJDBC.JDBCPatientManager;
 import dentalClinicJPA.JPAUserManager;
 import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Patient;
+import dentalClinicPOJOS.Patients_Clinician;
 import dentalClinicPOJOS.Role;
 import dentalClinicPOJOS.User;
 import dentalClinicXML.XMLManagerImpl;
@@ -169,7 +170,7 @@ public class menu {
 
 	        xmlmanager.patient2xml(1);
 	        File file = new File("./xmls/external_clinician.xml");
-	        Clinician c = xmlmanager.xml2Clinician(file);
+	        Patients_Clinician c = xmlmanager.xml2PatientsClinician(file);
 	        clinicianManager.addClinician(c);
 	    } else if (role.equals("Clinician")) {
 	        clinicianManager.getClinicianByEmail(email);
