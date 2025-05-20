@@ -39,15 +39,68 @@ public class JDBCTreatmentManager implements TreatmentManager {
     	}
     	
     }
+    
 	public void deleteTreatment (Integer treatment_id) {
-		
+		String sql = "DELETE FROM Treatments WHERE treatment_id = ?";
+        try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+            ps.setInt(1, treatment_id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 	}
+	
 	public void updateTreatment(Integer treatment_id) {
-		
+		String sql = "UPDATE Treatments SET name = ?, description = ?, price = ? WHERE treatment_id = ?";
+
+	    try {
+	        PreparedStatement ps = manager.getConnection().prepareStatement(sql);
+
+	        // Valores de prueba (puedes cambiarlos por entrada de usuario si deseas más adelante)
+	        ps.setString(1, "UpdatedName");
+	        ps.setString(2, "Updated description");
+	        ps.setInt(3, 100); // Precio nuevo
+	        ps.setInt(4, treatment_id);
+
+	        ps.executeUpdate();
+	        ps.close();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
+	
 	public List <Treatment> getListOfTreatments(){
-		return null;
+		 List<Treatment> treatments = new ArrayList<>();
+	        JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
+	        JDBCMaterialManager jdbcMaterialManager = new JDBCMaterialManager(manager);
+
+	        String sql = "SELECT * FROM Treatments";
+	        try (Statement stmt = manager.getConnection().createStatement();
+	             ResultSet rs = stmt.executeQuery(sql)) {
+
+	            while (rs.next()) {
+	                Integer id = rs.getInt("treatment_id");
+	                String name = rs.getString("name");
+	                String description = rs.getString("description");
+	                Integer price = rs.getInt("price");
+
+	                List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfTreatments(id);
+	                List<Material> materials = jdbcMaterialManager.getMaterialsOfTreatment(id);
+
+	                Treatment treatment = new Treatment(name, description, price, appointments, materials);
+	                treatment.setTreatment_id(id);
+	                treatments.add(treatment);
+	            }
+
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+
+	        return treatments;
 	}
+	
+	
 	public Treatment getTreatmentById(Integer treatment_id){
 		
 		Treatment treatment = null;
