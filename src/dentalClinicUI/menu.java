@@ -1,35 +1,22 @@
 package dentalClinicUI;
 
 import java.io.BufferedReader;
-import java.io.File;
+//import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.List;
-
 
 import dentalClinicIFaces.ClinicianManager;
 import dentalClinicIFaces.PatientManager;
-import dentalClinicIFaces.AppointmentManager;
-import dentalClinicIFaces.TreatmentManager;
 import dentalClinicIFaces.UserManager;
-import dentalClinicIFaces.XMLManager;
+//import dentalClinicIFaces.XMLManager;
 import dentalClinicJDBC.JDBCManager;
 import dentalClinicJDBC.JDBCClinicianManager;
 import dentalClinicJDBC.JDBCPatientManager;
-import dentalClinicJDBC.JDBCAppointmentManager;
-import dentalClinicJDBC.JDBCTreatmentManager;
-import dentalClinicJDBC.JDBCPatientManager;
 import dentalClinicJPA.JPAUserManager;
-import dentalClinicPOJOS.Clinician;
-import dentalClinicPOJOS.Patient;
-import dentalClinicPOJOS.Patients_Clinician;
 import dentalClinicPOJOS.Role;
 import dentalClinicPOJOS.User;
-import dentalClinicXML.XMLManagerImpl;
+//import dentalClinicXML.XMLManagerImpl;
 
 
 public class menu {
@@ -100,16 +87,17 @@ public class menu {
 			String password = reader.readLine();
 			
 			User user = usermanager.checkPassword(mail, password);
-			
+            String role = user.getRole().getDescription();
+            
 			if (user!=null & user.getRole().getDescription().equals("Patient")){
 				System.out.println("Login Successful!");
-				patientMenu(user.getEmail());
+				patientMenu(user.getEmail(), role);
 			} else if (user!=null & user.getRole().getDescription().equals("Clinician")){
 				System.out.println("Login Successful!");
-				clinicianMenu(user.getEmail(), user.getRole());
+				clinicianMenu(user.getEmail(), role);
 			} else if (user!=null & user.getRole().getDescription().equals("Supplier")){
 				System.out.println("Login Successful!");
-				supplierMenu(user.getEmail(), user.getRole());
+				supplierMenu(user.getEmail(), role);
 			} else {
 			    System.out.println("There is no user with these credentials");
 			}
@@ -149,13 +137,13 @@ public class menu {
 
 	        	if (userType == 1) {
 	        		patiententUI.addPatient(email);
-	        		patientMenu(email);
+	        		patientMenu(email, role.getDescription());
 	        		//patientMenu(email, role.getDescription());
 	        	} else if(userType == 2){
-	        		clinicianUI.addClinician();
+	        		clinicianUI.addClinician(email);
 	        		clinicianMenu(email, role.getDescription());
 	        	} else if(userType == 3) {
-	        		//supplierUI.addSupplier();
+	        		//supplierUI.addSupplier(email);
 	        		supplierMenu(email, role.getDescription());
 	        	}
 	        }catch(Exception e) {
@@ -168,7 +156,7 @@ public class menu {
 	    }
 	}
 	
-	public static void patientMenu(String email) {
+	public static void patientMenu(String email, String role) {
 		System.out.println("Choose an option:");
 		System.out.println("1. Profile");
 		System.out.println("2. Appointments");
@@ -178,7 +166,7 @@ public class menu {
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
 				case 1:
-					//profileMenu(role);
+					profileMenu(email, role);
 					break;
 				case 2:
 					appointmentMenu();
@@ -188,7 +176,7 @@ public class menu {
 					break;
 				default:
 					System.out.println("Invalid choice");
-					patientMenu(email);
+					patientMenu(email, role);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -220,7 +208,7 @@ public class menu {
 					break;
 				default:
 					System.out.println("Invalid choice");
-					patientMenu(email, role);
+					clinicianMenu(email, role);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -248,7 +236,7 @@ public class menu {
 					break;
 				default:
 					System.out.println("Invalid choice");
-					patientMenu(email, role);
+					supplierMenu(email, role);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -256,7 +244,7 @@ public class menu {
 	}
 	
 	
-	public static void profileMenu(String role) { //clinician, patient, supplier
+	public static void profileMenu(String mail, String role) { //clinician, patient, supplier
 	    System.out.println("Choose an option:");
 	    System.out.println("1. Edit Profile");
 	    System.out.println("2. Delete Profile");
@@ -265,17 +253,17 @@ public class menu {
 	        int choice = Integer.parseInt(reader.readLine());
 	        if (role.equals("Patient")) {
 	            if (choice == 1) {
-	            	patiententUI.modifyPatient();
+	            	//patiententUI.modifyPatient();
 	            }
 	            else if (choice == 2) {
 	            	patiententUI.deletePatient();
 	            }
 	            else {
-	            	profileMenu(role);
+	            	profileMenu(mail, role);
 	            }
 	        } else if (role.equals("Clinician")) {
 	            if (choice == 1) {
-	            	clinicianUI.modifyClinician();
+	            	//clinicianUI.modifyClinician();
 	            }
 	            else if (choice == 2) {
 	            	clinicianUI.deleteClinician();
@@ -289,15 +277,15 @@ public class menu {
 	            }
 	        }else {
 	        	System.out.println("Invalid option\n");
-	        	profileMenu(role);
+	        	profileMenu(mail, role);
 	        }
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
 	}
-*/
 
-    public static void appointmentMenu() { //Clinicia, Patient
+
+    public static void appointmentMenu() { //Clinician, Patient
     	System.out.println("Choose an option:");
         System.out.println("1. Book a new Appointment");
         System.out.println("2. Modify an Appointment");
