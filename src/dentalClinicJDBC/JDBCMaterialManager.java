@@ -29,11 +29,63 @@ public class JDBCMaterialManager implements MaterialManager {
 
     public void addMaterial(Material material) {
     	
+    	String sql = " INSERT INTO Material (id , supplier , name) VALUES id= ? , name= ? , supplier = ? "; 
+    	
+    	try {
+    		
+    		PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
+    		
+    		ps.setInt(1, material.getMaterials_id()); 
+    		ps.setInt(2, material.getSupplier().getSupplier_id());
+    		ps.setString(3, material.getName()); 
+    		
+    		ps.executeUpdate(); 
+    		ps.close(); 
+    		
+    		
+    		
+  
+    	} catch(SQLException e) {
+    		
+    		e.printStackTrace(); 
+    	}
+    	
     }
 	public void deleteMaterial(Integer material_id) {
 		
+		String sql = "DELETE FROM Materials WHERE id = ? "; 
+		
+		try {
+			
+			PreparedStatement ps = manager.getConnection().prepareStatement(sql) ; 
+			
+			ps.setInt(1, material_id); 
+			ps.executeUpdate(); 
+			ps.close(); 
+			
+		}catch(SQLException e) {
+			e.printStackTrace(); 
+			
+		}
+		
 	}
 	public void updateMaterial(Integer material_id) {
+		
+		String sql = "UPDATE Material SET name = ? WHERE materials_id= ?"; 
+		
+		try {
+			
+			PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
+			
+			ps.setString (1, "UpdatedName"); 
+			ps.setInt (2 , material_id); 
+			ps.executeUpdate () ; 
+			ps.close (); 
+			
+		}catch(SQLException e) {
+			
+			e.printStackTrace(); 
+		}
 		
 	}
 	
