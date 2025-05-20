@@ -3,7 +3,6 @@ package dentalClinicUI;
 import dentalClinicIFaces.PatientManager;
 import dentalClinicPOJOS.Appointment;
 import dentalClinicPOJOS.Patient;
-import dentalClinicPOJOS.Treatment;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +13,7 @@ import java.util.List;
 
 public class PatientUI {
     private PatientManager patientManager;
-    private Patient currentPatient;
+    //private Patient currentPatient;
     private BufferedReader reader;
 
     public PatientUI(PatientManager patientManager) {
@@ -42,8 +41,6 @@ public class PatientUI {
 
             System.out.println("Enter phone number:");
             int phone = Integer.parseInt(reader.readLine());
-
-            String email = patient.getEmail();
             
             System.out.println("Enter credit card number (9 digits):");
             int creditCard = Integer.parseInt(reader.readLine());
@@ -67,11 +64,15 @@ public class PatientUI {
             int id = Integer.parseInt(reader.readLine());
 
             patientManager.deletePatient(id);
-            System.out.println("Patients deleted");
+            System.out.println("Patient deleted");
         } catch (IOException | NumberFormatException e) {
             System.out.println("Invalid input");
         }
     }
+    
+    
+    //modifyPatient();
+    
     
     public void viewPatientsList() {
         try {
