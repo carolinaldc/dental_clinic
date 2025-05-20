@@ -175,8 +175,47 @@ public class JDBCMaterialManager implements MaterialManager {
 		
 	}
 	public List<Material> getListOfMaterials(){
-		return null;
+		List<Material> materials = new ArrayList<Material>(); 
+		JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
 		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "Select * FROM materials";
+			ResultSet rs = stmt.executeQuery(sql);
+			JDBCTreatmentManager jdbcTreatmentManager = new JDBCTreatmentManager(manager);
+			JDBCSupplierManager jdbcSupplierManager = new JDBCSupplierManager(manager);
+			
+			while(rs.next())
+			{
+				Integer materials_id= rs.getInt("materials_id");
+				String name= rs.getString("name");
+				Integer supplier_id = rs.getInt("supplier_id");
+				Integer treatment_id = rs.getInt("treatment_id");
+				
+				Supplier supplier = jdbcSupplierManager.getSupplierByid(supplier_id);
+				Treatment treatment = jdbcTreatmentManager.getTreatmentById(treatment_id);
+				
+				
+				List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfPatient(materials_id);
+				
+				
+				
+				//TODO
+				
+				Material m= new Material(materials_id, name, supplier_id, treatment_id);
+				materials.add(m);
+				
+				//////////
+				
+			}
+
+			rs.close();
+			stmt.close();
+			
+		}catch(Exception e) {
+			e.printStackTrace();}
+		
+		return materials;
 	}
 	
     /*

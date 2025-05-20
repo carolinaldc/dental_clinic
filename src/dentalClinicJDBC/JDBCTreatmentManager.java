@@ -56,10 +56,9 @@ public class JDBCTreatmentManager implements TreatmentManager {
 	    try {
 	        PreparedStatement ps = manager.getConnection().prepareStatement(sql);
 
-	        // Valores de prueba (puedes cambiarlos por entrada de usuario si deseas más adelante)
 	        ps.setString(1, "UpdatedName");
 	        ps.setString(2, "Updated description");
-	        ps.setInt(3, 100); // Precio nuevo
+	        ps.setInt(3, 100);
 	        ps.setInt(4, treatment_id);
 
 	        ps.executeUpdate();

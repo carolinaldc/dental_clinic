@@ -195,8 +195,5 @@ public class JDBCManager {
 		}
 	}
 
-	public TreatmentManager getTreatmentManager() {
-		return null;
-	}
 	
 }
