@@ -20,12 +20,70 @@ public class JDBCPatientManager implements PatientManager {
 
     public void addPatient(Patient patient) {
     	
+    	String sql = " INSERT INTO Patient (name , surname , dob , phone  , email, credit_card) VALUES (? , ? , ?, ?, ?, ? ) "; 
+    	
+    	try {
+    		
+    		PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
+    		
+    		ps.setString ( 1, patient.getName()); 
+    		ps.setString ( 2, patient.getSurname()); 
+    		ps.setDate ( 3, patient.getDob()); 
+    		ps.setInt (4, patient.getPhone()); 
+    		ps.setString(5, patient.getEmail()); 
+    		ps.setInt(6, patient.getCredit_card()); 
+    		
+    		ps.executeUpdate (); 
+    		ps.close() ; 
+    		
+    		
+    		
+    	}catch(SQLException e ) {
+    		e.printStackTrace(); 
+    		
+    	}
+    			
+    			
     }
 	public void deletePatient (Integer patient_id) {
+		
+		String sql = "DELETE FROM Patient WHERE id=? "; 
+		
+		try {
+			
+			PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
+			ps.setInt ( 1, patient_id); 
+			
+			ps.executeUpdate (); 
+			ps.close (); 
+		}catch(SQLException e) {
+			
+			e.printStackTrace(); 
+			
+		}
 		
 	}
 	
 	public void updatePatient(Integer patient_id) {
+		
+		String sql = "UPDATE FROM Patient name = ? WHERE id = ?" ;
+				
+				try {
+					
+					PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
+					
+					ps.setString(1, "UpdatedName"); 
+					ps.setInt (2, patient_id); 
+					
+					ps.executeUpdate(); 
+					ps.close(); 
+					
+					
+				}catch(SQLException e) {
+					
+					e.printStackTrace(); 
+					
+				}
 		
 	}
 	public List <Patient> getListOfPatients(){
