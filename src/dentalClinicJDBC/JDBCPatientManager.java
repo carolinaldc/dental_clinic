@@ -36,15 +36,13 @@ public class JDBCPatientManager implements PatientManager {
     		ps.executeUpdate (); 
     		ps.close() ; 
     		
-    		
-    		
     	}catch(SQLException e ) {
     		e.printStackTrace(); 
     		
     	}
-    			
-    			
     }
+    
+   
 	public void deletePatient (Integer patient_id) {
 		
 		String sql = "DELETE FROM Patient WHERE id=? "; 
