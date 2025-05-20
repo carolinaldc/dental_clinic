@@ -284,6 +284,51 @@ public class menu {
 	    }
 	}
 
+	
+	public static void otherMenu(String mail, String role) { //clinician, patient, supplier
+	    System.out.println("Choose an option:");
+	    System.out.println("1. Edit ");
+	    System.out.println("2. Delete ");
+	    System.out.println("3. modif ");
+	    System.out.println("4. view ");
+
+
+	    try {
+	        int choice = Integer.parseInt(reader.readLine());
+	        if (role.equals("Patient")) {
+	            if (choice == 1) {
+	            	//patiententUI.modifyPatient();
+	            }
+	            else if (choice == 2) {
+	            	patiententUI.deletePatient();
+	            }
+	            else {
+	            	profileMenu(mail, role);
+	            }
+	        } else if (role.equals("Clinician")) {
+	            if (choice == 1) {
+	            	//clinicianUI.modifyClinician();
+	            }
+	            else if (choice == 2) {
+	            	clinicianUI.deleteClinician();
+	            }
+	        }else if (role.equals("Supplier")) {
+	            if (choice == 1) {
+	            	//supplierUI.modifySupplier();
+	            }
+	            else if (choice == 2) {
+	            	//supplierUI.deleteSupplier();
+	            }
+	        }else {
+	        	System.out.println("Invalid option\n");
+	        	profileMenu(mail, role);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	
 
     public static void appointmentMenu() { //Clinician, Patient
     	System.out.println("Choose an option:");

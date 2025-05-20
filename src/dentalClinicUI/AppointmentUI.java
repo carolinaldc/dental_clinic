@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,7 +14,9 @@ import dentalClinicIFaces.PatientManager;
 import dentalClinicIFaces.TreatmentManager;
 import dentalClinicPOJOS.Appointment;
 import dentalClinicPOJOS.Clinician;
+import dentalClinicPOJOS.Material;
 import dentalClinicPOJOS.Patient;
+import dentalClinicPOJOS.Supplier;
 import dentalClinicPOJOS.Treatment;
 
 public class AppointmentUI {
@@ -54,7 +57,6 @@ public class AppointmentUI {
             int treatmentId = Integer.parseInt(reader.readLine());
             Treatment treatment = treatmentManager.getTreatmentById(treatmentId); 
 
-            
             Appointment appointment = new Appointment(date, comment, patient, treatment, clinician);
             appointmentManager.addAppointment(appointment);
 
@@ -83,7 +85,8 @@ public class AppointmentUI {
     }
 	
 
-    //modifyAppointment();
+
+//modifyAppointment();
     
     public void viewAppointmentsList() {
         try {

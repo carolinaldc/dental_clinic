@@ -79,7 +79,69 @@ public class MaterialUI {
         }
     }
 	
-    //modifyMaterial();
+
+    public void modifyMaterial() {
+        try {
+        	viewMaterialsList();
+        	System.out.println("Enter material ID to modify:");
+            int materilId = Integer.parseInt(reader.readLine());
+
+            Material materialToModify = materialManager.getMaterialByid(materilId);
+            int choice=0;
+    		try {
+    			System.out.println("What do you want to modify: ");
+	            System.out.println("1. name ");
+	            System.out.println("2. supplier "); //do i show a list of suppliers? no right? so then i just make up an ID??
+	            System.out.println("3. treatments"); 
+
+
+				choice = Integer.parseInt(reader.readLine());
+
+				switch (choice) {
+					case 1:
+			            System.out.println("Enter new name for the Material:");
+			            String newName = reader.readLine();
+			            materialToModify.setName(newName);
+						break;
+					case 2:
+			            System.out.println("Enter new supplier for the Material:");
+			            int supplier_id = Integer.parseInt(reader.readLine());
+			            Supplier supplier = supplierManager.getSupplierByid(supplier_id);
+			            materialToModify.setSupplier(supplier);
+						break;
+					case 3:
+						List<Treatment> selectedTreatments = new ArrayList<>();
+
+			            treatmentUI.viewTreatmentsList();
+			            System.out.println("Enter the IDs of the materials to use (comma separated), or leave blank to skip:");
+			            String input = reader.readLine();
+
+			            if (!input.trim().isEmpty()) {
+			                String[] ids = input.split(",");
+			                for (String idStr : ids) {
+			                    try {
+			                        int id = Integer.parseInt(idStr.trim());
+			                        Treatment treatment = treatmentManager.getTreatmentById(id);
+			                        if (treatment != null) {
+			                        	selectedTreatments.add(treatment);
+			                        } else {
+			                            System.out.println("No treatments found with ID: " + id);
+			                        }
+			                    } catch (NumberFormatException e) {
+			                        System.out.println("Invalid ID format: " + idStr.trim());
+			                    }
+			                }
+			            }
+			            materialToModify.setTreatments(selectedTreatments);
+						break;
+				}
+    		}catch(Exception e){
+    			e.printStackTrace();
+    		}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 	
     public void viewMaterialsList() {
         try {
