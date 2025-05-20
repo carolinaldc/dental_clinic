@@ -20,17 +20,110 @@ public class JDBCPatientManager implements PatientManager {
 
     public void addPatient(Patient patient) {
     	
+    	String sql = " INSERT INTO Patient (name , surname , dob , phone  , email, credit_card) VALUES (? , ? , ?, ?, ?, ? ) "; 
+    	
+    	try {
+    		
+    		PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
+    		
+    		ps.setString ( 1, patient.getName()); 
+    		ps.setString ( 2, patient.getSurname()); 
+    		ps.setDate ( 3, patient.getDob()); 
+    		ps.setInt (4, patient.getPhone()); 
+    		ps.setString(5, patient.getEmail()); 
+    		ps.setInt(6, patient.getCredit_card()); 
+    		
+    		ps.executeUpdate (); 
+    		ps.close() ; 
+    		
+    	}catch(SQLException e ) {
+    		e.printStackTrace(); 
+    		
+    	}
     }
+    
+   
 	public void deletePatient (Integer patient_id) {
+		
+		String sql = "DELETE FROM Patient WHERE id=? "; 
+		
+		try {
+			
+			PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
+			ps.setInt ( 1, patient_id); 
+			
+			ps.executeUpdate (); 
+			ps.close (); 
+		}catch(SQLException e) {
+			
+			e.printStackTrace(); 
+			
+		}
 		
 	}
 	
 	public void updatePatient(Integer patient_id) {
 		
+		String sql = "UPDATE FROM Patient name = ? WHERE id = ?" ;
+				
+				try {
+					
+					PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
+					
+					ps.setString(1, "UpdatedName"); 
+					ps.setInt (2, patient_id); 
+					
+					ps.executeUpdate(); 
+					ps.close(); 
+					
+					
+				}catch(SQLException e) {
+					
+					e.printStackTrace(); 
+					
+				}	
 	}
-	public List <Patient> getListOfPatients(){
-		return null;
-	}
+	
+	
+	/*public List <Patient> getListOfPatients(){
+		List<Patient> patients = new ArrayList<>();
+	    JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
+
+	    String sql = "SELECT * FROM Patient";
+
+	    try {
+	        Statement stmt = manager.getConnection().createStatement();
+	        ResultSet rs = stmt.executeQuery(sql);
+
+	        while (rs.next()) {
+	            Integer patient_id = rs.getInt("id");
+	            String name = rs.getString("name");
+	            String surname = rs.getString("surname");
+	            Date dob = rs.getDate("dob");
+	            Integer phone = rs.getInt("phone");
+	            String email = rs.getString("email");
+	            Integer credit_card = rs.getInt("credit_card");
+
+	            // Obtener las citas asociadas a este paciente
+	            List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfPatient(patient_id);
+
+	            Patient patient = new Patient(name, surname, dob, phone, email, credit_card, appointments);
+	            patient.setPatient_id(patient_id);
+
+	            patients.add(patient);
+	        }
+
+	        rs.close();
+	        stmt.close();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return patients;
+	}*/
+	
+	
 	public Patient getPatientById(Integer patient_id){
 		
 		Patient patient = null;

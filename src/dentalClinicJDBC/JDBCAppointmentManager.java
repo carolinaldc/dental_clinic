@@ -3,6 +3,7 @@ package dentalClinicJDBC;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,26 +17,95 @@ import dentalClinicPOJOS.Treatment;
 public class JDBCAppointmentManager implements AppointmentManager {
 	
 	private JDBCManager manager;
-
+	
 	public JDBCAppointmentManager(JDBCManager manager) {
 		
 		this.manager = manager;
 		
 	}
 	
-	public void addAppointment(Appointment o) {
-		
-	}
+	public void addAppointment(Appointment appointment) {
+		String sql = "INSERT INTO Appointments (date, comment, patient_id, treatment_id, clinician_id) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+            java.sql.Date sqlDate = new java.sql.Date(appointment.getDate().getTime());
+            ps.setDate(1, sqlDate);
+            ps.setString(2, appointment.getComment());
+            ps.setInt(3, appointment.getPatient().getPatient_id());
+            ps.setInt(4, appointment.getTreatment().getTreatment_id());
+            ps.setInt(5, appointment.getClinician().getClinician_id());
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+     }
+     
 	
 	public void deleteAppointment (Integer appointment_id) {
+		 String sql = "DELETE FROM Appointments WHERE appointment_id = ?";
+	        try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+	            ps.setInt(1, appointment_id);
+	            ps.executeUpdate();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	}
 	
-	public void updateAppointment(Integer appointment_id) {
+	public void updateAppointment(Integer appointment_id, Date newDate, Integer patient_id, Integer treatment_id, Integer clinician_id) {
+		String sql = "UPDATE Appointments SET date = ?, comment = ?, patient_id = ?, treatment_id = ?, clinician_id = ? WHERE appointment_id = ?";
+		
+	    try {
+	        PreparedStatement ps = manager.getConnection().prepareStatement(sql);
+	        
+	        ps.setDate(1, newDate);
+	        ps.setString(1, "UpdatedName");
+	        ps.setString(2, "Updated comment");
+	        ps.setInt(3, patient_id);
+	        ps.setInt(4, treatment_id);
+	        ps.setInt(5, clinician_id);
+	        ps.setInt(6, appointment_id);
+	        
+	        
+
+	        ps.executeUpdate();
+	        ps.close();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+		 
 	}
 	
 	public List <Appointment> getListOfAppointments(){
-		
-		return null;
+		 List<Appointment> appointments = new ArrayList<>();
+	        try {
+	            Statement stmt = manager.getConnection().createStatement();
+	            ResultSet rs = stmt.executeQuery("SELECT * FROM Appointments");
+	            JDBCTreatmentManager jdbcTreatmentManager = new JDBCTreatmentManager(manager);
+	            JDBCPatientManager jdbcPatientManager = new JDBCPatientManager(manager);
+	            JDBCClinicianManager jdbcClinicianManager = new JDBCClinicianManager(manager);
+
+	            while (rs.next()) {
+	                Integer appointment_id = rs.getInt("appointment_id");
+	                Date date = rs.getDate("date");
+	                String comment = rs.getString("comment");
+	                Integer patient_id = rs.getInt("patient_id");
+	                Integer treatment_id = rs.getInt("treatment_id");
+	                Integer clinician_id = rs.getInt("clinician_id");
+
+	                Patient patient = jdbcPatientManager.getPatientById(patient_id);
+	                Treatment treatment = jdbcTreatmentManager.getTreatmentById(treatment_id);
+	                Clinician clinician = jdbcClinicianManager.getClinicianByid(clinician_id);
+
+	                Appointment appt = new Appointment(date, comment, patient, treatment, clinician);
+	                appt.setAppointment_id(appointment_id);
+	                appointments.add(appt);
+	            }
+	            rs.close();
+	            stmt.close();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        return appointments;
 	}
 	
 	public List <Appointment> getAppointmentOfPatient (Integer patient_id){

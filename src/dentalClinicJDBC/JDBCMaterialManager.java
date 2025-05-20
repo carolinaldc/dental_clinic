@@ -29,34 +29,81 @@ public class JDBCMaterialManager implements MaterialManager {
 
     public void addMaterial(Material material) {
     	
+    	String sql = " INSERT INTO Material (id , supplier , name) VALUES id= ? , name= ? , supplier = ? "; 
+    	
+    	try {
+    		
+    		PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
+    		
+    		ps.setInt(1, material.getMaterials_id()); 
+    		ps.setInt(2, material.getSupplier().getSupplier_id());
+    		ps.setString(3, material.getName()); 
+    		
+    		ps.executeUpdate(); 
+    		ps.close(); 
+    		
+    		
+    		
+  
+    	} catch(SQLException e) {
+    		
+    		e.printStackTrace(); 
+    	}
+    	
     }
 	public void deleteMaterial(Integer material_id) {
 		
+		String sql = "DELETE FROM Materials WHERE id = ? "; 
+		
+		try {
+			
+			PreparedStatement ps = manager.getConnection().prepareStatement(sql) ; 
+			
+			ps.setInt(1, material_id); 
+			ps.executeUpdate(); 
+			ps.close(); 
+			
+		}catch(SQLException e) {
+			e.printStackTrace(); 
+			
+		}
+		
 	}
 	public void updateMaterial(Integer material_id) {
+		
+		String sql = "UPDATE Material SET name = ? WHERE materials_id= ?"; 
+		
+		try {
+			
+			PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
+			
+			ps.setString (1, "UpdatedName"); 
+			ps.setInt (2 , material_id); 
+			ps.executeUpdate () ; 
+			ps.close (); 
+			
+		}catch(SQLException e) {
+			
+			e.printStackTrace(); 
+		}
 		
 	}
 	
 	public List<Material> getMaterialsOfTreatment(Integer treatment_id){
 		List<Material> materials = new ArrayList<Material>();
         JDBCSupplierManager jdbcSupplierManager = new JDBCSupplierManager(manager);
+        JDBCMaterialManager jdbcMaterialManager = new JDBCMaterialManager(manager);
         
 		try {
 			
 			Statement stmt = manager.getConnection().createStatement();
-    		String sql = "SELECT * FROM Materials WHERE treatment_id = " + treatment_id;
+    		String sql = "SELECT material_id FROM Treatment_materials WHERE treatment_id = " + treatment_id;
 			ResultSet rs= stmt.executeQuery(sql);
 			
 			while(rs.next()) {
-	            String name = rs.getString("comment");
-	            
-	            //EN ESTE CASO NO HACE FALTA TENER TREATMENT EN LOS MATERIALES NO?
-	            //List<Treatment> treatments = jdbcTreatmentManager.getTreatmentById(treatment_id);
-	            Integer supplier_id = rs.getInt("supplier_id");
-	            Supplier supplier = jdbcSupplierManager.getSupplierByid(supplier_id);
-	            
-	            
-	            Material material = new Material(name, supplier);
+				
+				Integer material_id =rs.getInt("material_id");
+				Material material =  jdbcMaterialManager.getMaterialByid(material_id);
 	            materials.add(material);
 			}
 			
@@ -103,7 +150,29 @@ public class JDBCMaterialManager implements MaterialManager {
 	}
 
 	public Material getMaterialByid(Integer material_id) {
-		return null;
+		Material material = null;
+		manager = new JDBCManager();
+		JDBCSupplierManager jdbcSupplierManager = new JDBCSupplierManager(manager);
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql =  "SELECT name, supplier FROM Materials WHERE material_id =" + material_id;
+			
+			ResultSet rs= stmt.executeQuery(sql);
+			
+			String name = rs.getString("name");
+			Supplier supplier = jdbcSupplierManager.getSupplierOfMaterial(material_id);
+			rs.close();
+			stmt.close();
+			
+			material = new Material(name, supplier);
+		}catch(Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return material;
+		
 	}
 	public List<Material> getListOfMaterials(){
 		return null;

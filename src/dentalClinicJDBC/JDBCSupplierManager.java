@@ -22,12 +22,60 @@ public class JDBCSupplierManager {
 	    }
 	    
 	    public void addSupplier(Supplier supplier) {
+	    	String sql = "INSERT INTO Supplier ( supplierName , phone , email) VALUES (? , ? ,? ) "; 
+	    	
+	    	try {
+	    		PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
+	    		ps.setString (1 , supplier.getSupplierName ()); 
+	    		
+	    		ps.setInt ( 2 , supplier.getPhone()); 
+	    		ps.setString(3, supplier.getEmail()); 
+	    		
+	    		
+	    		ps.executeUpdate(); 
+	    		ps.close();
+	    		
+	    		
+	    	}catch(SQLException e) {
+	    		e.printStackTrace(); 
+	    		
+	    	}
 	    	
 	    }
 		public void deleteSupplier(Integer supplier_id) {
 			
+			String sql = "DELETE FROM Supplier WHERE id= ?"; 
+			
+			try {
+				
+				PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
+				ps.setInt(1, supplier_id); 
+				
+				ps.executeUpdate(); 
+				ps.close() ; 
+				
+			} catch(SQLException e) {
+				e.printStackTrace(); 
+			}
+			
 		}
 		public void updateSupplier(Integer supplier_id) {
+			
+			String sql = "UPDATE FROM Supplier name = ? WHERE id = ?"; 
+			
+			try {
+				
+				PreparedStatement ps = manager.getConnection().prepareStatement (sql); 
+				ps.setString ( 1 , "UpdatedName"); 
+				ps.setInt ( 2 , supplier_id ); 
+				
+				ps.executeUpdate(); 
+				ps.close(); 
+			}catch(SQLException e) {
+				
+				e.printStackTrace(); 
+				
+			}
 			
 		}
 
@@ -59,6 +107,40 @@ public class JDBCSupplierManager {
 			return supplier;
 			
 		}
+		
+		public Supplier getSupplierOfMaterial(Integer material_id) {
+			Supplier suppliers = null;
+	        //JDBCSupplierManager jdbcSupplierManager = new JDBCSupplierManager(manager);
+	        
+			try {
+				
+				Statement stmt = manager.getConnection().createStatement();
+	    		String sql = "SELECT * FROM Suppliers WHERE material_id = " + material_id;
+				ResultSet rs= stmt.executeQuery(sql);
+				
+				
+				Integer supplier_id = rs.getInt("supplier_id");
+		        String supplierName = rs.getString("supplierName");
+		        Integer phone = rs.getInt("phone");
+		        String email = rs.getString("email");
+		            
+		            
+		            
+		            
+		         Supplier supplier = new Supplier(supplier_id, supplierName, phone, email );
+		           
+				
+				
+				rs.close();
+				stmt.close();
+				
+			}catch(Exception e) 
+			{
+				e.printStackTrace();
+			}
+			return suppliers;
+		}
+		
 		public List<Supplier> getListOfSuppliers(){
 			return null;
 		}
