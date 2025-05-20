@@ -22,12 +22,60 @@ public class JDBCSupplierManager {
 	    }
 	    
 	    public void addSupplier(Supplier supplier) {
+	    	String sql = "INSERT INTO Supplier ( supplierName , phone , email) VALUES (? , ? ,? ) "; 
+	    	
+	    	try {
+	    		PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
+	    		ps.setString (1 , supplier.getSupplierName ()); 
+	    		
+	    		ps.setInt ( 2 , supplier.getPhone()); 
+	    		ps.setString(3, supplier.getEmail()); 
+	    		
+	    		
+	    		ps.executeUpdate(); 
+	    		ps.close();
+	    		
+	    		
+	    	}catch(SQLException e) {
+	    		e.printStackTrace(); 
+	    		
+	    	}
 	    	
 	    }
 		public void deleteSupplier(Integer supplier_id) {
 			
+			String sql = "DELETE FROM Supplier WHERE id= ?"; 
+			
+			try {
+				
+				PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
+				ps.setInt(1, supplier_id); 
+				
+				ps.executeUpdate(); 
+				ps.close() ; 
+				
+			} catch(SQLException e) {
+				e.printStackTrace(); 
+			}
+			
 		}
 		public void updateSupplier(Integer supplier_id) {
+			
+			String sql = "UPDATE FROM Supplier name = ? WHERE id = ?"; 
+			
+			try {
+				
+				PreparedStatement ps = manager.getConnection().prepareStatement (sql); 
+				ps.setString ( 1 , "UpdatedName"); 
+				ps.setInt ( 2 , supplier_id ); 
+				
+				ps.executeUpdate(); 
+				ps.close(); 
+			}catch(SQLException e) {
+				
+				e.printStackTrace(); 
+				
+			}
 			
 		}
 
