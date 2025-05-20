@@ -21,6 +21,22 @@ public class JDBCTreatmentManager implements TreatmentManager {
     }
     
     public void addTreatment(Treatment treatment) {
+    	String sql = "INSERT INTO Treatment (name, description, price) VALUES (?, ?, ?)";
+    	try (PreparedStatement ps = manager.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+    		 ps.setString(1, treatment.getName());
+             ps.setString(2, treatment.getDescription());
+             ps.setInt(3, treatment.getPrice());
+             ps.executeUpdate();
+             
+             try(ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                 if (generatedKeys.next()) {
+                     int treatmentId = generatedKeys.getInt(1);
+                     treatment.setTreatment_id(treatmentId);
+                 }
+             }
+    	}catch (SQLException e) {
+    		e.printStackTrace();
+    	}
     	
     }
 	public void deleteTreatment (Integer treatment_id) {
