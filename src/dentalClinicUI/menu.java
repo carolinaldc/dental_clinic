@@ -103,7 +103,7 @@ public class menu {
 			
 			if (user!=null & user.getRole().getDescription().equals("Patient")){
 				System.out.println("Login Successful!");
-				patientMenu(user.getEmail(), user.getRole());
+				patientMenu(user.getEmail());
 			} else if (user!=null & user.getRole().getDescription().equals("Clinician")){
 				System.out.println("Login Successful!");
 				clinicianMenu(user.getEmail(), user.getRole());
@@ -149,7 +149,8 @@ public class menu {
 
 	        	if (userType == 1) {
 	        		patiententUI.addPatient(email);
-	        		patientMenu(email, role.getDescription());
+	        		patientMenu(email);
+	        		//patientMenu(email, role.getDescription());
 	        	} else if(userType == 2){
 	        		clinicianUI.addClinician();
 	        		clinicianMenu(email, role.getDescription());
@@ -167,7 +168,7 @@ public class menu {
 	    }
 	}
 	
-	public static void patientMenu(String email, String role) {
+	public static void patientMenu(String email) {
 		System.out.println("Choose an option:");
 		System.out.println("1. Profile");
 		System.out.println("2. Appointments");
@@ -187,7 +188,7 @@ public class menu {
 					break;
 				default:
 					System.out.println("Invalid choice");
-					patientMenu(email, role);
+					patientMenu(email);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -254,7 +255,7 @@ public class menu {
 		}
 	}
 	
-	/*
+	
 	public static void profileMenu(String role) { //clinician, patient, supplier
 	    System.out.println("Choose an option:");
 	    System.out.println("1. Edit Profile");
