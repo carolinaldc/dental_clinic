@@ -85,43 +85,40 @@ public class JDBCPatientManager implements PatientManager {
 	}
 	
 	
-	/*public List <Patient> getListOfPatients(){
-		List<Patient> patients = new ArrayList<>();
-	    JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
+	public List <Patient> getListOfPatients(){
+		List<Patient> patients = new ArrayList<Patient>();
+		JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "Select * FROM patients";
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while(rs.next())
+			{
+				Integer patient_id= rs.getInt("patient_id");
+				String name= rs.getString("name");
+				String surname = rs.getString("surname");
+				Date dob = rs.getDate("dob");
+				Integer phone = rs.getInt("phone");
+				String email = rs.getString("email");
+				Integer credit_card = rs.getInt("credit_card");
+				
+				
+				List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfPatient(patient_id);
+				
+				Patient p= new Patient(patient_id, name, surname, dob, phone, email, credit_card, appointments);
+				patients.add(p);
+				
+			}
 
-	    String sql = "SELECT * FROM Patient";
-
-	    try {
-	        Statement stmt = manager.getConnection().createStatement();
-	        ResultSet rs = stmt.executeQuery(sql);
-
-	        while (rs.next()) {
-	            Integer patient_id = rs.getInt("id");
-	            String name = rs.getString("name");
-	            String surname = rs.getString("surname");
-	            Date dob = rs.getDate("dob");
-	            Integer phone = rs.getInt("phone");
-	            String email = rs.getString("email");
-	            Integer credit_card = rs.getInt("credit_card");
-
-	            // Obtener las citas asociadas a este paciente
-	            List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfPatient(patient_id);
-
-	            Patient patient = new Patient(name, surname, dob, phone, email, credit_card, appointments);
-	            patient.setPatient_id(patient_id);
-
-	            patients.add(patient);
-	        }
-
-	        rs.close();
-	        stmt.close();
-
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-
-	    return patients;
-	}*/
+			rs.close();
+			stmt.close();
+			
+		}catch(Exception e) {
+			e.printStackTrace();}
+		
+		return patients;
+	}
 	
 	
 	public Patient getPatientById(Integer patient_id){

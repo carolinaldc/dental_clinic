@@ -46,6 +46,19 @@ public class Patient implements Serializable {
 		this.credit_card = credit_card;
 		this.appointments = appointments;
 	}
+	
+	public Patient(Integer patient_id, String name, String surname, Date dob, Integer phone,
+			String email, Integer credit_card, List<Appointment> appointments) {
+		super();
+		this.patient_id = patient_id;
+		this.name = name;
+		this.surname = surname;
+		this.dob= dob;
+		this.phone = phone;
+		this.email = email;
+		this.credit_card = credit_card;
+		this.appointments = appointments;
+	}
 
 	public Integer getPatient_id() {
 		return patient_id;
