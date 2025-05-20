@@ -48,6 +48,8 @@ public class Supplier implements Serializable {
 		this.email = email;
 		
 	}
+	
+	
 
 	public Integer getSupplier_id() {
 		return supplier_id;
