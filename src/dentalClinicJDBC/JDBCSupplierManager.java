@@ -107,6 +107,40 @@ public class JDBCSupplierManager {
 			return supplier;
 			
 		}
+		
+		public Supplier getSupplierOfMaterial(Integer material_id) {
+			Supplier suppliers = null;
+	        //JDBCSupplierManager jdbcSupplierManager = new JDBCSupplierManager(manager);
+	        
+			try {
+				
+				Statement stmt = manager.getConnection().createStatement();
+	    		String sql = "SELECT * FROM Suppliers WHERE material_id = " + material_id;
+				ResultSet rs= stmt.executeQuery(sql);
+				
+				
+				Integer supplier_id = rs.getInt("supplier_id");
+		        String supplierName = rs.getString("supplierName");
+		        Integer phone = rs.getInt("phone");
+		        String email = rs.getString("email");
+		            
+		            
+		            
+		            
+		         Supplier supplier = new Supplier(supplier_id, supplierName, phone, email );
+		           
+				
+				
+				rs.close();
+				stmt.close();
+				
+			}catch(Exception e) 
+			{
+				e.printStackTrace();
+			}
+			return suppliers;
+		}
+		
 		public List<Supplier> getListOfSuppliers(){
 			return null;
 		}

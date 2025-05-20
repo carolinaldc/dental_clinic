@@ -92,23 +92,18 @@ public class JDBCMaterialManager implements MaterialManager {
 	public List<Material> getMaterialsOfTreatment(Integer treatment_id){
 		List<Material> materials = new ArrayList<Material>();
         JDBCSupplierManager jdbcSupplierManager = new JDBCSupplierManager(manager);
+        JDBCMaterialManager jdbcMaterialManager = new JDBCMaterialManager(manager);
         
 		try {
 			
 			Statement stmt = manager.getConnection().createStatement();
-    		String sql = "SELECT * FROM Materials WHERE treatment_id = " + treatment_id;
+    		String sql = "SELECT material_id FROM Treatment_materials WHERE treatment_id = " + treatment_id;
 			ResultSet rs= stmt.executeQuery(sql);
 			
 			while(rs.next()) {
-	            String name = rs.getString("comment");
-	            
-	            //EN ESTE CASO NO HACE FALTA TENER TREATMENT EN LOS MATERIALES NO?
-	            //List<Treatment> treatments = jdbcTreatmentManager.getTreatmentById(treatment_id);
-	            Integer supplier_id = rs.getInt("supplier_id");
-	            Supplier supplier = jdbcSupplierManager.getSupplierByid(supplier_id);
-	            
-	            
-	            Material material = new Material(name, supplier);
+				
+				Integer material_id =rs.getInt("material_id");
+				Material material =  jdbcMaterialManager.getMaterialByid(material_id);
 	            materials.add(material);
 			}
 			
@@ -155,7 +150,29 @@ public class JDBCMaterialManager implements MaterialManager {
 	}
 
 	public Material getMaterialByid(Integer material_id) {
-		return null;
+		Material material = null;
+		manager = new JDBCManager();
+		JDBCSupplierManager jdbcSupplierManager = new JDBCSupplierManager(manager);
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql =  "SELECT name, supplier FROM Materials WHERE material_id =" + material_id;
+			
+			ResultSet rs= stmt.executeQuery(sql);
+			
+			String name = rs.getString("name");
+			Supplier supplier = jdbcSupplierManager.getSupplierOfMaterial(material_id);
+			rs.close();
+			stmt.close();
+			
+			material = new Material(name, supplier);
+		}catch(Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return material;
+		
 	}
 	public List<Material> getListOfMaterials(){
 		return null;

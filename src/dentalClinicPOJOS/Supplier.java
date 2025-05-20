@@ -40,6 +40,14 @@ public class Supplier implements Serializable {
 		this.email = email;
 		this.material = material;
 	}
+	
+	public Supplier(Integer supplier_id, String supplierName, Integer phone, String email) {
+		super();
+		this.supplierName = supplierName;
+		this.phone = phone;
+		this.email = email;
+		
+	}
 
 	public Integer getSupplier_id() {
 		return supplier_id;

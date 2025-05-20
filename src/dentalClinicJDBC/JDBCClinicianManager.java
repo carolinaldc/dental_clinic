@@ -109,7 +109,34 @@ public class JDBCClinicianManager implements ClinicianManager {
 	}
 	
 	public List<Clinician> getListOfClinicians(){
-		return null;
+		List<Clinician> clinicians = new ArrayList<Clinician>();
+		JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "Select * FROM clinicians";
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while(rs.next())
+			{
+				Integer clinician_id = rs.getInt("clinician_id");
+				String name= rs.getString("name");
+				String surname = rs.getString("surname");
+				String speciality = rs.getString("speciality");
+				String email = rs.getString("email");
+				Integer phone = rs.getInt("phone");
+				
+				List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfClinician(clinician_id);
+				
+				Clinician c= new Clinician(clinician_id, name,surname,speciality, phone,email,appointments);
+				clinicians.add(c);
+			}
+
+			rs.close();
+			stmt.close();
+		}catch(Exception e)
+		{e.printStackTrace();}
+		
+		return clinicians;
 	}
    
 /*
