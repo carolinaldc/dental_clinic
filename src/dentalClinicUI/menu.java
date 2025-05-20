@@ -37,30 +37,29 @@ public class menu {
 	private static AppointmentUI appointmentUI;
 	private static PatientUI patiententUI;
 	private static ClinicianUI clinicianUI;
+	private static MaterialUI materialUI;
 	
 	private static JDBCManager jdbcmanager;
 	private static PatientManager patientManager;
 	private static ClinicianManager clinicianManager;
-	private static AppointmentManager patientsTreatmentManager;
-	private static TreatmentManager treatmentManager;
+	//private static AppointmentManager patientsTreatmentManager;
+	//private static TreatmentManager treatmentManager;
 	private static UserManager usermanager;
 	private static BufferedReader reader = new BufferedReader (new InputStreamReader(System.in));
-	private static XMLManager xmlmanager;
+	//private static XMLManager xmlmanager;
 
 
 	public static void main(String[] args) {
 		jdbcmanager = new JDBCManager();
 		patientManager = new JDBCPatientManager(jdbcmanager);
 		usermanager = new JPAUserManager();
-		xmlmanager = new XMLManagerImpl();
+		//xmlmanager = new XMLManagerImpl();
 		clinicianManager = new JDBCClinicianManager(jdbcmanager);
-		patientsTreatmentManager = new JDBCAppointmentManager(jdbcmanager);
-		treatmentManager = new JDBCTreatmentManager(jdbcmanager);
+		//patientsTreatmentManager = new JDBCAppointmentManager(jdbcmanager);
+		//treatmentManager = new JDBCTreatmentManager(jdbcmanager);
 		
 		patiententUI = new PatientUI(patientManager);
 		clinicianUI = new ClinicianUI(clinicianManager);
-		//appointmentUI = new AppointmentUI(patientManager, clinicianManager, patientsTreatmentManager, treatmentManager); 
-
 		
 		int choice=0;
 		try {
@@ -102,9 +101,15 @@ public class menu {
 			
 			User user = usermanager.checkPassword(mail, password);
 			
-			if (user != null) {
-			    System.out.println("Login Successful!");
-			    userMenu(user.getEmail(), user.getRole().getDescription());
+			if (user!=null & user.getRole().getDescription().equals("Patient")){
+				System.out.println("Login Successful!");
+				patientMenu(user.getEmail(), user.getRole());
+			} else if (user!=null & user.getRole().getDescription().equals("Clinician")){
+				System.out.println("Login Successful!");
+				clinicianMenu(user.getEmail(), user.getRole());
+			} else if (user!=null & user.getRole().getDescription().equals("Supplier")){
+				System.out.println("Login Successful!");
+				supplierMenu(user.getEmail(), user.getRole());
 			} else {
 			    System.out.println("There is no user with these credentials");
 			}
@@ -119,6 +124,7 @@ public class menu {
 	    System.out.println("Register as:");
 	    System.out.println("1. Patient");
 	    System.out.println("2. Clinician");
+	    System.out.println("3. Supplier");
 
 	    try {
 	        String input = reader.readLine();
@@ -127,7 +133,7 @@ public class menu {
 	        try {
 	            userType = Integer.parseInt(input);
 	        } catch (NumberFormatException e) {
-	            System.out.println("Invalid input. Please enter 1 for Patient or 2 for Clinician");
+	            System.out.println("Invalid input. Please enter 1 for Patient, 2 for Clinician or 3 for Supplier");
 	            registerPage(); 
 	            return;
 	        }
@@ -143,10 +149,13 @@ public class menu {
 
 	        	if (userType == 1) {
 	        		patiententUI.addPatient(email);
-	        		userMenu(email, role.getDescription());
-	        	} else {
+	        		patientMenu(email, role.getDescription());
+	        	} else if(userType == 2){
 	        		clinicianUI.addClinician();
-	        		userMenu(email, role.getDescription());
+	        		clinicianMenu(email, role.getDescription());
+	        	} else if(userType == 3) {
+	        		//supplierUI.addSupplier();
+	        		supplierMenu(email, role.getDescription());
 	        	}
 	        }catch(Exception e) {
 	        	System.out.println("Error during registration.");
@@ -157,52 +166,96 @@ public class menu {
 	        e.printStackTrace();
 	    }
 	}
-
-
-	public static void userMenu(String email, String role) {
-	    if (role.equals("Patient")) {
-	        Patient patient = patientManager.getPatient(email);
-	        if (patient == null) {
-	            System.out.println("No patient found with email: " + email);
-	            return;
-	        }
-	        patiententUI.setCurrentPatient(patient);
-
-	        xmlmanager.patient2xml(1);
-	        File file = new File("./xmls/external_clinician.xml");
-	        Patients_Clinician c = xmlmanager.xml2PatientsClinician(file);
-	        clinicianManager.addClinician(c);
-	    } else if (role.equals("Clinician")) {
-	        clinicianManager.getClinicianByEmail(email);
-	    }
-
-	    System.out.println("Choose an option:");
-	    System.out.println("1. Profile");
-	    System.out.println("2. Treatments");
-	    System.out.println("3. Log Out");
-
-	    try {
-	        int choice = Integer.parseInt(reader.readLine());
-	        switch (choice) {
-	            case 1:
-	                profileMenu(role);
-	                break;
-	            case 2:
-	                treatmentMenu();
-	                break;
-	            case 3:
-	                main(null);
-	                break;
-	            default:
-	                System.out.println("Invalid choice");
-	                userMenu(email, role);
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+	
+	public static void patientMenu(String email, String role) {
+		System.out.println("Choose an option:");
+		System.out.println("1. Profile");
+		System.out.println("2. Appointments");
+		System.out.println("3. Log Out");
+		
+		try {
+			int choice = Integer.parseInt(reader.readLine());
+			switch (choice) {
+				case 1:
+					//profileMenu(role);
+					break;
+				case 2:
+					appointmentMenu();
+					break;
+				case 3:
+					main(null);
+					break;
+				default:
+					System.out.println("Invalid choice");
+					patientMenu(email, role);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
-	public static void profileMenu(String role) {
+	
+	
+	public static void clinicianMenu(String email, String role) {
+		System.out.println("Choose an option:");
+		System.out.println("1. Profile");
+		System.out.println("2. Appointments");
+		System.out.println("3. Treatments");
+		System.out.println("4. Log Out");
+		
+		try {
+			int choice = Integer.parseInt(reader.readLine());
+			switch (choice) {
+				case 1:
+					//profileMenu(role);
+					break;
+				case 2:
+					appointmentMenu();
+					break;
+				case 3:
+					treatmentMenu();
+					break;
+				case 4:
+					main(null);
+					break;
+				default:
+					System.out.println("Invalid choice");
+					patientMenu(email, role);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public static void supplierMenu(String email, String role) {
+		System.out.println("Choose an option:");
+		System.out.println("1. Profile");
+		System.out.println("2. Materials");
+		System.out.println("3. Log Out");
+		
+		try {
+			int choice = Integer.parseInt(reader.readLine());
+			switch (choice) {
+				case 1:
+					//profileMenu(role);
+					break;
+				case 2:
+					materialMenu();
+					break;
+				case 3:
+					main(null);
+					break;
+				default:
+					System.out.println("Invalid choice");
+					patientMenu(email, role);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	public static void profileMenu(String role) { //clinician, patient, supplier
 	    System.out.println("Choose an option:");
 	    System.out.println("1. Edit Profile");
 	    System.out.println("2. Delete Profile");
@@ -226,22 +279,62 @@ public class menu {
 	            else if (choice == 2) {
 	            	clinicianUI.deleteClinician();
 	            }
-	            else {
-	        	    System.out.println("Invalid option\n");
-	            	profileMenu(role);
+	        }else if (role.equals("Supplier")) {
+	            if (choice == 1) {
+	            	//supplierUI.modifySupplier();
 	            }
+	            else if (choice == 2) {
+	            	//supplierUI.deleteSupplier();
+	            }
+	        }else {
+	        	System.out.println("Invalid option\n");
+	        	profileMenu(role);
 	        }
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
 	}
+*/
 
+    public static void appointmentMenu() { //Clinicia, Patient
+    	System.out.println("Choose an option:");
+        System.out.println("1. Book a new Appointment");
+        System.out.println("2. Modify an Appointment");
+        System.out.println("3. Cancel an Appointment");
+        System.out.println("4. Show List of Appointments");
 
-    public static void treatmentMenu() {
+        int choice;
+        try {
+        	choice = Integer.parseInt(reader.readLine());
+
+            switch (choice) {
+                case 1:
+                	appointmentUI.addAppointment();
+                    break;
+                case 2:
+                	//appointmentUI.modifyAppointment();
+                    break;
+                case 3:
+                	appointmentUI.deleteAppointment();
+                    break;
+                case 4:
+                	appointmentUI.viewAppointmentsList();
+                    break;
+                default:
+                    System.out.println("Invalid choice");
+                    appointmentMenu();
+            }
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+    }
+   
+
+    public static void treatmentMenu() { //clinician
         System.out.println("Choose an option:");
-        System.out.println("1. Book a new Treatment");
-        System.out.println("2. Modify a Treatment");
-        System.out.println("3. Cancel a Treatment");
+        System.out.println("1. Create a new Treatment");
+        System.out.println("2. Remove a Treatment");
+        System.out.println("3. Modify a Treatment");
         System.out.println("4. Show List of Treatments");
 
         int choice;
@@ -253,10 +346,10 @@ public class menu {
                 	treatmentUI.addTreatment();
                     break;
                 case 2:
-                	treatmentUI.modifyTreatment();
+                	treatmentUI.deleteTreatment();
                     break;
                 case 3:
-                	treatmentUI.deleteTreatment();
+                	//treatmentUI.modifyTreatment();
                     break;
                 case 4:
                 	treatmentUI.viewTreatmentsList();
@@ -269,7 +362,40 @@ public class menu {
 			e.printStackTrace();
 		}
     }
+    
+    
+    public static void materialMenu() { //supplier
+        System.out.println("Choose an option:");
+        System.out.println("1. Add new Material");
+        System.out.println("2. Modify a Material");
+        System.out.println("3. Remove a Material");
+        System.out.println("4. Show List of Materials");
 
+        int choice;
+        try {
+        	choice = Integer.parseInt(reader.readLine());
+
+            switch (choice) {
+                case 1:
+                	materialUI.addMaterial();
+                    break;
+                case 2:
+                	//materialUI.modifyMaterial();
+                    break;
+                case 3:
+                	materialUI.deleteMaterial();
+                    break;
+                case 4:
+                	materialUI.viewMaterialsList();
+                    break;
+                default:
+                    System.out.println("Invalid choice");
+                    treatmentMenu();
+            }
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+    }
     
     private static void createUser(String email, String password, Role role) throws Exception {
         if (email == null || password == null || role == null) {
@@ -282,6 +408,4 @@ public class menu {
 
         usermanager.newUser(new User(email, pw, role));
     }
-
-
 }
