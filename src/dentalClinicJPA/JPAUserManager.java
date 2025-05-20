@@ -36,8 +36,10 @@ public class JPAUserManager implements UserManager{
 		{
 			Role patient = new Role("Patient");
 			Role clinician = new Role("Clinician");
+			Role supplier = new Role("Supplier");
 			this.newRole(patient);
 			this.newRole(clinician);
+			this.newRole(supplier);
 		}
 		
 	}
@@ -109,8 +111,4 @@ public class JPAUserManager implements UserManager{
 		return user;
 		
 	}
-	
-	
-	
-	
 }
