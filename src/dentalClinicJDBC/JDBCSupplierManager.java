@@ -142,7 +142,11 @@ public class JDBCSupplierManager {
 		}
 		
 		public List<Supplier> getListOfSuppliers(){
-			return null;
+			
+			
+			
+			
+			return suppliers;
 		}
 	    
 	   /*

@@ -29,7 +29,7 @@ public class JDBCMaterialManager implements MaterialManager {
 
     public void addMaterial(Material material) {
     	
-    	String sql = " INSERT INTO Material (id , supplier , name) VALUES id= ? , name= ? , supplier = ? "; 
+    	String sql = " INSERT INTO Materials (id , supplier , name) VALUES id= ? , name= ? , supplier = ? "; 
     	
     	try {
     		
@@ -71,7 +71,7 @@ public class JDBCMaterialManager implements MaterialManager {
 	}
 	public void updateMaterial(Integer material_id) {
 		
-		String sql = "UPDATE Material SET name = ? WHERE materials_id= ?"; 
+		String sql = "UPDATE Materials SET name = ? WHERE materials_id= ?"; 
 		
 		try {
 			
