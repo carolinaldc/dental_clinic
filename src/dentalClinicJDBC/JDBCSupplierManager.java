@@ -9,6 +9,7 @@ import dentalClinicPOJOS.Appointment;
 import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Material;
 import dentalClinicPOJOS.Supplier;
+import dentalClinicPOJOS.Treatment;
 
 public class JDBCSupplierManager {
 	
@@ -22,7 +23,7 @@ public class JDBCSupplierManager {
 	    }
 	    
 	    public void addSupplier(Supplier supplier) {
-	    	String sql = "INSERT INTO Supplier ( supplierName , phone , email) VALUES (? , ? ,? ) "; 
+	    	String sql = "INSERT INTO Suppliers ( supplierName , phone , email) VALUES (? , ? ,? ) "; 
 	    	
 	    	try {
 	    		PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
@@ -44,7 +45,7 @@ public class JDBCSupplierManager {
 	    }
 		public void deleteSupplier(Integer supplier_id) {
 			
-			String sql = "DELETE FROM Supplier WHERE id= ?"; 
+			String sql = "DELETE FROM Suppliers WHERE id= ?"; 
 			
 			try {
 				
@@ -61,7 +62,7 @@ public class JDBCSupplierManager {
 		}
 		public void updateSupplier(Integer supplier_id) {
 			
-			String sql = "UPDATE FROM Supplier name = ? WHERE id = ?"; 
+			String sql = "UPDATE FROM Suppliers name = ? WHERE id = ?"; 
 			
 			try {
 				
@@ -87,7 +88,7 @@ public class JDBCSupplierManager {
 			
 			try {
 				Statement stmt = manager.getConnection().createStatement();
-				String sql =  "SELECT * FROM Supplier WHERE supplier_id =" + supplier_id;
+				String sql =  "SELECT * FROM Suppliers WHERE supplier_id =" + supplier_id;
 				
 				ResultSet rs= stmt.executeQuery(sql);
 				
@@ -142,10 +143,30 @@ public class JDBCSupplierManager {
 		}
 		
 		public List<Supplier> getListOfSuppliers(){
-			
-			
-			
-			
+			List<Supplier> suppliers = new ArrayList<>();
+	        JDBCMaterialManager jdbcMaterialManager = new JDBCMaterialManager(manager);
+
+	        String sql = "SELECT * FROM Suppliers";
+	        try (Statement stmt = manager.getConnection().createStatement();
+	             ResultSet rs = stmt.executeQuery(sql)) {
+
+	            while (rs.next()) {
+	                Integer supplier_id = rs.getInt("supplier_id");
+	                String supplierName = rs.getString("supplierName");
+	                Integer phone = rs.getInt("phone");
+	                String email = rs.getString("email");
+
+	                List<Material> materials = jdbcMaterialManager.getMaterialsOfTreatment(supplier_id);
+
+	                Supplier supplier = new Supplier(supplier_id, supplierName, phone, email);
+	                supplier.setMaterial(materials);
+	                
+	                suppliers.add(supplier);
+	            }
+
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 			return suppliers;
 		}
 	    

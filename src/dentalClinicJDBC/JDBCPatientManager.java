@@ -20,7 +20,7 @@ public class JDBCPatientManager implements PatientManager {
 
     public void addPatient(Patient patient) {
     	
-    	String sql = " INSERT INTO Patient (name , surname , dob , phone  , email, credit_card) VALUES (? , ? , ?, ?, ?, ? ) "; 
+    	String sql = " INSERT INTO Patients (name , surname , dob , phone  , email, credit_card) VALUES (? , ? , ?, ?, ?, ? ) "; 
     	
     	try {
     		
@@ -45,7 +45,7 @@ public class JDBCPatientManager implements PatientManager {
    
 	public void deletePatient (Integer patient_id) {
 		
-		String sql = "DELETE FROM Patient WHERE id=? "; 
+		String sql = "DELETE FROM Patients WHERE id=? "; 
 		
 		try {
 			
@@ -64,7 +64,7 @@ public class JDBCPatientManager implements PatientManager {
 	
 	public void updatePatient(Integer patient_id) {
 		
-		String sql = "UPDATE FROM Patient name = ? WHERE id = ?" ;
+		String sql = "UPDATE FROM Patients name = ? WHERE id = ?" ;
 				
 				try {
 					
@@ -90,7 +90,7 @@ public class JDBCPatientManager implements PatientManager {
 		JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "Select * FROM patients";
+			String sql = "Select * FROM Patients";
 			ResultSet rs = stmt.executeQuery(sql);
 			
 			while(rs.next())

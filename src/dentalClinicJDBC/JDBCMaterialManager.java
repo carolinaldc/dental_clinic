@@ -182,7 +182,7 @@ public class JDBCMaterialManager implements MaterialManager {
 		
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "Select * FROM materials";
+			String sql = "Select * FROM Materials";
 			ResultSet rs = stmt.executeQuery(sql);
 			
 			while(rs.next())

@@ -19,7 +19,7 @@ public class JDBCClinicianManager implements ClinicianManager {
     
     public void addClinician(Clinician clinician) {
     	
-    	String sql = "INSERT INTO Clinician (specialty, phone , id , name , email , surname) VALUES (? , ?, ?, ? ,? ,?)"; 
+    	String sql = "INSERT INTO Clinicians (specialty, phone , id , name , email , surname) VALUES (? , ?, ?, ? ,? ,?)"; 
     try {
     	PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
     	
@@ -42,7 +42,7 @@ public class JDBCClinicianManager implements ClinicianManager {
     }
 	public void deleteClinician(Integer clinician_id) {
 		
-		String sql = "DELETE FROM Clinician WHERE id=? "; 
+		String sql = "DELETE FROM Clinicians WHERE id=? "; 
 		
 		try {
 			PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
@@ -58,7 +58,7 @@ public class JDBCClinicianManager implements ClinicianManager {
 	}
    	public void updateClinician(Integer clinician_id) {
    		
-   		String sql = "UPDATE Clinican SET speciality = ? , phone =? , name = ? , id= ? , surname = ? , email = ?"; 
+   		String sql = "UPDATE Clinicans SET speciality = ? , phone =? , name = ? , id= ? , surname = ? , email = ?"; 
    		
    		try {
    			
@@ -113,7 +113,7 @@ public class JDBCClinicianManager implements ClinicianManager {
 		JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "Select * FROM clinicians";
+			String sql = "Select * FROM Clinicians";
 			ResultSet rs = stmt.executeQuery(sql);
 			
 			while(rs.next())
