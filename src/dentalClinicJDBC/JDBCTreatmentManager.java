@@ -133,6 +133,31 @@ public class JDBCTreatmentManager implements TreatmentManager {
 		return treatment;
 		
 	}
+	
+	public List<Treatment> getTreatmentsOfMaterial(Integer material_id) {
+	    List<Treatment> treatments = new ArrayList<>();
+
+	    try {
+	        String sql = "SELECT treatment_id FROM treatment_materials WHERE material_id = ?";
+	        PreparedStatement ps = manager.getConnection().prepareStatement(sql);
+	        ps.setInt(1, material_id);
+	        ResultSet rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	            int treatmentId = rs.getInt("treatment_id");
+	            Treatment treatment = getTreatmentById(treatmentId); // este método ya lo tienes
+	            treatments.add(treatment);
+	        }
+
+	        rs.close();
+	        ps.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return treatments;
+	}
+
     
     /*
     public void addTreatment(Treatment treatment) {

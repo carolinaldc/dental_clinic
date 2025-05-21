@@ -45,7 +45,7 @@ public class Material implements Serializable{
 		this.supplier = supplier;
 	}
 	
-	public Material(Integer materials_id, String name, Supplier supplier, List<Treatment> treatments) {
+	public Material(Integer materials_id, String name, List<Treatment> treatments) {
 		super();
 		this.materials_id = materials_id;
 		this.name = name;
