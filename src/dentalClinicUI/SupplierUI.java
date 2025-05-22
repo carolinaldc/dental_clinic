@@ -4,13 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
+import dentalClinicPOJOS.Supplier;
 
 import dentalClinicIFaces.MaterialManager;
 import dentalClinicIFaces.SupplierManager;
 import dentalClinicIFaces.TreatmentManager;
 import dentalClinicPOJOS.Appointment;
 import dentalClinicPOJOS.Material;
+import dentalClinicPOJOS.Patient;
 import dentalClinicPOJOS.Treatment;
 
 
@@ -66,14 +67,43 @@ public class SupplierUI {
             Supplier supplier = new Supplier(supplierName, phone, email, selectedMaterials);
             supplierManager.addSupplier(supplier);
 
-            System.out.println("Treatment added successfully.");
+            System.out.println("Supplier added successfully.");
 
-        } catch (IOException e) {
-            System.out.println("Error reading input.");
+        } catch (IOException | IllegalArgumentException e) {
+            System.out.println("Error adding Supplier.");
             e.printStackTrace();
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid number for price.");
+        }
+        
+    }
+	
+	public void deleteSupplier() {
+        try {
+        	viewSupplierList();
+            System.out.println("Enter ID of supplier to delete:");
+            int id = Integer.parseInt(reader.readLine());
+
+            supplierManager.deleteSupplier(id);
+            System.out.println("Supplier deleted");
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Invalid input");
         }
     }
+	
+	public void viewSupplierList() {
+        try {
+           List<Supplier> suppliers = supplierManager.getListOfSuppliers();
+           if (suppliers != null && !suppliers.isEmpty()) {
+                for (Supplier supplier : suppliers) {
+                    System.out.println(supplier);
+                }
+            } else {
+                System.out.println("No suppliers found");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+	
+	//modify Supplier
 	
 }
