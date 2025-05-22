@@ -177,7 +177,7 @@ public class menu {
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
 				case 1:
-					//profileMenu(role);
+					profileMenu(role);
 					break;
 				case 2:
 					appointmentMenu();
@@ -255,14 +255,14 @@ public class menu {
 	}
 	
 	
-	public static void profileMenu(String role) { //clinician, patient, supplier
+	public static void profileMenu(Role role) { //clinician, patient, supplier
 	    System.out.println("Choose an option:");
 	    System.out.println("1. Edit Profile");
 	    System.out.println("2. Delete Profile");
 
 	    try {
 	        int choice = Integer.parseInt(reader.readLine());
-	        if (role.equals("Patient")) {
+	        if ("Patient".equalsIgnoreCase(role.getDescription())) {
 	            if (choice == 1) {
 	            	//patiententUI.modifyPatient();
 	            }
@@ -272,14 +272,14 @@ public class menu {
 	            else {
 	            	profileMenu(role);
 	            }
-	        } else if (role.equals("Clinician")) {
+	        } else if ("Clinician".equalsIgnoreCase(role.getDescription())) {
 	            if (choice == 1) {
 	            	//clinicianUI.modifyClinician();
 	            }
 	            else if (choice == 2) {
 	            	clinicianUI.deleteClinician();
 	            }
-	        }else if (role.equals("Supplier")) {
+	        }else if ("Supplier".equalsIgnoreCase(role.getDescription())) {
 	            if (choice == 1) {
 	            	//supplierUI.modifySupplier();
 	            }
