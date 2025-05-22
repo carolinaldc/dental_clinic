@@ -206,7 +206,7 @@ public class menu {
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
 				case 1:
-					//profileMenu(role);
+					profileMenu(role);
 					break;
 				case 2:
 					appointmentMenu();
@@ -237,7 +237,7 @@ public class menu {
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
 				case 1:
-					//profileMenu(role);
+					profileMenu(role);
 					break;
 				case 2:
 					materialMenu();
