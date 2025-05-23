@@ -19,7 +19,7 @@ public class JDBCClinicianManager implements ClinicianManager {
     
     public void addClinician(Clinician clinician) {
     	
-    	String sql = "INSERT INTO Clinicians (specialty, phone , id , name , email , surname) VALUES (? , ?, ?, ? ,? ,?)"; 
+    	String sql = "INSERT INTO Clinicians (clinician_id, name, surname, specialty, phone , email) VALUES (? , ?, ?, ? ,? ,?)"; 
     try {
     	PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
     	
@@ -58,7 +58,7 @@ public class JDBCClinicianManager implements ClinicianManager {
 	}
    	public void updateClinician(Integer clinician_id) {
    		
-   		String sql = "UPDATE Clinicans SET speciality = ? , phone =? , name = ? , id= ? , surname = ? , email = ?"; 
+   		String sql = "UPDATE Clinicans SET clinician_id = ?, name = ?  , surname = ? , speciality = ? , phone =? , email = ?"; 
    		
    		try {
    			
