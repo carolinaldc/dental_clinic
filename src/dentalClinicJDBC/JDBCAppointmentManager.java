@@ -93,7 +93,7 @@ public class JDBCAppointmentManager implements AppointmentManager {
 
 	                Patient patient = jdbcPatientManager.getPatientById(patient_id);
 	                Treatment treatment = jdbcTreatmentManager.getTreatmentById(treatment_id);
-	                Clinician clinician = jdbcClinicianManager.getClinicianByid(clinician_id);
+	                Clinician clinician = jdbcClinicianManager.getClinicianById(clinician_id);
 
 	                Appointment appt = new Appointment(date, comment, patient, treatment, clinician);
 	                appt.setAppointment_id(appointment_id);
@@ -127,7 +127,7 @@ public class JDBCAppointmentManager implements AppointmentManager {
 	            
 	            Treatment treatment = jdbcTreatmentManager.getTreatmentById(treatment_id);
 	            Patient patient = jdbcPatientManager.getPatientById(patient_id);
-	            Clinician clinician = jdbcClinicianManager.getClinicianByid(clinician_id);
+	            Clinician clinician = jdbcClinicianManager.getClinicianById(clinician_id);
 	            Appointment pt = new Appointment(date, comment,patient, treatment, clinician);
 	            appointments.add(pt);
 			}
@@ -163,7 +163,7 @@ public class JDBCAppointmentManager implements AppointmentManager {
 	            
 	            Treatment treatment = jdbcTreatmentManager.getTreatmentById(treatment_id);
 	            Patient patient = jdbcPatientManager.getPatientById(patient_id);
-	            Clinician clinician = jdbcClinicianManager.getClinicianByid(clinician_id);
+	            Clinician clinician = jdbcClinicianManager.getClinicianById(clinician_id);
 	            Appointment pt = new Appointment(date, comment,patient, treatment, clinician);
 	            appointments.add(pt);
 			}
@@ -199,7 +199,7 @@ public class JDBCAppointmentManager implements AppointmentManager {
 	            
 	            Treatment treatment = jdbcTreatmentManager.getTreatmentById(treatment_id);
 	            Patient patient = jdbcPatientManager.getPatientById(patient_id);
-	            Clinician clinician = jdbcClinicianManager.getClinicianByid(clinician_id);
+	            Clinician clinician = jdbcClinicianManager.getClinicianById(clinician_id);
 	            Appointment pt = new Appointment(date, comment,patient, treatment, clinician);
 	            appointments.add(pt);
 			}

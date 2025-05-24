@@ -26,7 +26,7 @@ public class Clinician implements Serializable {
 		@XmlElement
 		private String surname; 
 		@XmlAttribute
-		private String speciality;
+		private String specialty;
 		@XmlElement
 		private Integer phone;
 		@XmlElement
@@ -43,7 +43,7 @@ public class Clinician implements Serializable {
 			super();
 			this.name = name;
 			this.surname = surname;
-			this.speciality = speciality;
+			this.specialty = speciality;
 			this.phone = phone;
 			this.email = email;
 			this.appointments = appointments;
@@ -57,7 +57,7 @@ public class Clinician implements Serializable {
 			this.clinician_id = clinician_id;
 			this.name = name;
 			this.surname = surname;
-			this.speciality = speciality;
+			this.specialty = speciality;
 			this.phone = phone;
 			this.email = email;
 			this.appointments = appointments;
@@ -87,12 +87,12 @@ public class Clinician implements Serializable {
 			this.surname = surname;
 		}
 
-		public String getSpeciality() {
-			return speciality;
+		public String getSpecialty() {
+			return specialty;
 		}
 
 		public void setSpeciality(String speciality) {
-			this.speciality = speciality;
+			this.specialty = speciality;
 		}
 
 		public Integer getPhone() {
@@ -121,7 +121,7 @@ public class Clinician implements Serializable {
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(appointments, clinician_id, email, name, phone, speciality, surname);
+			return Objects.hash(appointments, clinician_id, email, name, phone, specialty, surname);
 		}
 
 		@Override
@@ -135,13 +135,13 @@ public class Clinician implements Serializable {
 			Clinician other = (Clinician) obj;
 			return Objects.equals(appointments, other.appointments) && Objects.equals(clinician_id, other.clinician_id)
 					&& Objects.equals(email, other.email) && Objects.equals(name, other.name)
-					&& Objects.equals(phone, other.phone) && Objects.equals(speciality, other.speciality)
+					&& Objects.equals(phone, other.phone) && Objects.equals(specialty, other.specialty)
 					&& Objects.equals(surname, other.surname);
 		}
 
 		@Override
 		public String toString() {
-			return "Clinician [name=" + name + ", surname=" + surname + ", speciality=" + speciality + ", phone="
+			return "Clinician [name=" + name + ", surname=" + surname + ", specialty=" + specialty + ", phone="
 					+ phone + ", email=" + email + ", appointments=" + appointments + "]";
 		}
 	}

@@ -28,7 +28,7 @@ public class XMLManagerImpl implements XMLManager {
 		try {
 			
 			
-	        Clinician clinician = jdbcClinicianManager.getClinicianByid(id);
+	        Clinician clinician = jdbcClinicianManager.getClinicianById(id);
 	        
 	        //export this Clinician to a XML file
 	        JAXBContext jaxbcontext =  JAXBContext.newInstance(Clinician.class);

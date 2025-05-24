@@ -164,7 +164,7 @@ public class JDBCPatientManager implements PatientManager {
 
 	@Override
 	public void updatePatient(Integer patient_id, String fieldName, Object value) {
-		List<String> allowedFields = Arrays.asList("name", "surname", "dob", "phone", "email", "credit_card");
+		List<String> allowedFields = Arrays.asList("name", "surname", "dob", "phone", "credit_card");
 
 	    if (!allowedFields.contains(fieldName)) {
 	        throw new IllegalArgumentException("Invalid field name: " + fieldName);

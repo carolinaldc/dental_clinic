@@ -3,6 +3,7 @@ package dentalClinicUI;
 import dentalClinicIFaces.ClinicianManager;
 import dentalClinicPOJOS.Appointment;
 import dentalClinicPOJOS.Clinician;
+import dentalClinicPOJOS.Patient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,12 +13,16 @@ import java.util.List;
 
 public class ClinicianUI {
     private ClinicianManager clinicianManager;
-
+    private Clinician currentClinician;
     private BufferedReader reader;
 
     public ClinicianUI(ClinicianManager clinicianManager) {
         this.clinicianManager = clinicianManager;
         this.reader = new BufferedReader(new InputStreamReader(System.in));
+    }
+    
+    public void setCurrentClinician(Clinician clinician) {
+        this.currentClinician = clinician;
     }
     
     public void addClinician(String email) {
@@ -47,31 +52,33 @@ public class ClinicianUI {
     }
     
     public void deleteClinician() {
+        if (currentClinician == null) {
+            System.out.println("No clinician logged in.");
+            return;
+        }
         try {
-        	viewCliniciansList();
-            System.out.println("Enter ID of clinician to delete:");
-            int id = Integer.parseInt(reader.readLine());
-
-            clinicianManager.deleteClinician(id);
-            System.out.println("Client deleted");
-        } catch (IOException | NumberFormatException e) {
-            System.out.println("Invalid input");
+            clinicianManager.deleteClinician(currentClinician.getClinician_id());
+            System.out.println("Your clinician profile has been deleted.");
+            currentClinician = null;
+        } catch (Exception e) {
+            System.out.println("Error deleting clinician.");
+            e.printStackTrace();
         }
     }
+
+/*
     
     
     public void modifyClinician() {
         try {
-        	viewCliniciansList();
-            System.out.println("Enter ID of clinician to modify:");
-            int id = Integer.parseInt(reader.readLine());
-
-            Clinician clinician = clinicianManager.getClinicianByid(id);
-            if (clinician == null) {
-                System.out.println("Clinician not found.");
+        	if (currentClinician == null) {
+                System.out.println("No clinicians logged in.");
                 return;
             }
 
+            try {
+            	Clinician clinician = currentClinician;
+                
             int choice=0;
     		try {
     			System.out.println("What do you want to modify: ");
@@ -120,6 +127,7 @@ public class ClinicianUI {
             System.out.println("Error modifying clinician.");
         }
     }
+        */
     
     
     public void viewCliniciansList() {
