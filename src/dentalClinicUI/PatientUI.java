@@ -71,7 +71,6 @@ public class PatientUI {
     }
     
     
-
     public void modifyPatient() {
         try {
             viewPatientsList();
@@ -83,55 +82,64 @@ public class PatientUI {
                 System.out.println("Patient not found.");
                 return;
             }
-                        
-            int choice=0;
-    		try {
-    			System.out.println("What do you want to modify: ");
-	            System.out.println("1. name ");
-	            System.out.println("2. surname");
-	            System.out.println("3. phone");
-	            System.out.println("4. email");
-	            System.out.println("5. credit card");
-				
-				choice = Integer.parseInt(reader.readLine());
 
-				switch (choice) {
-					case 1:
-			            System.out.println("Enter new name (" + patient.getName() + "):");
-			            String newName = reader.readLine();
-			            if (!newName.trim().isEmpty()) patient.setName(newName);
-						break;
-					case 2:
-			            System.out.println("Enter new surname (" + patient.getSurname() + "):");
-			            String newSurname = reader.readLine();
-			            if (!newSurname.trim().isEmpty()) patient.setSurname(newSurname);
-						break;
-					case 3:
-			            System.out.println("Enter new phone (" + patient.getPhone() + "):");
-			            String newPhone = reader.readLine();
-			            if (!newPhone.trim().isEmpty()) patient.setPhone(Integer.parseInt(newPhone));
-						break;
-					case 4:
-			            System.out.println("Enter new email (" + patient.getEmail() + "):");
-			            String newEmail = reader.readLine();
-			            if (!newEmail.trim().isEmpty()) patient.setEmail(newEmail);
-					case 5:
-			            System.out.println("Enter new credit card (9 digits)(" + patient.getCredit_card() + "):");
-			            String newCard = reader.readLine();
-			            if (!newCard.trim().isEmpty()) patient.setCredit_card(Integer.parseInt(newCard));
-						break;
-				}
-    		}catch(Exception e){
-    			e.printStackTrace();
-    		}
+            System.out.println("What do you want to modify:");
+            System.out.println("1. Name");
+            System.out.println("2. Surname");
+            System.out.println("3. Phone");
+            System.out.println("4. Email");
+            System.out.println("5. Credit Card");
 
-            patientManager.updatePatient(patient.getPatient_id());
+            int choice = Integer.parseInt(reader.readLine());
+
+            switch (choice) {
+                case 1:
+                    System.out.println("Enter new name (" + patient.getName() + "):");
+                    String newName = reader.readLine();
+                    if (!newName.trim().isEmpty()) {
+                        patientManager.updatePatient(id, "name", newName);
+                    }
+                    break;
+                case 2:
+                    System.out.println("Enter new surname (" + patient.getSurname() + "):");
+                    String newSurname = reader.readLine();
+                    if (!newSurname.trim().isEmpty()) {
+                        patientManager.updatePatient(id, "surname", newSurname);
+                    }
+                    break;
+                case 3:
+                    System.out.println("Enter new phone (" + patient.getPhone() + "):");
+                    String newPhone = reader.readLine();
+                    if (!newPhone.trim().isEmpty()) {
+                        patientManager.updatePatient(id, "phone", newPhone);
+                    }
+                    break;
+                case 4:
+                    System.out.println("Enter new email (" + patient.getEmail() + "):");
+                    String newEmail = reader.readLine();
+                    if (!newEmail.trim().isEmpty()) {
+                        patientManager.updatePatient(id, "email", newEmail);
+                    }
+                    break;
+                case 5:
+                    System.out.println("Enter new credit card (" + patient.getCredit_card() + "):");
+                    String newCard = reader.readLine();
+                    if (!newCard.trim().isEmpty()) {
+                        patientManager.updatePatient(id, "credit_card", newCard);
+                    }
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+            }
+
             System.out.println("Patient updated.");
 
         } catch (IOException | NumberFormatException e) {
             System.out.println("Error modifying patient.");
+            e.printStackTrace();
         }
     }
+
     
     
     public void viewPatientsList() {

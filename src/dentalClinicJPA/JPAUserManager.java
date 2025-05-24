@@ -40,6 +40,7 @@ public class JPAUserManager implements UserManager{
 			this.newRole(patient);
 			this.newRole(clinician);
 			this.newRole(supplier);
+			
 		}
 		
 	}
@@ -52,15 +53,25 @@ public class JPAUserManager implements UserManager{
 	
 	
 	@Override
-	public void newUser(User user) {
-		
-		entityManager.getTransaction().begin();
-		entityManager.persist(user);
-		entityManager.getTransaction().commit();
-		
+	public boolean newUser(User user) {
+	    Long count = (Long) entityManager.createQuery(
+	        "SELECT COUNT(u) FROM User u WHERE u.email = :email")
+	        .setParameter("email", user.getEmail())
+	        .getSingleResult();
+
+	    if (count > 0) {
+	        return false;  // Email already exists
+	    }
+
+	    entityManager.getTransaction().begin();
+	    entityManager.persist(user);
+	    entityManager.getTransaction().commit();
+
+	    return true;  // User created successfully
 	}
-	
-	
+
+
+
 	
 	@Override
 	public void newRole(Role role) {
@@ -111,4 +122,8 @@ public class JPAUserManager implements UserManager{
 		return user;
 		
 	}
+	
+	
+	
+	
 }

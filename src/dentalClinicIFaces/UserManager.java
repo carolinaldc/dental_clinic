@@ -11,7 +11,7 @@ public interface UserManager {
 	void disconnect();
 	List<Role> getRoles();
 	void newRole(Role r);
-	void newUser(User user);
+	boolean newUser(User user);
 	Role getRole(Integer id);
 	User checkPassword(String mail, String password);
 

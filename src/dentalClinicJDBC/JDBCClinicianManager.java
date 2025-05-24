@@ -18,16 +18,17 @@ public class JDBCClinicianManager implements ClinicianManager {
     }
     
     public void addClinician(Clinician clinician) {
-    	String sql = "INSERT INTO Clinicians (clinician_id, name, surname, specialty, phone , email) VALUES (? , ?, ?, ? ,? ,?)"; 
+    	String sql = "INSERT INTO Clinicians (name, surname, specialty, phone, email) VALUES (?, ?, ?, ?, ?)";
+    	
+
     try {
     	PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
     	
-    	ps.setString(1, clinician.getSpeciality()); 
-    	ps.setInt(2,clinician.getPhone() ); 
-    	ps.setInt (3, clinician.getClinician_id()); 
-    	ps.setString(4, clinician.getName()); 
-    	ps.setString (5, clinician.getEmail()); 
-    	ps.setString(6, clinician.getSurname());
+    	ps.setString(1, clinician.getName());
+    	ps.setString(2, clinician.getSurname());
+    	ps.setString(3, clinician.getSpeciality());
+    	ps.setInt(4, clinician.getPhone());
+    	ps.setString(5, clinician.getEmail());
     	
     	ps.executeUpdate(); 
     	ps.close ();     	

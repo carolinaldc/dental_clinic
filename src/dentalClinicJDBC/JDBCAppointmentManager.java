@@ -57,7 +57,6 @@ public class JDBCAppointmentManager implements AppointmentManager {
 	        PreparedStatement ps = manager.getConnection().prepareStatement(sql);
 	        
 	        ps.setDate(1, newDate);
-	        ps.setString(1, "UpdatedName");
 	        ps.setString(2, "Updated comment");
 	        ps.setInt(3, patient_id);
 	        ps.setInt(4, treatment_id);

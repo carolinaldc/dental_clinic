@@ -2,6 +2,7 @@ package dentalClinicJDBC;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import dentalClinicIFaces.PatientManager;
@@ -20,7 +21,7 @@ public class JDBCPatientManager implements PatientManager {
 
     public void addPatient(Patient patient) {
     	
-    	String sql = " INSERT INTO Patient (name , surname , dob , phone  , email, credit_card) VALUES (? , ? , ?, ?, ?, ? ) "; 
+    	String sql = " INSERT INTO Patients (name , surname , dob , phone  , email, credit_card) VALUES (? , ? , ?, ?, ?, ? ) "; 
     	
     	try {
     		
@@ -45,7 +46,7 @@ public class JDBCPatientManager implements PatientManager {
    
 	public void deletePatient (Integer patient_id) {
 		
-		String sql = "DELETE FROM Patient WHERE id=? "; 
+		String sql = "DELETE FROM Patients WHERE patient_id=? "; 
 		
 		try {
 			
@@ -61,10 +62,11 @@ public class JDBCPatientManager implements PatientManager {
 		}
 		
 	}
-	
+	/*
 	public void updatePatient(Integer patient_id) {
 		
-		String sql = "UPDATE FROM Patient name = ? WHERE id = ?" ;
+		String sql = "UPDATE FROM Patients name = ? WHERE patient_id = ?" ;
+		
 				
 				try {
 					
@@ -84,44 +86,44 @@ public class JDBCPatientManager implements PatientManager {
 				}	
 	}
 	
-	
-	/*public List <Patient> getListOfPatients(){
-		List<Patient> patients = new ArrayList<>();
-	    JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
+*/
 
-	    String sql = "SELECT * FROM Patient";
 
-	    try {
-	        Statement stmt = manager.getConnection().createStatement();
-	        ResultSet rs = stmt.executeQuery(sql);
 
-	        while (rs.next()) {
-	            Integer patient_id = rs.getInt("id");
-	            String name = rs.getString("name");
-	            String surname = rs.getString("surname");
-	            Date dob = rs.getDate("dob");
-	            Integer phone = rs.getInt("phone");
-	            String email = rs.getString("email");
-	            Integer credit_card = rs.getInt("credit_card");
+	public List <Patient> getListOfPatients(){
+		List<Patient> patients = new ArrayList<Patient>();
+		JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "Select * FROM Patients";
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while(rs.next())
+			{
+				Integer patient_id= rs.getInt("patient_id");
+				String name= rs.getString("name");
+				String surname = rs.getString("surname");
+				Date dob = rs.getDate("dob");
+				Integer phone = rs.getInt("phone");
+				String email = rs.getString("email");
+				Integer credit_card = rs.getInt("credit_card");
+				
+				
+				List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfPatient(patient_id);
+				
+				Patient p= new Patient(patient_id, name, surname, dob, phone, email, credit_card, appointments);
+				patients.add(p);
+				
+			}
 
-	            // Obtener las citas asociadas a este paciente
-	            List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfPatient(patient_id);
-
-	            Patient patient = new Patient(name, surname, dob, phone, email, credit_card, appointments);
-	            patient.setPatient_id(patient_id);
-
-	            patients.add(patient);
-	        }
-
-	        rs.close();
-	        stmt.close();
-
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-
-	    return patients;
-	}*/
+			rs.close();
+			stmt.close();
+			
+		}catch(Exception e) {
+			e.printStackTrace();}
+		
+		return patients;
+	}
 	
 	
 	public Patient getPatientById(Integer patient_id){
@@ -158,6 +160,25 @@ public class JDBCPatientManager implements PatientManager {
 		
 		return patient;
 	
+	}
+
+	@Override
+	public void updatePatient(Integer patient_id, String fieldName, Object value) {
+		List<String> allowedFields = Arrays.asList("name", "surname", "dob", "phone", "email", "credit_card");
+
+	    if (!allowedFields.contains(fieldName)) {
+	        throw new IllegalArgumentException("Invalid field name: " + fieldName);
+	    }
+
+	    String sql = "UPDATE Patients SET " + fieldName + " = ? WHERE patient_id = ?";
+
+	    try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+	        ps.setObject(1, value);
+	        ps.setInt(2, patient_id);
+	        ps.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
     
     /*
