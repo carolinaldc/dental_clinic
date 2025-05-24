@@ -59,7 +59,7 @@ public class JDBCClinicianManager implements ClinicianManager {
 	}
 	
 	public void updateClinician(Integer clinician_id, String fieldName, Object value) {
-	    List<String> allowedFields = Arrays.asList("name", "surname", "specialty", "phone", "email");
+	    List<String> allowedFields = Arrays.asList("name", "surname", "specialty", "phone");
 
 	    if (!allowedFields.contains(fieldName)) {
 	        throw new IllegalArgumentException("Invalid field name: " + fieldName);

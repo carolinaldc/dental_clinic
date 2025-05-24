@@ -1,6 +1,7 @@
 package dentalClinicPOJOS;
+
+
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,7 +14,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="Clincian")
+@XmlRootElement(name="Clinician")
 @XmlType(propOrder = {"name", "surname", "specialty","phone", "email"})
 public class Clinician implements Serializable {
 		
