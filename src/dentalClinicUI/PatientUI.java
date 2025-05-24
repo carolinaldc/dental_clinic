@@ -13,19 +13,18 @@ import java.util.List;
 
 public class PatientUI {
     private PatientManager patientManager;
-    //private Patient currentPatient;
+    private Patient currentPatient;
     private BufferedReader reader;
 
     public PatientUI(PatientManager patientManager) {
         this.patientManager = patientManager;
         this.reader = new BufferedReader(new InputStreamReader(System.in));
     }
-    /*
+
     public void setCurrentPatient(Patient patient) {
         this.currentPatient = patient;
-        System.out.println("Current patient set: " + patient.getName() + " (ID: " + patient.getPatient_id() + ")");
     }
-    */
+
     
 
     public void addPatient(String email) {
@@ -58,37 +57,35 @@ public class PatientUI {
     }
 
     public void deletePatient() {
+        if (currentPatient == null) {
+            System.out.println("No patient logged in.");
+            return;
+        }
         try {
-        	viewPatientsList();
-            System.out.println("Enter ID of patient to delete:");
-            int id = Integer.parseInt(reader.readLine());
-
-            patientManager.deletePatient(id);
-            System.out.println("Patient deleted");
-        } catch (IOException | NumberFormatException e) {
-            System.out.println("Invalid input");
+            patientManager.deletePatient(currentPatient.getPatient_id());
+            System.out.println("Your patient profile has been deleted.");
+            currentPatient = null;
+        } catch (Exception e) {
+            System.out.println("Error deleting patient.");
+            e.printStackTrace();
         }
     }
-    
+
     
     public void modifyPatient() {
-        try {
-            viewPatientsList();
-            System.out.println("Enter ID of patient to modify:");
-            int id = Integer.parseInt(reader.readLine());
+        if (currentPatient == null) {
+            System.out.println("No patient logged in.");
+            return;
+        }
 
-            Patient patient = patientManager.getPatientById(id);
-            if (patient == null) {
-                System.out.println("Patient not found.");
-                return;
-            }
+        try {
+            Patient patient = currentPatient;
 
             System.out.println("What do you want to modify:");
             System.out.println("1. Name");
             System.out.println("2. Surname");
             System.out.println("3. Phone");
-            System.out.println("4. Email");
-            System.out.println("5. Credit Card");
+            System.out.println("4. Credit Card");
 
             int choice = Integer.parseInt(reader.readLine());
 
@@ -97,35 +94,28 @@ public class PatientUI {
                     System.out.println("Enter new name (" + patient.getName() + "):");
                     String newName = reader.readLine();
                     if (!newName.trim().isEmpty()) {
-                        patientManager.updatePatient(id, "name", newName);
+                        patientManager.updatePatient(patient.getPatient_id(), "name", newName);
                     }
                     break;
                 case 2:
                     System.out.println("Enter new surname (" + patient.getSurname() + "):");
                     String newSurname = reader.readLine();
                     if (!newSurname.trim().isEmpty()) {
-                        patientManager.updatePatient(id, "surname", newSurname);
+                        patientManager.updatePatient(patient.getPatient_id(), "surname", newSurname);
                     }
                     break;
                 case 3:
                     System.out.println("Enter new phone (" + patient.getPhone() + "):");
                     String newPhone = reader.readLine();
                     if (!newPhone.trim().isEmpty()) {
-                        patientManager.updatePatient(id, "phone", newPhone);
+                        patientManager.updatePatient(patient.getPatient_id(), "phone", newPhone);
                     }
                     break;
                 case 4:
-                    System.out.println("Enter new email (" + patient.getEmail() + "):");
-                    String newEmail = reader.readLine();
-                    if (!newEmail.trim().isEmpty()) {
-                        patientManager.updatePatient(id, "email", newEmail);
-                    }
-                    break;
-                case 5:
                     System.out.println("Enter new credit card (" + patient.getCredit_card() + "):");
                     String newCard = reader.readLine();
                     if (!newCard.trim().isEmpty()) {
-                        patientManager.updatePatient(id, "credit_card", newCard);
+                        patientManager.updatePatient(patient.getPatient_id(), "credit_card", newCard);
                     }
                     break;
                 default:
@@ -139,6 +129,7 @@ public class PatientUI {
             e.printStackTrace();
         }
     }
+
 
     
     

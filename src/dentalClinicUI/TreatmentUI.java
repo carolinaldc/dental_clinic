@@ -24,7 +24,11 @@ public class TreatmentUI {
         this.reader = reader;
     }
 
-    public void addTreatment() {
+    public TreatmentUI(TreatmentManager treatmentManager2) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public void addTreatment() {
         try {
             System.out.println("Enter treatment name:");
             String name = reader.readLine();

@@ -57,7 +57,7 @@ public class JDBCClinicianManager implements ClinicianManager {
 		
 	}
    	public void updateClinician(Integer clinician_id) {
-   		String sql = "UPDATE Clinicans SET clinician_id = ?, name = ?  , surname = ? , speciality = ? , phone =? , email = ?";    		
+   		String sql = "UPDATE Clinicans SET clinician_id = ?, name = ?  , surname = ? , specialty = ? , phone =? , email = ?";    		
    		try {
    			
    			PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
@@ -119,7 +119,7 @@ public class JDBCClinicianManager implements ClinicianManager {
 				Integer clinician_id = rs.getInt("clinician_id");
 				String name= rs.getString("name");
 				String surname = rs.getString("surname");
-				String speciality = rs.getString("speciality");
+				String speciality = rs.getString("specialty");
 				String email = rs.getString("email");
 				Integer phone = rs.getInt("phone");
 				

@@ -2,6 +2,7 @@ package dentalClinicUI;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,7 +31,33 @@ public class AppointmentUI {
 
     private BufferedReader reader;
 
-	
+
+    public AppointmentUI(AppointmentManager appointmentManager) {
+        this.appointmentManager = appointmentManager;
+        this.patientUI = new PatientUI(patientManager);
+        this.cliniciantUI = new ClinicianUI(clinicianManager);
+        this.treatmentUI = new TreatmentUI(treatmentManager);
+        this.reader = new BufferedReader(new InputStreamReader(System.in));
+    }
+
+
+	public AppointmentUI(AppointmentManager appointmentManager, PatientManager patientManager, ClinicianManager clinicianManager, TreatmentManager treatmentManager,
+            PatientUI patientUI, ClinicianUI clinicianUI, TreatmentUI treatmentUI) {
+this.appointmentManager = appointmentManager;
+this.patientManager = patientManager;
+this.clinicianManager = clinicianManager;
+this.treatmentManager = treatmentManager;
+this.patientUI = patientUI;
+this.cliniciantUI = clinicianUI;
+this.treatmentUI = treatmentUI;
+this.reader = new BufferedReader(new InputStreamReader(System.in));
+}
+
+	public void setPatientUI(PatientUI patientUI) {
+	    this.patientUI = patientUI;
+	}
+
+
 	public void addAppointment() throws ParseException {
         try {
             System.out.println("Enter appointment date (yyyy-MM-dd):");

@@ -181,6 +181,34 @@ public class JDBCPatientManager implements PatientManager {
 	    }
 	}
     
+	public Patient getPatientByEmail(String email) {
+	    Patient patient = null;
+	    JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
+
+	    String sql = "SELECT * FROM Patients WHERE email = ?";
+	    try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+	        ps.setString(1, email);
+	        ResultSet rs = ps.executeQuery();
+
+	        if (rs.next()) {
+	            Integer patient_id = rs.getInt("patient_id");
+	            String name = rs.getString("name");
+	            String surname = rs.getString("surname");
+	            Date dob = rs.getDate("dob");
+	            Integer phone = rs.getInt("phone");
+	            Integer credit_card = rs.getInt("credit_card");
+
+	            List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfPatient(patient_id);
+
+	            patient = new Patient(patient_id, name, surname, dob, phone, email, credit_card, appointments);
+	        }
+	        rs.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return patient;
+	}
+
     /*
     @Override
     public void addPatient(Patient p) {

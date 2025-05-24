@@ -13,6 +13,7 @@ import java.util.List;
 
 import dentalClinicIFaces.ClinicianManager;
 import dentalClinicIFaces.PatientManager;
+import dentalClinicIFaces.SupplierManager;
 import dentalClinicIFaces.AppointmentManager;
 import dentalClinicIFaces.TreatmentManager;
 import dentalClinicIFaces.UserManager;
@@ -27,6 +28,7 @@ import dentalClinicJPA.JPAUserManager;
 import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Patient;
 import dentalClinicPOJOS.Role;
+import dentalClinicPOJOS.Supplier;
 import dentalClinicPOJOS.User;
 import dentalClinicXML.XMLManagerImpl;
 
@@ -43,24 +45,36 @@ public class menu {
 	private static JDBCManager jdbcmanager;
 	private static PatientManager patientManager;
 	private static ClinicianManager clinicianManager;
-	//private static AppointmentManager patientsTreatmentManager;
+	private static AppointmentManager appointmentManager;
+	private static SupplierManager supplierManager;
+
 	//private static TreatmentManager treatmentManager;
 	private static UserManager usermanager;
 	private static BufferedReader reader = new BufferedReader (new InputStreamReader(System.in));
 	//private static XMLManager xmlmanager;
 
 
+	private static User currentUser;
+
+	
 	public static void main(String[] args) {
+		
 		jdbcmanager = new JDBCManager();
-		patientManager = new JDBCPatientManager(jdbcmanager);
 		usermanager = new JPAUserManager();
-		//xmlmanager = new XMLManagerImpl();
+		patientManager = new JDBCPatientManager(jdbcmanager);
 		clinicianManager = new JDBCClinicianManager(jdbcmanager);
-		//patientsTreatmentManager = new JDBCAppointmentManager(jdbcmanager);
+		//supplierManager = new JDBCSupplierManager(jdbcmanager);
+
+		appointmentManager = new JDBCAppointmentManager(jdbcmanager);
 		//treatmentManager = new JDBCTreatmentManager(jdbcmanager);
+		//xmlmanager = new XMLManagerImpl();
+
 		
 		patiententUI = new PatientUI(patientManager);
 		clinicianUI = new ClinicianUI(clinicianManager);
+		//supplierUI = new SupplierUI(supplierManager);
+		appointmentUI = new AppointmentUI(appointmentManager);
+
 		
 		int choice=0;
 		try {
@@ -99,22 +113,27 @@ public class menu {
 			String mail = reader.readLine();
 			System.out.println("Introduce password");
 			String password = reader.readLine();
-			
+
 			User user = usermanager.checkPassword(mail, password);
 			if (user == null) {
-	            System.out.println("There is no account with that username or password\n");
-	            return;
-	        }else {
-	        	if (user!=null & user.getRole().getDescription().equals("Patient")){
-					patientMenu(user.getEmail(),user.getRole());
-				} else if (user!=null & user.getRole().getDescription().equals("Clinician")){
-					clinicianMenu(user.getEmail(), user.getRole());
-				} else if (user!=null & user.getRole().getDescription().equals("Supplier")){
-					supplierMenu(user.getEmail(), user.getRole());
-				}
-				System.out.println("Login Successful!");
-	        }
-			
+			    System.out.println("There is no account with that username or password\n");
+			    return;
+			} else {
+			    if (user.getRole().getDescription().equals("Patient")) {
+			        Patient patient = patientManager.getPatientByEmail(user.getEmail()); 
+			        patiententUI.setCurrentPatient(patient);                        
+			        patientMenu(user.getEmail(), user.getRole());
+			    } else if (user.getRole().getDescription().equals("Clinician")) {
+			        //Clinician clinician = clinicianManager.getClinicianByEmail(user.getEmail()); 
+			        //clinicianUI.setCurrentClinician(clinician);
+			        clinicianMenu(user.getEmail(), user.getRole());
+			    } else if (user.getRole().getDescription().equals("Supplier")) {
+			        //Supplier supplier = supplierManager.getSuppliertByEmail(user.getEmail()); 
+			        //supplierUI.setCurrentSupplier(supplier);
+			        supplierMenu(user.getEmail(), user.getRole());
+			    }
+			    System.out.println("Login Successful!");
+			}
 
 			
 		}catch(IOException e) {
@@ -158,12 +177,11 @@ public class menu {
 	        	if (userType == 1) {
 	        		patiententUI.addPatient(email);
 	        		patientMenu(email,role);
-	        		//patientMenu(email, role.getDescription());
 	        	} else if(userType == 2){
 	        		clinicianUI.addClinician(email);
 	        		clinicianMenu(email, role);
 	        	} else if(userType == 3) {
-	        		//supplierUI.addSupplier();
+	        		supplierUI.addSupplier();
 	        		supplierMenu(email, role);
 	        	}
 	        }catch(Exception e) {
@@ -192,6 +210,7 @@ public class menu {
 					appointmentMenu();
 					break;
 				case 3:
+	                currentUser = null;
 					main(null);
 					break;
 				default:
@@ -277,6 +296,7 @@ public class menu {
 	            }
 	            else if (choice == 2) {
 	            	patiententUI.deletePatient();
+	                currentUser = null; 
 	            }
 	            else {
 	            	profileMenu(role);
@@ -287,6 +307,7 @@ public class menu {
 	            }
 	            else if (choice == 2) {
 	            	clinicianUI.deleteClinician();
+	                currentUser = null; 
 	            }
 	        }else if ("Supplier".equalsIgnoreCase(role.getDescription())) {
 	            if (choice == 1) {
@@ -294,6 +315,7 @@ public class menu {
 	            }
 	            else if (choice == 2) {
 	            	supplierUI.deleteSupplier();
+	                currentUser = null; 
 	            }
 	        }else {
 	        	System.out.println("Invalid option\n");
