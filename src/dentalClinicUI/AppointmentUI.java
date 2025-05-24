@@ -57,16 +57,6 @@ public class AppointmentUI {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date date = sdf.parse(dateString);
 
-            treatmentUI.viewTreatmentsList();
-            System.out.println("Enter treatment id:");
-            int treatmentId = Integer.parseInt(reader.readLine());
-            Treatment treatment = treatmentManager.getTreatmentById(treatmentId);
-
-            if (treatment == null) {
-                System.out.println("Treatment not found with id: " + treatmentId);
-                return;
-            }
-
             System.out.println("Enter comment:");
             String comment = reader.readLine();
 
@@ -108,6 +98,16 @@ public class AppointmentUI {
                 return;
             }
 
+            treatmentUI.viewTreatmentsList();
+            System.out.println("Enter treatment id:");
+            int treatmentId = Integer.parseInt(reader.readLine());
+            Treatment treatment = treatmentManager.getTreatmentById(treatmentId);
+
+            if (treatment == null) {
+                System.out.println("Treatment not found with id: " + treatmentId);
+                return;
+            }
+            
             Appointment appointment = new Appointment(date, comment, patient, treatment, clinician);
             appointmentManager.addAppointment(appointment);
 
@@ -193,4 +193,10 @@ public class AppointmentUI {
             e.printStackTrace();
         }
     }
+
+
+	public String getListOfAppointments(String email, Role role) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

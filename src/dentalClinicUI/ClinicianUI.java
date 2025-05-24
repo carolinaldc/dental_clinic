@@ -66,68 +66,65 @@ public class ClinicianUI {
         }
     }
 
-/*
-    
     
     public void modifyClinician() {
+        if (currentClinician == null) {
+            System.out.println("No clinician logged in.");
+            return;
+        }
+
         try {
-        	if (currentClinician == null) {
-                System.out.println("No clinicians logged in.");
-                return;
+            Clinician clinician = currentClinician;
+
+            System.out.println("What do you want to modify:");
+            System.out.println("1. Name");
+            System.out.println("2. Surname");
+            System.out.println("3. Phone");
+            System.out.println("4. Specialty");
+
+            int choice = Integer.parseInt(reader.readLine());
+
+            switch (choice) {
+                case 1:
+                    System.out.println("Enter new name (" + clinician.getName() + "):");
+                    String newName = reader.readLine();
+                    if (!newName.trim().isEmpty()) {
+                        clinicianManager.updateClinician(clinician.getClinician_id(), "name", newName);
+                    }
+                    break;
+                case 2:
+                    System.out.println("Enter new surname (" + clinician.getSurname() + "):");
+                    String newSurname = reader.readLine();
+                    if (!newSurname.trim().isEmpty()) {
+                        clinicianManager.updateClinician(clinician.getClinician_id(), "surname", newSurname);
+                    }
+                    break;
+                case 3:
+                    System.out.println("Enter new phone (" + clinician.getPhone() + "):");
+                    String newPhone = reader.readLine();
+                    if (!newPhone.trim().isEmpty()) {
+                        clinicianManager.updateClinician(clinician.getClinician_id(), "phone", newPhone);
+                    }
+                    break;
+                case 4:
+                    System.out.println("Enter new specialty (" + clinician.getSpecialty() + "):");
+                    String newSpecialty = reader.readLine();
+                    if (!newSpecialty.trim().isEmpty()) {
+                        clinicianManager.updateClinician(clinician.getClinician_id(), "specialty", newSpecialty);
+                    }
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+                    return;
             }
-
-            try {
-            	Clinician clinician = currentClinician;
-                
-            int choice=0;
-    		try {
-    			System.out.println("What do you want to modify: ");
-	            System.out.println("1. name ");
-	            System.out.println("2. surname");
-	            System.out.println("3. phone");
-	            System.out.println("4. email");
-	            System.out.println("5. specialty");
-				
-				choice = Integer.parseInt(reader.readLine());
-
-				switch (choice) {
-					case 1:
-			            System.out.println("Enter new name (" + clinician.getName() + "):");
-			            String newName = reader.readLine();
-			            if (!newName.trim().isEmpty()) clinician.setName(newName);
-						break;
-					case 2:
-			            System.out.println("Enter new surname (" + clinician.getSurname() + "):");
-			            String newSurname = reader.readLine();
-			            if (!newSurname.trim().isEmpty()) clinician.setSurname(newSurname);
-						break;
-					case 3:
-			            System.out.println("Enter new phone (" + clinician.getPhone() + "):");
-			            String newPhone = reader.readLine();
-			            if (!newPhone.trim().isEmpty()) clinician.setPhone(Integer.parseInt(newPhone));
-						break;
-					case 4:
-			            System.out.println("Enter new email (" + clinician.getEmail() + "):");
-			            String newEmail = reader.readLine();
-			            if (!newEmail.trim().isEmpty()) clinician.setEmail(newEmail);
-					case 5:
-			            System.out.println("Enter new specialty (" + clinician.getSpeciality() + "):");
-			            String newSpeciality = reader.readLine();
-			            if (!newSpeciality.trim().isEmpty()) clinician.setSpeciality(newSpeciality);
-						break;
-				}
-    		}catch(Exception e){
-    			e.printStackTrace();
-    		}
-
-    		clinicianManager.updateClinician(clinician.getClinician_id());
-    		System.out.println("Clinician updated.");
+            System.out.println("Clinician updated.");
 
         } catch (IOException | NumberFormatException e) {
             System.out.println("Error modifying clinician.");
+            e.printStackTrace();
         }
     }
-        */
+
     
     
     public void viewCliniciansList() {

@@ -25,7 +25,6 @@ public class PatientUI {
         this.currentPatient = patient;
     }
 
-    
 
     public void addPatient(String email) {
         try {
@@ -128,10 +127,7 @@ public class PatientUI {
             System.out.println("Error modifying patient.");
             e.printStackTrace();
         }
-    }
-
-
-    
+    }    
     
     public void viewPatientsList() {
         try {

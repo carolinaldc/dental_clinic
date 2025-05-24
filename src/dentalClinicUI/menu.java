@@ -49,7 +49,7 @@ public class menu {
 	private static AppointmentManager appointmentManager;
 	private static SupplierManager supplierManager;
 
-	//private static TreatmentManager treatmentManager;
+	private static TreatmentManager treatmentManager;
 	private static UserManager usermanager;
 	private static BufferedReader reader = new BufferedReader (new InputStreamReader(System.in));
 	//private static XMLManager xmlmanager;
@@ -67,14 +67,16 @@ public class menu {
 		//supplierManager = new JDBCSupplierManager(jdbcmanager);
 
 		appointmentManager = new JDBCAppointmentManager(jdbcmanager);
-		//treatmentManager = new JDBCTreatmentManager(jdbcmanager);
+		treatmentManager = new JDBCTreatmentManager(jdbcmanager);
 		//xmlmanager = new XMLManagerImpl();
 
 		
 		patiententUI = new PatientUI(patientManager);
 		clinicianUI = new ClinicianUI(clinicianManager);
-		//supplierUI = new SupplierUI(supplierManager);
+		treatmentUI = new TreatmentUI(treatmentManager);
 		appointmentUI = new AppointmentUI(appointmentManager);
+		//supplierUI = new SupplierUI(supplierManager);
+		//appointmentUI = new AppointmentUI(appointmentManager, patiententUI, clinicianUI, treatmentUI);
 
 		
 		int choice=0;
@@ -215,7 +217,7 @@ public class menu {
 					profileMenu(email, role);
 					break;
 				case 2:
-					appointmentMenu(email, role);
+					//appointmentMenu(email, role);
 					break;
 				case 3:
 	                currentUser = null;
@@ -246,7 +248,7 @@ public class menu {
 					profileMenu(email, role);
 					break;
 				case 2:
-					appointmentMenu(email, role);
+					//appointmentMenu(email, role);
 					break;
 				case 3:
 					treatmentMenu(email, role);
@@ -322,7 +324,7 @@ public class menu {
 		            }
 		        } else if ("Clinician".equalsIgnoreCase(role.getDescription())) {
 		            if (choice == 1) {
-		            	//clinicianUI.modifyClinician();
+		            	clinicianUI.modifyClinician();
 		            }
 		            else if (choice == 2) {
 		            	clinicianUI.deleteClinician();
@@ -348,7 +350,7 @@ public class menu {
 	        }
 	}
 
-
+/*
     public static void appointmentMenu(String email, Role role) throws ParseException { //Clinicia, Patient
 		int choice = 0;
 
@@ -371,9 +373,12 @@ public class menu {
 			    
 	            switch (choice) {
 	                case 1:
-	                	//appointmentUI.addAppointment(email, role);
+	                	appointmentUI.addAppointment(email, role);
 	                    break;
-	                case 2:
+	                if (appointmentUI.getListOfAppointments(email, role).isEmpty()) {
+	                        System.out.println("There aren't any appointments to show.");
+	                } else {
+	                	case 2:
 	                	//appointmentUI.modifyAppointment();
 	                	if ("Patient".equalsIgnoreCase(role.getDescription())) {
 		                	//appointmentUI.addPatientAppointment();
@@ -399,6 +404,7 @@ public class menu {
 	        	        }
 	                	appointmentUI.viewAppointmentsList(); //idk if i should do one for the specific user
 	                    break;
+	                }
 	                default:
 	                    System.out.println("Invalid choice");
 	                    appointmentMenu(email, role);
@@ -411,6 +417,7 @@ public class menu {
 	        }
     }
    
+    */
 
     public static void treatmentMenu(String email, Role role) { //clinician
 		int choice = 0;

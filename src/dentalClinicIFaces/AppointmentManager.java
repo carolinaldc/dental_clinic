@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.List;
 
 import dentalClinicPOJOS.Appointment;
+import dentalClinicPOJOS.Role;
 
 public interface AppointmentManager {
 
@@ -15,6 +16,5 @@ public interface AppointmentManager {
 	public List <Appointment> getAppointmentOfClinician (Integer clinician_id);
 	public List <Appointment> getAppointmentOfTreatments (Integer treatment_id);
 	//public Appointment getAppointmentById (Integer appointment_id);
-	
-
+	public List <Appointment> getgetListOfAppointments(String emial, Role role);
 }
