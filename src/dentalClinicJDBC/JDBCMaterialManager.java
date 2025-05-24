@@ -28,16 +28,15 @@ public class JDBCMaterialManager implements MaterialManager {
     }
 
     public void addMaterial(Material material) {
-    	
-    	String sql = " INSERT INTO Material (id , supplier , name) VALUES id= ? , name= ? , supplier = ? "; 
-    	
+    	String sql = " INSERT INTO Materials (material_id , supplier_id , treatment_id, name) VALUES material_id= ? , supplier_id = ?, treatment_id = ? ,name= ?";     	
     	try {
     		
     		PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
     		
     		ps.setInt(1, material.getMaterials_id()); 
     		ps.setInt(2, material.getSupplier().getSupplier_id());
-    		ps.setString(3, material.getName()); 
+    		//ps.setInt(3, material.getTreatments().getTreatment_id());
+    		ps.setString(4, material.getName()); 
     		
     		ps.executeUpdate(); 
     		ps.close(); 
