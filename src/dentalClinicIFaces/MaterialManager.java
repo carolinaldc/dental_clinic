@@ -12,8 +12,9 @@ public interface MaterialManager {
 	public void updateMaterial(Integer material_id, String fieldName, String value);
 
 	public Material getMaterialByid(Integer material_id);
-	public List<Material> getListOfMaterials(Integer supplier_id);
-	public List<Material> getMaterialsOfTreatment(Integer treatment_id);
+	public List<Material> getListOfSupplier_Materials(Integer supplier_id);
+	public List<Material> getListOfTreatment_Materials(Integer treatment_id);
+	public List<Material> getListOfAllMaterials();
 	
 	public void linkMaterialToTreatment(int materialId, int treatmentId);
 }

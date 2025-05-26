@@ -21,7 +21,7 @@ public class JDBCTreatmentManager implements TreatmentManager {
     }
     
     public void addTreatment(Treatment treatment) {
-    	String sql = "INSERT INTO Treatment (name, description, price) VALUES (?, ?, ?)";
+    	String sql = "INSERT INTO Treatments (name, description, price) VALUES (?, ?, ?)";
     	try (PreparedStatement ps = manager.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
     		 ps.setString(1, treatment.getName());
              ps.setString(2, treatment.getDescription());
@@ -56,10 +56,9 @@ public class JDBCTreatmentManager implements TreatmentManager {
 	    try {
 	        PreparedStatement ps = manager.getConnection().prepareStatement(sql);
 
-	        // Valores de prueba (puedes cambiarlos por entrada de usuario si deseas más adelante)
 	        ps.setString(1, "UpdatedName");
 	        ps.setString(2, "Updated description");
-	        ps.setInt(3, 100); // Precio nuevo
+	        ps.setInt(3, 100);
 	        ps.setInt(4, treatment_id);
 
 	        ps.executeUpdate();
@@ -86,7 +85,7 @@ public class JDBCTreatmentManager implements TreatmentManager {
 	                Integer price = rs.getInt("price");
 
 	                List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfTreatments(id);
-	                List<Material> materials = jdbcMaterialManager.getMaterialsOfTreatment(id);
+	                List<Material> materials = jdbcMaterialManager.getListOfTreatment_Materials(id);
 
 	                Treatment treatment = new Treatment(name, description, price, appointments, materials);
 	                treatment.setTreatment_id(id);
@@ -119,7 +118,7 @@ public class JDBCTreatmentManager implements TreatmentManager {
 			String description = rs.getString("description");
 			Integer price = rs.getInt("price");
 			List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfTreatments(treatment_id);
-			List<Material> materials = jdbcMaterialManager.getMaterialsOfTreatment(treatment_id);
+			List<Material> materials = jdbcMaterialManager.getListOfTreatment_Materials(treatment_id);
 			
 			rs.close();
 			stmt.close();
@@ -134,6 +133,31 @@ public class JDBCTreatmentManager implements TreatmentManager {
 		return treatment;
 		
 	}
+	
+	public List<Treatment> getTreatmentsOfMaterial(Integer material_id) {
+	    List<Treatment> treatments = new ArrayList<>();
+
+	    try {
+	        String sql = "SELECT treatment_id FROM Treatment_materials WHERE material_id = ?";
+	        PreparedStatement ps = manager.getConnection().prepareStatement(sql);
+	        ps.setInt(1, material_id);
+	        ResultSet rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	            int treatmentId = rs.getInt("treatment_id");
+	            Treatment treatment = getTreatmentById(treatmentId); // este método ya lo tienes
+	            treatments.add(treatment);
+	        }
+
+	        rs.close();
+	        ps.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return treatments;
+	}
+
     
     /*
     public void addTreatment(Treatment treatment) {

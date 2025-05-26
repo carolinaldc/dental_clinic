@@ -39,7 +39,7 @@ public class TreatmentUI {
 
             List<Material> selectedMaterials = new ArrayList<>();
 
-            boolean materialsExist = materialUI.viewMaterialsList();
+            boolean materialsExist = materialUI.viewAllMaterialsList();
             if(!materialsExist) {
                 System.out.println("Create materials (with suppliers) before creating a treatment");
             	selectedMaterials = null;

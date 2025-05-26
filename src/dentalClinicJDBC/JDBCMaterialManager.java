@@ -119,7 +119,7 @@ public class JDBCMaterialManager implements MaterialManager {
 	}
 
 	
-	public List<Material> getMaterialsOfTreatment(Integer treatment_id){
+	public List<Material> getListOfTreatment_Materials(Integer treatment_id){
 		List<Material> materials = new ArrayList<Material>();
         JDBCSupplierManager jdbcSupplierManager = new JDBCSupplierManager(manager);
         JDBCMaterialManager jdbcMaterialManager = new JDBCMaterialManager(manager);
@@ -147,7 +147,34 @@ public class JDBCMaterialManager implements MaterialManager {
 		return materials;
 	}
 	
-	public List<Material> getListOfMaterials(Integer supplier_id) {
+	public List<Material> getListOfAllMaterials() {
+	    List<Material> materials = new ArrayList<>();
+	    JDBCSupplierManager jdbcSupplierManager = new JDBCSupplierManager(manager);
+	    JDBCMaterialManager jdbcMaterialManager = new JDBCMaterialManager(manager);
+
+	    try {
+	        Statement stmt = manager.getConnection().createStatement();
+	        String sql = "SELECT materials_id FROM Materials"; 
+	        ResultSet rs = stmt.executeQuery(sql);
+
+	        while (rs.next()) {
+	            Integer material_id = rs.getInt("materials_id");
+	            Material material = jdbcMaterialManager.getMaterialByid(material_id);
+	            materials.add(material);
+	        }
+
+	        rs.close();
+	        stmt.close();
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return materials;
+	}
+
+	
+	public List<Material> getListOfSupplier_Materials(Integer supplier_id) {
 	    List<Material> materials = new ArrayList<>();
 
 	    try {
@@ -178,8 +205,6 @@ public class JDBCMaterialManager implements MaterialManager {
 
 	    return materials;
 	}
-
-
 
 	public Material getMaterialByid(Integer material_id) {
 		Material material = null;

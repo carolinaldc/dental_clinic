@@ -128,7 +128,7 @@ public class MaterialUI {
 	
     public boolean viewMaterialsList() {
         try {
-        	List<Material> materials = materialManager.getListOfMaterials(currentSupplier.getSupplier_id());
+        	List<Material> materials = materialManager.getListOfSupplier_Materials(currentSupplier.getSupplier_id());
             if (materials != null && !materials.isEmpty()) {
                 for (Material material : materials) {
                     System.out.println(material);
@@ -143,5 +143,22 @@ public class MaterialUI {
             return false;
         }
     }
-
+    
+    public boolean viewAllMaterialsList() {
+        try {
+        	List<Material> materials = materialManager.getListOfAllMaterials();
+            if (materials != null && !materials.isEmpty()) {
+                for (Material material : materials) {
+                    System.out.println(material);
+                }
+                return true;
+            } else {
+                System.out.println("No materials found.");
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

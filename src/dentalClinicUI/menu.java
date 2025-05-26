@@ -61,22 +61,23 @@ public class menu {
     public static void main(String[] args) {
         jdbcmanager = new JDBCManager();
         usermanager = new JPAUserManager();
+        
         patientManager = new JDBCPatientManager(jdbcmanager);
         clinicianManager = new JDBCClinicianManager(jdbcmanager);
         supplierManager = new JDBCSupplierManager(jdbcmanager);
 
-        appointmentManager = new JDBCAppointmentManager(jdbcmanager);
-        treatmentManager = new JDBCTreatmentManager(jdbcmanager);
         materialManager = new JDBCMaterialManager(jdbcmanager);
+        treatmentManager = new JDBCTreatmentManager(jdbcmanager);
+        appointmentManager = new JDBCAppointmentManager(jdbcmanager);
 
 
         patientUI = new PatientUI(patientManager);
         clinicianUI = new ClinicianUI(clinicianManager);
         supplierUI = new SupplierUI(supplierManager);
 
-        appointmentUI = new AppointmentUI(appointmentManager, patientManager, clinicianManager, treatmentManager, reader);
-        treatmentUI = new TreatmentUI(treatmentManager, materialManager, materialUI, reader);
         materialUI = new MaterialUI(materialManager, reader, null); 
+        treatmentUI = new TreatmentUI(treatmentManager, materialManager, materialUI, reader);
+        appointmentUI = new AppointmentUI(appointmentManager, patientManager, clinicianManager, treatmentManager, reader);
 
 
 
