@@ -16,47 +16,52 @@ public class MaterialUI {
     private MaterialManager materialManager;
     private SupplierManager supplierManager;
     private TreatmentManager treatmentManager;
+    private Supplier currentSupplier;
     private static TreatmentUI treatmentUI;
     private BufferedReader reader;
 	
-    public MaterialUI(MaterialManager materialManager, BufferedReader reader) {
+    public MaterialUI(MaterialManager materialManager, BufferedReader reader, Supplier supplier) {
     	this.materialManager = materialManager;
     	this.reader = reader;
+    	this.currentSupplier = currentSupplier;
 	}
 
+    public void setCurrentSupplier(Supplier supplier) {
+        this.currentSupplier = supplier;
+    }
 
 	public void addMaterial() {
         try {
             System.out.println("Enter material name:");
             String name = reader.readLine();
 
-            System.out.println("Enter supplier id:");
-            int supplier_id = Integer.parseInt(reader.readLine());
-            Supplier supplier = supplierManager.getSupplierByid(supplier_id);
+            Supplier supplier = currentSupplier;
 
 
             List<Treatment> selectedTreatments = new ArrayList<>();
 
-            treatmentUI.viewTreatmentsList();
-            System.out.println("Enter the IDs of the materials to use (comma separated), or leave blank to skip:");
-            String input = reader.readLine();
+           
+            //treatmentUI.viewTreatmentsList();
+            //System.out.println("Enter the IDs of the materials to use (comma separated), or leave blank to skip:");
+            //String input = reader.readLine();
 
-            if (!input.trim().isEmpty()) {
-                String[] ids = input.split(",");
-                for (String idStr : ids) {
-                    try {
-                        int id = Integer.parseInt(idStr.trim());
-                        Treatment treatment = treatmentManager.getTreatmentById(id);
-                        if (treatment != null) {
-                        	selectedTreatments.add(treatment);
-                        } else {
-                            System.out.println("No treatments found with ID: " + id);
-                        }
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid ID format: " + idStr.trim());
-                    }
-                }
-            }
+            //if (!input.trim().isEmpty()) {
+             //   String[] ids = input.split(",");
+              //  for (String idStr : ids) {
+              //      try {
+             //           int id = Integer.parseInt(idStr.trim());
+                //        Treatment treatment = treatmentManager.getTreatmentById(id);
+                 //       if (treatment != null) {
+              //          	selectedTreatments.add(treatment);
+                //        } else {
+             //               System.out.println("No treatments found with ID: " + id);
+               //         }
+              //      } catch (NumberFormatException e) {
+              //          System.out.println("Invalid ID format: " + idStr.trim());
+              //      }
+             //   }
+            //}
+
 
             Material material = new Material(name, supplier, selectedTreatments);
             materialManager.addMaterial(material);

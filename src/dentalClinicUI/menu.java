@@ -76,7 +76,8 @@ public class menu {
 
         appointmentUI = new AppointmentUI(appointmentManager, patientManager, clinicianManager, treatmentManager, reader);
         treatmentUI = new TreatmentUI(treatmentManager, materialManager, materialUI, reader);
-        materialUI = new MaterialUI(materialManager, reader);
+        materialUI = new MaterialUI(materialManager, reader, null); 
+
 
 
 
@@ -135,6 +136,7 @@ public class menu {
 			    } else if (user.getRole().getDescription().equals("Supplier")) {
 			        Supplier supplier = supplierManager.getSupplierByEmail(user.getEmail()); 
 			        supplierUI.setCurrentSupplier(supplier);
+			        materialUI.setCurrentSupplier(supplier);
 			        supplierMenu(user.getEmail(), user.getRole());
 			    }
 			    System.out.println("Login Successful!");
@@ -192,7 +194,7 @@ public class menu {
 	        		clinicianUI.addClinician(email);
 	        		clinicianMenu(email, role);
 	        	} else if(userType == 3) {
-	        		supplierUI.addSupplier();
+	        		supplierUI.addSupplier(email);
 	        		supplierMenu(email, role);
 	        	}
 	        }catch(Exception e) {

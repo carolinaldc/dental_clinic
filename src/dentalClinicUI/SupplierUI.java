@@ -2,6 +2,7 @@ package dentalClinicUI;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import dentalClinicPOJOS.Supplier;
@@ -32,25 +33,24 @@ public class SupplierUI {
 	
 	public SupplierUI(SupplierManager supplierManager) {
 		this.supplierManager = supplierManager;
+        this.reader = new BufferedReader(new InputStreamReader(System.in));
 	}
 
 	public void setCurrentSupplier(Supplier supplier) {
         this.currentSupplier = supplier;
     }
-	public void addSupplier() {
+	public void addSupplier(String email) {
         try {
             System.out.println("Enter supplier name:");
             String supplierName = reader.readLine();
 
             System.out.println("Enter phone:");
             int phone = Integer.parseInt(reader.readLine());
-            
-            System.out.println("Enter email:");
-            String email = reader.readLine();
 
 
-            List<Material> selectedMaterials = new ArrayList<>(); //add materials later on
+            List<Material> materials = new ArrayList<>(); //add materials later on
 
+            /*
             materialUI.viewMaterialsList();
             System.out.println("Enter the IDs of the materials to use (comma separated), or leave blank to skip:");
             String input = reader.readLine();
@@ -71,9 +71,10 @@ public class SupplierUI {
                     }
                 }
             }
+            */
 
             
-            Supplier supplier = new Supplier(supplierName, phone, email, selectedMaterials);
+            Supplier supplier = new Supplier(supplierName, phone, email, materials);
             supplierManager.addSupplier(supplier);
 
             System.out.println("Supplier added successfully.");

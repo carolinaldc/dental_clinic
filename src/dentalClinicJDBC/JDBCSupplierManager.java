@@ -39,6 +39,7 @@ public class JDBCSupplierManager implements SupplierManager {
 	    	}
 	    	
 	    }
+	    
 		public void deleteSupplier(Integer supplier_id) {
 			
 			String sql = "DELETE FROM Suppliers WHERE supplier_id= ?"; 

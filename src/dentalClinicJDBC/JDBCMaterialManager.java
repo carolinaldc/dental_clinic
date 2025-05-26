@@ -28,31 +28,44 @@ public class JDBCMaterialManager implements MaterialManager {
     }
 
     public void addMaterial(Material material) {
-    	String sql = " INSERT INTO Materials (material_id , supplier_id , treatment_id, name) VALUES material_id= ? , supplier_id = ?, treatment_id = ? ,name= ?";     	
-    	try {
-    		
-    		PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
-    		
-    		ps.setInt(1, material.getMaterials_id()); 
-    		ps.setInt(2, material.getSupplier().getSupplier_id());
-    		//ps.setInt(3, material.getTreatments().getTreatment_id());
-    		ps.setString(4, material.getName()); 
-    		
-    		ps.executeUpdate(); 
-    		ps.close(); 
-    		
-    		
-    		
-  
-    	} catch(SQLException e) {
-    		
-    		e.printStackTrace(); 
-    	}
-    	
+        String sql = "INSERT INTO Materials (supplier_id, name) VALUES (?, ?)";
+        
+        try {
+            PreparedStatement ps = manager.getConnection().prepareStatement(sql);
+            ps.setInt(1, material.getSupplier().getSupplier_id());
+            ps.setString(2, material.getName());
+            ps.executeUpdate();
+            ps.close();
+
+            if (material.getTreatments() != null) {
+                for (Treatment treatment : material.getTreatments()) {
+                    linkMaterialToTreatment(material.getMaterials_id(), treatment.getTreatment_id());
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error inserting material");
+            e.printStackTrace();
+        }
     }
+
+    public void linkMaterialToTreatment(int materialId, int treatmentId) {
+        String sql = "INSERT INTO Material_Treatment (material_id, treatment_id) VALUES (?, ?)";
+        try {
+            PreparedStatement ps = manager.getConnection().prepareStatement(sql);
+            ps.setInt(1, materialId);
+            ps.setInt(2, treatmentId);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println("Error linking material to treatment");
+            e.printStackTrace();
+        }
+    }
+
 	public void deleteMaterial(Integer material_id) {
 		
-		String sql = "DELETE FROM Materials WHERE id = ? "; 
+		String sql = "DELETE FROM Materials WHERE materials_id = ? "; 
 		
 		try {
 			
@@ -96,7 +109,7 @@ public class JDBCMaterialManager implements MaterialManager {
 		try {
 			
 			Statement stmt = manager.getConnection().createStatement();
-    		String sql = "SELECT material_id FROM Treatment_materials WHERE treatment_id = " + treatment_id;
+    		String sql = "SELECT materials_id FROM Treatment_materials WHERE treatment_id = " + treatment_id;
 			ResultSet rs= stmt.executeQuery(sql);
 			
 			while(rs.next()) {
@@ -155,7 +168,7 @@ public class JDBCMaterialManager implements MaterialManager {
 		
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql =  "SELECT name, supplier FROM Materials WHERE material_id =" + material_id;
+			String sql =  "SELECT name, supplier FROM Materials WHERE materials_id =" + material_id;
 			
 			ResultSet rs= stmt.executeQuery(sql);
 			
