@@ -10,6 +10,7 @@ import java.util.List;
 
 import dentalClinicIFaces.AppointmentManager;
 import dentalClinicPOJOS.Patient;
+import dentalClinicPOJOS.Role;
 import dentalClinicPOJOS.Appointment;
 import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Treatment;
@@ -212,6 +213,12 @@ public class JDBCAppointmentManager implements AppointmentManager {
 			e.printStackTrace();
 		}
 		return appointments;
+	}
+
+	@Override
+	public List<Appointment> getgetListOfAppointments(String emial, Role role) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
