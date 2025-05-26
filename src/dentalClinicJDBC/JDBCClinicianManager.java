@@ -97,6 +97,7 @@ public class JDBCClinicianManager implements ClinicianManager {
 	            List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfClinician(clinician_id);
 
 	            clinician = new Clinician(clinician_id, name, surname, specialty, phone, email, appointments);
+	            clinician.setEmail(email);
 	        }
 	        rs.close();
 	    } catch (SQLException e) {
@@ -127,6 +128,7 @@ public class JDBCClinicianManager implements ClinicianManager {
 			stmt.close();
 			
 			clinician = new Clinician(name, surname,specialty, phone, email, appointments);
+			clinician.setClinician_id(clinician_id);
 		}catch(Exception e) 
 		{
 			e.printStackTrace();
