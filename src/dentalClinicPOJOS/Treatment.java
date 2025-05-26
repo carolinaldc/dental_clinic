@@ -98,7 +98,12 @@ public class Treatment implements Serializable {
 
 	@Override
 	public String toString() {
+		return "Treatment [id: " + treatment_id + "name=" + name + ", description=" + description + ", price=" + price + "]";
+	} 
+	/*
+	 * public String toString() {
 		return "Treatment [name=" + name + ", description=" + description + ", price=" + price + ", appointments="
 				+ appointments + ", materials=" + materials + "]";
-	} 
+	}
+	 */
 }

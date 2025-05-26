@@ -27,7 +27,7 @@ public class JDBCAppointmentManager implements AppointmentManager {
 	}
 	
 	public void addAppointment(Appointment appointment) {
-		String sql = "INSERT INTO Appointments (date, comment, patient_id, treatment_id, clinician_id) VALUES (?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO Appointments (date, comments, patient_id, treatment_id, clinician_id) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
             java.sql.Date sqlDate = new java.sql.Date(appointment.getDate().getTime());
             ps.setDate(1, sqlDate);
@@ -53,13 +53,13 @@ public class JDBCAppointmentManager implements AppointmentManager {
 	}
 	
 	public void updateAppointment(Integer appointment_id, Date newDate, Integer patient_id, Integer treatment_id, Integer clinician_id) {
-		String sql = "UPDATE Appointments SET date = ?, comment = ?, patient_id = ?, treatment_id = ?, clinician_id = ? WHERE appointment_id = ?";
+		String sql = "UPDATE Appointments SET date = ?, comments = ?, patient_id = ?, treatment_id = ?, clinician_id = ? WHERE appointment_id = ?";
 		
 	    try {
 	        PreparedStatement ps = manager.getConnection().prepareStatement(sql);
 	        
 	        ps.setDate(1, newDate);
-	        ps.setString(2, "Updated comment");
+	        ps.setString(2, "Updated comments");
 	        ps.setInt(3, patient_id);
 	        ps.setInt(4, treatment_id);
 	        ps.setInt(5, clinician_id);
@@ -117,7 +117,7 @@ public class JDBCAppointmentManager implements AppointmentManager {
 			
 			while(rs.next()) {
 				Date date = rs.getDate("date");
-	            String comment = rs.getString("comment");
+	            String comment = rs.getString("comments");
 	            Integer treatment_id = rs.getInt("treatment_id");
 	            Integer clinician_id = rs.getInt("clinician_id");
 	            
@@ -153,7 +153,7 @@ public class JDBCAppointmentManager implements AppointmentManager {
 			
 			while(rs.next()) {
 				Date date = rs.getDate("date");
-	            String comment = rs.getString("comment");
+	            String comment = rs.getString("comments");
 	            Integer patient_id = rs.getInt("patient_id");
 	            Integer clinician_id = rs.getInt("clinician_id");
 	            
@@ -189,7 +189,7 @@ public class JDBCAppointmentManager implements AppointmentManager {
 			
 			while(rs.next()) {
 				Date date = rs.getDate("date");
-	            String comment = rs.getString("comment");
+	            String comment = rs.getString("comments");
 	            Integer patient_id = rs.getInt("patient_id");
 	            Integer treatment_id = rs.getInt("treatment_id");
 	            

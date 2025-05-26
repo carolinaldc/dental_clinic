@@ -395,6 +395,8 @@ public class menu {
 	                case 4:
 	                	appointmentUI.viewAppointmentsList(email, role);
 	                    break;
+	                case 5:
+	                	break;
 	                default:
 	                    System.out.println("Invalid choice");
 	                    appointmentMenu(email, role);
@@ -486,6 +488,8 @@ public class menu {
 	           case 4:
 	               	materialUI.viewMaterialsList();
 	                break;
+	           case 5:
+	        	   break;
 	           default:
 	                System.out.println("Invalid choice");
 	                materialMenu(email, role);
