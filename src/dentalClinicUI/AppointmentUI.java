@@ -108,7 +108,7 @@ this.reader = reader;
                 return;
             }
 
-            treatmentUI.viewTreatmentsList();
+            //treatmentUI.viewTreatmentsList();
             if (!treatmentUI.viewTreatmentsList()) {
                 return;
             }

@@ -124,6 +124,7 @@ public class JDBCTreatmentManager implements TreatmentManager {
 			stmt.close();
 			
 			treatment = new Treatment(name, description,price, appointments, materials);
+			treatment.setTreatment_id(treatment_id);
 			
 		}catch(Exception e) 
 		{
