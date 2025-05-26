@@ -121,13 +121,15 @@ public class JDBCAppointmentManager implements AppointmentManager {
 	            Integer treatment_id = rs.getInt("treatment_id");
 	            Integer clinician_id = rs.getInt("clinician_id");
 	            
-	            //Treatment treatment = new Treatment();
-	            //treatment.setTreatment_id(treatment_id); //hacer esto para que no entre en bucle infinito
-	            Treatment treatment = jdbcTreatmentManager.getTreatmentById(treatment_id);
-	            //Patient patient = new Patient();
-	            //patient.setPatient_id(patient_id);
-	            Patient patient = jdbcPatientManager.getPatientById(patient_id);
-	            Clinician clinician = jdbcClinicianManager.getClinicianById(clinician_id);
+	            Treatment treatment = new Treatment();
+	            treatment.setTreatment_id(treatment_id); //hacer esto para que no entre en bucle infinito
+	            //Treatment treatment = jdbcTreatmentManager.getTreatmentById(treatment_id);
+	            Patient patient = new Patient();
+	            patient.setPatient_id(patient_id);
+	            //Patient patient = jdbcPatientManager.getPatientById(patient_id);
+	            Clinician clinician = new Clinician();
+	            clinician.setClinician_id(clinician_id);
+	            //Clinician clinician = jdbcClinicianManager.getClinicianById(clinician_id);
 	            Appointment pt = new Appointment(date, comment,patient, treatment, clinician);
 	            appointments.add(pt);
 			}
@@ -164,8 +166,12 @@ public class JDBCAppointmentManager implements AppointmentManager {
 	            Treatment treatment = new Treatment();
 	            treatment.setTreatment_id(treatment_id); //hacer esto para que no entre en bucle infinito
 	            //Treatment treatment = jdbcTreatmentManager.getTreatmentById(treatment_id);
-	            Patient patient = jdbcPatientManager.getPatientById(patient_id);
-	            Clinician clinician = jdbcClinicianManager.getClinicianById(clinician_id);
+	            Patient patient = new Patient();
+	            patient.setPatient_id(patient_id);
+	            //Patient patient = jdbcPatientManager.getPatientById(patient_id);
+	            Clinician clinician = new Clinician();
+	            clinician.setClinician_id(clinician_id);
+	            //Clinician clinician = jdbcClinicianManager.getClinicianById(clinician_id);
 	            Appointment pt = new Appointment(date, comment,patient, treatment, clinician);
 	            appointments.add(pt);
 			}
@@ -202,8 +208,12 @@ public class JDBCAppointmentManager implements AppointmentManager {
 	            Treatment treatment = new Treatment();
 	            treatment.setTreatment_id(treatment_id); //hacer esto para que no entre en bucle infinito
 	            //Treatment treatment = jdbcTreatmentManager.getTreatmentById(treatment_id);
-	            Patient patient = jdbcPatientManager.getPatientById(patient_id);
-	            Clinician clinician = jdbcClinicianManager.getClinicianById(clinician_id);
+	            Patient patient = new Patient();
+	            patient.setPatient_id(patient_id);
+	            //Patient patient = jdbcPatientManager.getPatientById(patient_id);
+	            Clinician clinician = new Clinician();
+	            clinician.setClinician_id(clinician_id);
+	            //Clinician clinician = jdbcClinicianManager.getClinicianById(clinician_id);
 	            Appointment pt = new Appointment(date, comment,patient, treatment, clinician);
 	            appointments.add(pt);
 			}
