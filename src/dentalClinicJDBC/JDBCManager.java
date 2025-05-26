@@ -16,7 +16,7 @@ public class JDBCManager {
 		try {
 			
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:./db/Dental_Clinic.db");
+			c = DriverManager.getConnection("jdbc:sqlite:./db/DentalClinic.db");
 			c.createStatement().execute("PRAGMA foreign_keys=ON");
 			
 		
