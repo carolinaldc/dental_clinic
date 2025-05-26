@@ -10,6 +10,7 @@ import dentalClinicIFaces.MaterialManager;
 import dentalClinicIFaces.SupplierManager;
 import dentalClinicIFaces.TreatmentManager;
 import dentalClinicPOJOS.Appointment;
+import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Material;
 import dentalClinicPOJOS.Patient;
 import dentalClinicPOJOS.Treatment;
@@ -19,6 +20,7 @@ public class SupplierUI {
 
 	private BufferedReader reader;
 	private SupplierManager supplierManager;
+    private Supplier currentSupplier;
     private MaterialManager materialManager;
     private MaterialUI materialUI;
 	
@@ -28,6 +30,13 @@ public class SupplierUI {
 		this.reader = reader;
 	}
 	
+	public SupplierUI(SupplierManager supplierManager) {
+		this.supplierManager = supplierManager;
+	}
+
+	public void setCurrentSupplier(Supplier supplier) {
+        this.currentSupplier = supplier;
+    }
 	public void addSupplier() {
         try {
             System.out.println("Enter supplier name:");

@@ -11,7 +11,7 @@ import dentalClinicPOJOS.Material;
 import dentalClinicPOJOS.Supplier;
 import dentalClinicPOJOS.Treatment;
 
-public class JDBCSupplierManager {
+public class JDBCSupplierManager implements SupplierManager {
 	
 
 	    //private Connection c;
@@ -95,7 +95,7 @@ public class JDBCSupplierManager {
 				rs.close();
 				stmt.close();
 				
-				supplier = new Supplier(supplierName, phone,email, materials);
+				supplier = new Supplier(supplierName, phone, email, materials);
 			}catch(Exception e) 
 			{
 				e.printStackTrace();
@@ -104,6 +104,32 @@ public class JDBCSupplierManager {
 			return supplier;
 			
 		}
+		
+		public Supplier getSupplierByEmail(String email) {
+		    Supplier supplier = null;
+		    JDBCMaterialManager jdbcMaterialManager = new JDBCMaterialManager(manager);
+
+		    String sql = "SELECT * FROM Suppliers WHERE email = ?";
+		    try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+		        ps.setString(1, email);
+		        ResultSet rs = ps.executeQuery();
+
+		        if (rs.next()) {
+		            Integer supplier_id = rs.getInt("supplier_id");
+		            String supplierName = rs.getString("supplierName");
+		            Integer phone = rs.getInt("phone");
+
+		            List<Material> materials = jdbcMaterialManager.getMaterialsOfSupplier(supplier_id);
+
+		            supplier = new Supplier(supplier_id, supplierName, phone, email, materials);
+		        }
+		        rs.close();
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		    return supplier;
+		}
+
 		
 		public Supplier getSupplierOfMaterial(Integer material_id) {
 			Supplier suppliers = null;

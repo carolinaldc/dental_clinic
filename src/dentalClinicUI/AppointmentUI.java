@@ -10,6 +10,7 @@ import java.util.List;
 
 import dentalClinicIFaces.AppointmentManager;
 import dentalClinicIFaces.ClinicianManager;
+import dentalClinicIFaces.MaterialManager;
 import dentalClinicIFaces.PatientManager;
 import dentalClinicIFaces.TreatmentManager;
 import dentalClinicPOJOS.Appointment;
@@ -19,36 +20,45 @@ import dentalClinicPOJOS.Role;
 import dentalClinicPOJOS.Treatment;
 
 public class AppointmentUI {
-	private static AppointmentManager appointmentManager;
-	private static PatientManager patientManager;
-	private static ClinicianManager clinicianManager;
-	private static TreatmentManager treatmentManager;
-	private static TreatmentUI treatmentUI;
-	private static PatientUI patientUI;
-	private static ClinicianUI clinicianUI;
+	private  AppointmentManager appointmentManager;
+	private  PatientManager patientManager;
+	private  ClinicianManager clinicianManager;
+	private  TreatmentManager treatmentManager;
+	private  MaterialManager materialManager;
+	private  TreatmentUI treatmentUI;
+	private  PatientUI patientUI;
+	private  ClinicianUI clinicianUI;
+	private  MaterialUI materialUI;
+
 
     private BufferedReader reader;
 
-
-    public AppointmentUI(AppointmentManager appointmentManager) {
+    public AppointmentUI(AppointmentManager appointmentManager, PatientUI patientUI,
+                         ClinicianUI clinicianUI, BufferedReader reader) {
         this.appointmentManager = appointmentManager;
-        this.patientUI = new PatientUI(patientManager);
-        this.clinicianUI = new ClinicianUI(clinicianManager);
-        this.treatmentUI = new TreatmentUI(treatmentManager);
-        this.reader = new BufferedReader(new InputStreamReader(System.in));
+        this.patientUI = patientUI;
+        this.clinicianUI = clinicianUI;
+        this.reader = reader;
     }
 
 
-    public AppointmentUI(AppointmentManager appointmentManager, PatientManager patientManager, ClinicianManager clinicianManager, TreatmentManager treatmentManager) {
-        this.appointmentManager = appointmentManager;
-        this.patientManager = patientManager;
-        this.clinicianManager = clinicianManager;
-        this.treatmentManager = treatmentManager;
-        this.patientUI = new PatientUI(patientManager);
-        this.clinicianUI = new ClinicianUI(clinicianManager);
-        this.treatmentUI = new TreatmentUI(treatmentManager);
-        this.reader = new BufferedReader(new InputStreamReader(System.in));
-    }
+
+    public AppointmentUI(AppointmentManager appointmentManager,
+            PatientManager patientManager,
+            ClinicianManager clinicianManager,
+            TreatmentManager treatmentManager,
+            BufferedReader reader) {
+this.appointmentManager = appointmentManager;
+this.patientManager = patientManager;
+this.clinicianManager = clinicianManager;
+this.treatmentManager = treatmentManager;
+this.patientUI = new PatientUI(patientManager);
+this.clinicianUI = new ClinicianUI(clinicianManager);
+this.treatmentUI = new TreatmentUI(treatmentManager, materialManager, materialUI, reader);
+this.reader = reader;
+}
+
+
     
     public void addAppointment(String email, Role role) throws ParseException {
         try {
@@ -99,6 +109,9 @@ public class AppointmentUI {
             }
 
             treatmentUI.viewTreatmentsList();
+            if (!treatmentUI.viewTreatmentsList()) {
+                return;
+            }
             System.out.println("Enter treatment id:");
             int treatmentId = Integer.parseInt(reader.readLine());
             Treatment treatment = treatmentManager.getTreatmentById(treatmentId);
@@ -162,9 +175,15 @@ public class AppointmentUI {
     }
 
 	*/
-    public void deleteAppointment() { 
+    
+  //modifyAppointment();
+
+    public void deleteAppointment(String email, Role role) { 
         try {
-        	viewAppointmentsList();
+            if (!viewAppointmentsList(email, role)) {
+                return;//no appointemnts found
+            }
+
             System.out.println("Enter ID of appointment to delete:");
             int id = Integer.parseInt(reader.readLine());
 
@@ -174,29 +193,28 @@ public class AppointmentUI {
             System.out.println("Invalid input.");
         }
     }
+
 	
 
 
-//modifyAppointment();
     
-    public void viewAppointmentsList() {
+    public boolean viewAppointmentsList(String email, Role role) {
         try {
-           List<Appointment> appointments = appointmentManager.getListOfAppointments();
-           if (appointments != null && !appointments.isEmpty()) {
+            List<Appointment> appointments = appointmentManager.getListOfAppointments(email, role);
+            if (appointments != null && !appointments.isEmpty()) {
                 for (Appointment appointment : appointments) {
                     System.out.println(appointment);
                 }
+                return true;
             } else {
                 System.out.println("No appointments found.");
+                return false;
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return false; 
         }
     }
 
 
-	public String getListOfAppointments(String email, Role role) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

@@ -19,7 +19,13 @@ public class MaterialUI {
     private static TreatmentUI treatmentUI;
     private BufferedReader reader;
 	
-    public void addMaterial() {
+    public MaterialUI(MaterialManager materialManager, BufferedReader reader) {
+    	this.materialManager = materialManager;
+    	this.reader = reader;
+	}
+
+
+	public void addMaterial() {
         try {
             System.out.println("Enter material name:");
             String name = reader.readLine();
@@ -143,18 +149,22 @@ public class MaterialUI {
         }
     }
 	
-    public void viewMaterialsList() {
+    public boolean viewMaterialsList() {
         try {
-           List<Material> materials = materialManager.getListOfMaterials();
-           if (materials != null && !materials.isEmpty()) {
+            List<Material> materials = materialManager.getListOfMaterials();
+            if (materials != null && !materials.isEmpty()) {
                 for (Material material : materials) {
                     System.out.println(material);
                 }
+                return true;
             } else {
                 System.out.println("No materials found.");
+                return false;
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
+
 }

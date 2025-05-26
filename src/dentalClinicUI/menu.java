@@ -13,6 +13,7 @@ import java.util.List;
 
 
 import dentalClinicIFaces.ClinicianManager;
+import dentalClinicIFaces.MaterialManager;
 import dentalClinicIFaces.PatientManager;
 import dentalClinicIFaces.SupplierManager;
 import dentalClinicIFaces.AppointmentManager;
@@ -20,8 +21,10 @@ import dentalClinicIFaces.TreatmentManager;
 import dentalClinicIFaces.UserManager;
 import dentalClinicIFaces.XMLManager;
 import dentalClinicJDBC.JDBCManager;
+import dentalClinicJDBC.JDBCMaterialManager;
 import dentalClinicJDBC.JDBCClinicianManager;
 import dentalClinicJDBC.JDBCPatientManager;
+import dentalClinicJDBC.JDBCSupplierManager;
 import dentalClinicJDBC.JDBCAppointmentManager;
 import dentalClinicJDBC.JDBCTreatmentManager;
 import dentalClinicJDBC.JDBCPatientManager;
@@ -35,50 +38,49 @@ import dentalClinicXML.XMLManagerImpl;
 
 
 public class menu {
-	private static TreatmentUI treatmentUI;
-	private static AppointmentUI appointmentUI;
-	private static PatientUI patiententUI;
-	private static ClinicianUI clinicianUI;
-	private static MaterialUI materialUI;
-	private static SupplierUI supplierUI;
+    private static TreatmentUI treatmentUI;
+    private static AppointmentUI appointmentUI;
+    private static PatientUI patientUI;       // renamed from patiententUI
+    private static ClinicianUI clinicianUI;
+    private static MaterialUI materialUI;
+    private static SupplierUI supplierUI;
+
+    private static JDBCManager jdbcmanager;
+    private static PatientManager patientManager;
+    private static ClinicianManager clinicianManager;
+    private static AppointmentManager appointmentManager;
+    private static SupplierManager supplierManager;
+    private static MaterialManager materialManager;
+
+    private static TreatmentManager treatmentManager;
+    private static UserManager usermanager;
+    private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+    private static User currentUser;
+
+    public static void main(String[] args) {
+        jdbcmanager = new JDBCManager();
+        usermanager = new JPAUserManager();
+        patientManager = new JDBCPatientManager(jdbcmanager);
+        clinicianManager = new JDBCClinicianManager(jdbcmanager);
+        supplierManager = new JDBCSupplierManager(jdbcmanager);
+
+        appointmentManager = new JDBCAppointmentManager(jdbcmanager);
+        treatmentManager = new JDBCTreatmentManager(jdbcmanager);
+        materialManager = new JDBCMaterialManager(jdbcmanager);
+
+
+        patientUI = new PatientUI(patientManager);
+        clinicianUI = new ClinicianUI(clinicianManager);
+        supplierUI = new SupplierUI(supplierManager);
+
+        appointmentUI = new AppointmentUI(appointmentManager, patientManager, clinicianManager, treatmentManager, reader);
+        treatmentUI = new TreatmentUI(treatmentManager, materialManager, materialUI, reader);
+        materialUI = new MaterialUI(materialManager, reader);
+
+
 
 	
-	private static JDBCManager jdbcmanager;
-	private static PatientManager patientManager;
-	private static ClinicianManager clinicianManager;
-	private static AppointmentManager appointmentManager;
-	private static SupplierManager supplierManager;
-
-	private static TreatmentManager treatmentManager;
-	private static UserManager usermanager;
-	private static BufferedReader reader = new BufferedReader (new InputStreamReader(System.in));
-	//private static XMLManager xmlmanager;
-
-
-	private static User currentUser;
-
-	
-	public static void main(String[] args) {
-		
-		jdbcmanager = new JDBCManager();
-		usermanager = new JPAUserManager();
-		patientManager = new JDBCPatientManager(jdbcmanager);
-		clinicianManager = new JDBCClinicianManager(jdbcmanager);
-		//supplierManager = new JDBCSupplierManager(jdbcmanager);
-
-		appointmentManager = new JDBCAppointmentManager(jdbcmanager);
-		treatmentManager = new JDBCTreatmentManager(jdbcmanager);
-		//xmlmanager = new XMLManagerImpl();
-
-		
-		patiententUI = new PatientUI(patientManager);
-		clinicianUI = new ClinicianUI(clinicianManager);
-		treatmentUI = new TreatmentUI(treatmentManager);
-		appointmentUI = new AppointmentUI(appointmentManager);
-		//supplierUI = new SupplierUI(supplierManager);
-		//appointmentUI = new AppointmentUI(appointmentManager, patiententUI, clinicianUI, treatmentUI);
-
-		
 		int choice=0;
 		try {
 			do {
@@ -124,15 +126,15 @@ public class menu {
 			} else {
 			    if (user.getRole().getDescription().equals("Patient")) {
 			        Patient patient = patientManager.getPatientByEmail(user.getEmail()); 
-			        patiententUI.setCurrentPatient(patient);                        
+			        patientUI.setCurrentPatient(patient);                        
 			        patientMenu(user.getEmail(), user.getRole());
 			    } else if (user.getRole().getDescription().equals("Clinician")) {
 			        Clinician clinician = clinicianManager.getClinicianByEmail(user.getEmail()); 
 			        clinicianUI.setCurrentClinician(clinician);
 			        clinicianMenu(user.getEmail(), user.getRole());
 			    } else if (user.getRole().getDescription().equals("Supplier")) {
-			        //Supplier supplier = supplierManager.getSuppliertByEmail(user.getEmail()); 
-			        //supplierUI.setCurrentSupplier(supplier);
+			        Supplier supplier = supplierManager.getSupplierByEmail(user.getEmail()); 
+			        supplierUI.setCurrentSupplier(supplier);
 			        supplierMenu(user.getEmail(), user.getRole());
 			    }
 			    System.out.println("Login Successful!");
@@ -178,10 +180,10 @@ public class menu {
 	        	}
 
 	        	if (userType == 1) {
-	        	    patiententUI.addPatient(email);  // add patient first
+	        		patientUI.addPatient(email);  // add patient first
 	        	    Patient patient = patientManager.getPatientByEmail(email); // now fetch the newly added patient
 	        	    if (patient != null) {
-	        	        patiententUI.setCurrentPatient(patient); // set current patient properly
+	        	    	patientUI.setCurrentPatient(patient); // set current patient properly
 	        	        patientMenu(email, role);
 	        	    } else {
 	        	        System.out.println("Error: Could not find newly added patient.");
@@ -217,7 +219,7 @@ public class menu {
 					profileMenu(email, role);
 					break;
 				case 2:
-					//appointmentMenu(email, role);
+					appointmentMenu(email, role);
 					break;
 				case 3:
 	                currentUser = null;
@@ -248,7 +250,7 @@ public class menu {
 					profileMenu(email, role);
 					break;
 				case 2:
-					//appointmentMenu(email, role);
+					appointmentMenu(email, role);
 					break;
 				case 3:
 					treatmentMenu(email, role);
@@ -316,10 +318,10 @@ public class menu {
 			    
 		        if ("Patient".equalsIgnoreCase(role.getDescription())) {
 		            if (choice == 1) {
-		            	patiententUI.modifyPatient();
+		            	patientUI.modifyPatient();
 		            }
 		            else if (choice == 2) {
-		            	patiententUI.deletePatient();
+		            	patientUI.deletePatient();
 		                currentUser = null; 
 		            }
 		        } else if ("Clinician".equalsIgnoreCase(role.getDescription())) {
@@ -350,12 +352,12 @@ public class menu {
 	        }
 	}
 
-/*
+
     public static void appointmentMenu(String email, Role role) throws ParseException { //Clinicia, Patient
 		int choice = 0;
 
 			do {
-				System.out.println("Appointment menu");
+				System.out.println("\nAppointment menu");
 		    	System.out.println("Choose an option:");
 		        System.out.println("1. Book a new Appointment");
 		        System.out.println("2. Modify an Appointment");
@@ -375,10 +377,7 @@ public class menu {
 	                case 1:
 	                	appointmentUI.addAppointment(email, role);
 	                    break;
-	                if (appointmentUI.getListOfAppointments(email, role).isEmpty()) {
-	                        System.out.println("There aren't any appointments to show.");
-	                } else {
-	                	case 2:
+	                case 2:
 	                	//appointmentUI.modifyAppointment();
 	                	if ("Patient".equalsIgnoreCase(role.getDescription())) {
 		                	//appointmentUI.addPatientAppointment();
@@ -388,27 +387,15 @@ public class menu {
 	                	//appointmentUI.modifyAppointment();
 	                    break;
 	                case 3:
-	                	if ("Patient".equalsIgnoreCase(role.getDescription())) {
-		                	//appointmentUI.deleteAppointment();
-	        	        } else if ("Clinician".equalsIgnoreCase(role.getDescription())) {
-		                	//appointmentUI.deleteAppointment();
-	        	        }
-	                	appointmentUI.deleteAppointment(); //idk if i should do one for the specific user
+	                	appointmentUI.deleteAppointment(email, role);
 	                    break;
 	                case 4:
-	                	if ("Patient".equalsIgnoreCase(role.getDescription())) {
-		                	//appointmentUI.viewPatientAppointmentsList();
-		                	appointmentUI.viewAppointmentsList();
-	        	        } else if ("Clinician".equalsIgnoreCase(role.getDescription())) {
-		                	//appointmentUI.viewClinicianAppointmentsList();
-	        	        }
-	                	appointmentUI.viewAppointmentsList(); //idk if i should do one for the specific user
+	                	appointmentUI.viewAppointmentsList(email, role);
 	                    break;
-	                }
 	                default:
 	                    System.out.println("Invalid choice");
 	                    appointmentMenu(email, role);
-	            }
+	                }
 	    	}while(choice !=5);
         	if ("Patient".equalsIgnoreCase(role.getDescription())) {
             	patientMenu(email, role);
@@ -417,13 +404,13 @@ public class menu {
 	        }
     }
    
-    */
+    
 
     public static void treatmentMenu(String email, Role role) { //clinician
 		int choice = 0;
 
 			do {
-				System.out.println("Treatment menu");
+				System.out.println("\nTreatment menu");
 		        System.out.println("Choose an option:");
 		        System.out.println("1. Create a new Treatment");
 		        System.out.println("2. Remove a Treatment");
@@ -464,7 +451,7 @@ public class menu {
     public static void materialMenu(String email, Role role) { //supplier
 		int choice = 0;
 		do {
-			System.out.println("Material menu");
+			System.out.println("\nMaterial menu");
 		    System.out.println("Choose an option:");
 		    System.out.println("1. Add new Material");
 		    System.out.println("2. Modify a Material");

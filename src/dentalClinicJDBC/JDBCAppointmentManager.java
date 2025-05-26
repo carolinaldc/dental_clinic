@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dentalClinicIFaces.AppointmentManager;
+import dentalClinicJPA.JPAUserManager;
 import dentalClinicPOJOS.Patient;
 import dentalClinicPOJOS.Role;
 import dentalClinicPOJOS.Appointment;
@@ -75,37 +76,31 @@ public class JDBCAppointmentManager implements AppointmentManager {
 		 
 	}
 	
-	public List <Appointment> getListOfAppointments(){
-		 List<Appointment> appointments = new ArrayList<>();
-	        try {
-	            Statement stmt = manager.getConnection().createStatement();
-	            ResultSet rs = stmt.executeQuery("SELECT * FROM Appointments");
-	            JDBCTreatmentManager jdbcTreatmentManager = new JDBCTreatmentManager(manager);
-	            JDBCPatientManager jdbcPatientManager = new JDBCPatientManager(manager);
-	            JDBCClinicianManager jdbcClinicianManager = new JDBCClinicianManager(manager);
-
-	            while (rs.next()) {
-	                Integer appointment_id = rs.getInt("appointment_id");
-	                Date date = rs.getDate("date");
-	                String comment = rs.getString("comment");
-	                Integer patient_id = rs.getInt("patient_id");
-	                Integer treatment_id = rs.getInt("treatment_id");
-	                Integer clinician_id = rs.getInt("clinician_id");
-
-	                Patient patient = jdbcPatientManager.getPatientById(patient_id);
-	                Treatment treatment = jdbcTreatmentManager.getTreatmentById(treatment_id);
-	                Clinician clinician = jdbcClinicianManager.getClinicianById(clinician_id);
-
-	                Appointment appt = new Appointment(date, comment, patient, treatment, clinician);
-	                appt.setAppointment_id(appointment_id);
-	                appointments.add(appt);
+	@Override
+	public List<Appointment> getListOfAppointments(String email, Role role) {
+	    List<Appointment> appointments = new ArrayList<>();
+	    
+	    try {
+	        JDBCPatientManager patientManager = new JDBCPatientManager(manager);
+	        JDBCClinicianManager clinicianManager = new JDBCClinicianManager(manager);
+	        
+	        if (role.getDescription().equalsIgnoreCase("Patient")) {
+	            Patient patient = patientManager.getPatientByEmail(email);
+	            if (patient != null) {
+	                appointments = getAppointmentOfPatient(patient.getPatient_id());
 	            }
-	            rs.close();
-	            stmt.close();
-	        } catch (Exception e) {
-	            e.printStackTrace();
+	        } else if (role.getDescription().equalsIgnoreCase("Clinician")) {
+	            Clinician clinician = clinicianManager.getClinicianByEmail(email);
+	            if (clinician != null) {
+	                appointments = getAppointmentOfClinician(clinician.getClinician_id());
+	            }
 	        }
-	        return appointments;
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return appointments;
 	}
 	
 	public List <Appointment> getAppointmentOfPatient (Integer patient_id){
@@ -215,12 +210,41 @@ public class JDBCAppointmentManager implements AppointmentManager {
 		return appointments;
 	}
 
-	@Override
-	public List<Appointment> getgetListOfAppointments(String emial, Role role) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
+	/*
+	public List <Appointment> getListOfAppointments(){
+		 List<Appointment> appointments = new ArrayList<>();
+	        try {
+	            Statement stmt = manager.getConnection().createStatement();
+	            ResultSet rs = stmt.executeQuery("SELECT * FROM Appointments");
+	            JDBCTreatmentManager jdbcTreatmentManager = new JDBCTreatmentManager(manager);
+	            JDBCPatientManager jdbcPatientManager = new JDBCPatientManager(manager);
+	            JDBCClinicianManager jdbcClinicianManager = new JDBCClinicianManager(manager);
+
+	            while (rs.next()) {
+	                Integer appointment_id = rs.getInt("appointment_id");
+	                Date date = rs.getDate("date");
+	                String comment = rs.getString("comment");
+	                Integer patient_id = rs.getInt("patient_id");
+	                Integer treatment_id = rs.getInt("treatment_id");
+	                Integer clinician_id = rs.getInt("clinician_id");
+
+	                Patient patient = jdbcPatientManager.getPatientById(patient_id);
+	                Treatment treatment = jdbcTreatmentManager.getTreatmentById(treatment_id);
+	                Clinician clinician = jdbcClinicianManager.getClinicianById(clinician_id);
+
+	                Appointment appt = new Appointment(date, comment, patient, treatment, clinician);
+	                appt.setAppointment_id(appointment_id);
+	                appointments.add(appt);
+	            }
+	            rs.close();
+	            stmt.close();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        return appointments;
+	}
+	*/
 	
 	//TODO: REVISAR
 	/*

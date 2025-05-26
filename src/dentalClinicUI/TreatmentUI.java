@@ -18,15 +18,13 @@ public class TreatmentUI {
     private MaterialUI materialUI;
     private BufferedReader reader;
 
-    public TreatmentUI(TreatmentManager treatmentManager, MaterialManager materialManager, BufferedReader reader) {
+    public TreatmentUI(TreatmentManager treatmentManager, MaterialManager materialManager, MaterialUI materialUI, BufferedReader reader) {
         this.treatmentManager = treatmentManager;
         this.materialManager = materialManager;
+        this.materialUI = materialUI;
         this.reader = reader;
     }
 
-    public TreatmentUI(TreatmentManager treatmentManager2) {
-		// TODO Auto-generated constructor stub
-	}
 
 	public void addTreatment() {
         try {
@@ -41,7 +39,13 @@ public class TreatmentUI {
 
             List<Material> selectedMaterials = new ArrayList<>();
 
-            materialUI.viewMaterialsList();
+            boolean materialsExist = materialUI.viewMaterialsList();
+            if(!materialsExist) {
+                System.out.println("Create materials (with suppliers) before creating a treatment");
+            	selectedMaterials = null;
+            	return;
+            }
+            
             System.out.println("Enter the IDs of the materials to use (comma separated), or leave blank to skip:");
             String input = reader.readLine();
 
@@ -163,18 +167,22 @@ public class TreatmentUI {
     
     
 
-    public void viewTreatmentsList() {
+    public boolean viewTreatmentsList() {
         try {
-           List<Treatment> treatments = treatmentManager.getListOfTreatments();
-           if (treatments != null && !treatments.isEmpty()) {
+            List<Treatment> treatments = treatmentManager.getListOfTreatments();
+            if (treatments != null && !treatments.isEmpty()) {
                 for (Treatment treatment : treatments) {
                     System.out.println(treatment);
                 }
+                return true; 
             } else {
-                System.out.println("No treatments found.");
+                System.out.println("There aren't any treatments created. Create one before booking an appointment.");
+                return false; 
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-    }    
+    }
+   
 }

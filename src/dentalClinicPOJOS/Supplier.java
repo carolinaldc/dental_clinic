@@ -33,6 +33,15 @@ public class Supplier implements Serializable {
 		super();
 	}
 
+	public Supplier(Integer supplier_id, String supplierName, Integer phone, String email, List<Material> material) {
+		super();
+		this.supplier_id = supplier_id;
+		this.supplierName = supplierName;
+		this.phone = phone;
+		this.email = email;
+		this.material = material;
+	}
+	
 	public Supplier(String supplierName, Integer phone, String email, List<Material> material) {
 		super();
 		this.supplierName = supplierName;
@@ -41,13 +50,16 @@ public class Supplier implements Serializable {
 		this.material = material;
 	}
 	
+	
 	public Supplier(Integer supplier_id, String supplierName, Integer phone, String email) {
 		super();
+		this.supplier_id = supplier_id;
 		this.supplierName = supplierName;
 		this.phone = phone;
 		this.email = email;
-		
 	}
+	
+	
 
 	public Integer getSupplier_id() {
 		return supplier_id;
