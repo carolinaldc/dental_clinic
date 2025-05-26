@@ -142,7 +142,7 @@ public class Clinician implements Serializable {
 
 		@Override
 		public String toString() {
-			return "Clinician id: " + clinician_id + "[ Name: " + name + ", Surname: " + surname + ", Specialty: " + specialty + "]";
+			return "Clinician id: " + clinician_id + " -  Name: " + name + ", Surname: " + surname + ", Specialty: " + specialty;
 		}
 		/*
 		 * public String toString() {
