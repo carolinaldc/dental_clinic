@@ -442,6 +442,9 @@ public class menu {
 	                case 4:
 	                	treatmentUI.viewTreatmentsList();
 	                    break;
+	                case 5:
+	                	//goes to the while
+	                    break;
 	                default:
 	                    System.out.println("Invalid choice");
 	                    treatmentMenu(email, role);
