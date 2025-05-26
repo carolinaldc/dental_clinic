@@ -8,6 +8,7 @@ import java.util.List;
 import dentalClinicIFaces.MaterialManager;
 import dentalClinicIFaces.SupplierManager;
 import dentalClinicIFaces.TreatmentManager;
+import dentalClinicPOJOS.Appointment;
 import dentalClinicPOJOS.Material;
 import dentalClinicPOJOS.Supplier;
 import dentalClinicPOJOS.Treatment;
@@ -21,10 +22,10 @@ public class MaterialUI {
     private BufferedReader reader;
 	
     public MaterialUI(MaterialManager materialManager, BufferedReader reader, Supplier supplier) {
-    	this.materialManager = materialManager;
-    	this.reader = reader;
-    	this.currentSupplier = currentSupplier;
-	}
+        this.materialManager = materialManager;
+        this.reader = reader;
+        this.currentSupplier = supplier;
+    }
 
     public void setCurrentSupplier(Supplier supplier) {
         this.currentSupplier = supplier;
@@ -37,33 +38,9 @@ public class MaterialUI {
 
             Supplier supplier = currentSupplier;
 
+            List<Treatment> treatments = new ArrayList<>(); //adds treatments later on
 
-            List<Treatment> selectedTreatments = new ArrayList<>();
-
-           
-            //treatmentUI.viewTreatmentsList();
-            //System.out.println("Enter the IDs of the materials to use (comma separated), or leave blank to skip:");
-            //String input = reader.readLine();
-
-            //if (!input.trim().isEmpty()) {
-             //   String[] ids = input.split(",");
-              //  for (String idStr : ids) {
-              //      try {
-             //           int id = Integer.parseInt(idStr.trim());
-                //        Treatment treatment = treatmentManager.getTreatmentById(id);
-                 //       if (treatment != null) {
-              //          	selectedTreatments.add(treatment);
-                //        } else {
-             //               System.out.println("No treatments found with ID: " + id);
-               //         }
-              //      } catch (NumberFormatException e) {
-              //          System.out.println("Invalid ID format: " + idStr.trim());
-              //      }
-             //   }
-            //}
-
-
-            Material material = new Material(name, supplier, selectedTreatments);
+            Material material = new Material(name, supplier, treatments);
             materialManager.addMaterial(material);
 
             System.out.println("Material added successfully.");
@@ -79,7 +56,7 @@ public class MaterialUI {
 	
     public void deleteMaterial() {
         try {
-        	viewMaterialsList();
+        	viewMaterialsList(); //you can see the materials of the supplier that logged in, not the entire materials list
             System.out.println("Enter ID of material to delete:");
             int id = Integer.parseInt(reader.readLine());
 
@@ -102,25 +79,20 @@ public class MaterialUI {
     		try {
     			System.out.println("What do you want to modify: ");
 	            System.out.println("1. name ");
-	            System.out.println("2. supplier "); //do i show a list of suppliers? no right? so then i just make up an ID??
-	            System.out.println("3. treatments"); 
+	            System.out.println("2. treatments (this doesnt work YET!!)"); 
 
 
 				choice = Integer.parseInt(reader.readLine());
 
 				switch (choice) {
 					case 1:
-			            System.out.println("Enter new name for the Material:");
-			            String newName = reader.readLine();
-			            materialToModify.setName(newName);
+						System.out.println("Enter new name (" + materialToModify.getName() + "):");
+	                    String newName = reader.readLine();
+	                    if (!newName.trim().isEmpty()) {
+	                        materialManager.updateMaterial(materialToModify.getMaterials_id(), "name", newName);
+	                    }
 						break;
 					case 2:
-			            System.out.println("Enter new supplier for the Material:");
-			            int supplier_id = Integer.parseInt(reader.readLine());
-			            Supplier supplier = supplierManager.getSupplierByid(supplier_id);
-			            materialToModify.setSupplier(supplier);
-						break;
-					case 3:
 						List<Treatment> selectedTreatments = new ArrayList<>();
 
 			            treatmentUI.viewTreatmentsList();
@@ -156,7 +128,7 @@ public class MaterialUI {
 	
     public boolean viewMaterialsList() {
         try {
-            List<Material> materials = materialManager.getListOfMaterials();
+        	List<Material> materials = materialManager.getListOfMaterials(currentSupplier.getSupplier_id());
             if (materials != null && !materials.isEmpty()) {
                 for (Material material : materials) {
                     System.out.println(material);

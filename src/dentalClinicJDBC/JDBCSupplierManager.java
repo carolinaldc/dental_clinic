@@ -92,7 +92,7 @@ public class JDBCSupplierManager implements SupplierManager {
 				String supplierName = rs.getString("supplierName");
 				Integer phone = rs.getInt("phone");
 				String email = rs.getString("email");
-				List<Material> materials = jdbcMaterialManager.getMaterialsOfSupplier(supplier_id);
+				List<Material> materials = jdbcMaterialManager.getListOfMaterials(supplier_id);
 				rs.close();
 				stmt.close();
 				
@@ -120,7 +120,7 @@ public class JDBCSupplierManager implements SupplierManager {
 		            String supplierName = rs.getString("supplierName");
 		            Integer phone = rs.getInt("phone");
 
-		            List<Material> materials = jdbcMaterialManager.getMaterialsOfSupplier(supplier_id);
+		            List<Material> materials = jdbcMaterialManager.getListOfMaterials(supplier_id);
 
 		            supplier = new Supplier(supplier_id, supplierName, phone, email, materials);
 		        }

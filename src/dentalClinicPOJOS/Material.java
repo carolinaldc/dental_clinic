@@ -27,6 +27,7 @@ public class Material implements Serializable{
 	@XmlTransient
 	private List<Treatment> treatments;
 	
+	
 	public Material() {
 		super();
 	}
@@ -42,6 +43,14 @@ public class Material implements Serializable{
 		super();
 		this.name = name;
 		this.supplier = supplier;
+	}
+	
+	public Material(Integer materials_id, String name, List<Treatment> treatments) {
+		super();
+		this.materials_id = materials_id;
+		this.name = name;
+		this.supplier = supplier;
+		this.treatments= treatments;
 	}
 
 	public Integer getMaterials_id() {
@@ -96,6 +105,11 @@ public class Material implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Material [name=" + name + ", supplier=" + supplier + ", treatments=" + treatments + "]";
+		return "Material [id: " + materials_id + "name=" + name + "]";
 	} 
+	/*
+	 * public String toString() {
+		return "Material [name=" + name + ", supplier=" + supplier + ", treatments=" + treatments + "]";
+	}
+	 */
 }

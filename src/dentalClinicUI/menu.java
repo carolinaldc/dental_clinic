@@ -182,10 +182,10 @@ public class menu {
 	        	}
 
 	        	if (userType == 1) {
-	        		patientUI.addPatient(email);  // add patient first
-	        	    Patient patient = patientManager.getPatientByEmail(email); // now fetch the newly added patient
+	        		patientUI.addPatient(email); 
+	        	    Patient patient = patientManager.getPatientByEmail(email);
 	        	    if (patient != null) {
-	        	    	patientUI.setCurrentPatient(patient); // set current patient properly
+	        	    	patientUI.setCurrentPatient(patient);
 	        	        patientMenu(email, role);
 	        	    } else {
 	        	        System.out.println("Error: Could not find newly added patient.");
