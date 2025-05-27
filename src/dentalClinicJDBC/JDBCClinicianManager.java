@@ -97,6 +97,7 @@ public class JDBCClinicianManager implements ClinicianManager {
 	            List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfClinician(clinician_id);
 
 	            clinician = new Clinician(clinician_id, name, surname, specialty, phone, email, appointments);
+	            clinician.setEmail(email);
 	        }
 	        rs.close();
 	    } catch (SQLException e) {
@@ -106,35 +107,35 @@ public class JDBCClinicianManager implements ClinicianManager {
 	}
    	
 	public Clinician getClinicianById(Integer clinician_id) {
-	    Clinician clinician = null;
-
-	    try {
-	        Statement stmt = manager.getConnection().createStatement();
-	        String sql =  "SELECT * FROM Clinicians WHERE clinician_id =" + clinician_id;
-
-	        ResultSet rs = stmt.executeQuery(sql);
-
-	        if (rs.next()) {
-	            String name = rs.getString("name");
-	            String surname = rs.getString("surname");
-	            String specialty = rs.getString("specialty");
-	            Integer phone = rs.getInt("phone");
-	            String email = rs.getString("email");
-
-	            clinician = new Clinician(name, surname, specialty, phone, email, new ArrayList<>());
-	            clinician.setClinician_id(clinician_id);
-	        }
-
-	        rs.close();
-	        stmt.close();
-
-	    } catch(Exception e) {
-	        e.printStackTrace();
-	    }
-
-	    return clinician;
+		
+		Clinician clinician = null;
+		manager = new JDBCManager();
+		JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
+		
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql =  "SELECT * FROM Clinicians WHERE clinician_id =" + clinician_id;
+			
+			ResultSet rs= stmt.executeQuery(sql);
+			
+			String name = rs.getString("name");
+			String surname = rs.getString("surname");
+			String specialty = rs.getString("specialty");
+			Integer phone = rs.getInt("phone");
+			String email = rs.getString("email");
+			List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfClinician(clinician_id);
+			rs.close();
+			stmt.close();
+			
+			clinician = new Clinician(name, surname,specialty, phone, email, appointments);
+			clinician.setClinician_id(clinician_id);
+		}catch(Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return clinician;
 	}
-
 	
 	public List<Clinician> getListOfClinicians(){
 		List<Clinician> clinicians = new ArrayList<Clinician>();
@@ -144,7 +145,8 @@ public class JDBCClinicianManager implements ClinicianManager {
 			String sql = "Select * FROM clinicians";
 			ResultSet rs = stmt.executeQuery(sql);
 			
-			while(rs.next()){
+			while(rs.next())
+			{
 				Integer clinician_id = rs.getInt("clinician_id");
 				String name= rs.getString("name");
 				String surname = rs.getString("surname");
@@ -154,16 +156,15 @@ public class JDBCClinicianManager implements ClinicianManager {
 				
 				List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfClinician(clinician_id);
 				
-				Clinician c= new Clinician(clinician_id, name, surname, specialty, phone, email, appointments);
+				Clinician c= new Clinician(clinician_id, name,surname,specialty, phone,email,appointments);
 				clinicians.add(c);
 			}
 
 			rs.close();
 			stmt.close();
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+		}catch(Exception e)
+		{e.printStackTrace();}
+		
 		return clinicians;
 	}
 	
@@ -323,5 +324,3 @@ public class JDBCClinicianManager implements ClinicianManager {
     */
         
 }
-
-

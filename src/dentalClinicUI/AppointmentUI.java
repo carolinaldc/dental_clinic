@@ -100,7 +100,7 @@ public class AppointmentUI {
                 return;
             }
 
-            treatmentUI.viewTreatmentsList();
+            //treatmentUI.viewTreatmentsList();
             if (!treatmentUI.viewTreatmentsList()) {
                 return;
             }
