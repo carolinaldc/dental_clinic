@@ -123,6 +123,14 @@ public class JPAUserManager implements UserManager{
 		
 	}
 	
+	public void deleteUser (User u) 
+	{
+		entityManager.getTransaction().begin();
+		entityManager.remove(u);
+		entityManager.getTransaction().commit();
+	}
+
+	
 	
 	
 	
