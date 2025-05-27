@@ -77,47 +77,11 @@ public class MaterialUI {
             Material materialToModify = materialManager.getMaterialByid(materilId);
             int choice=0;
     		try {
-    			System.out.println("What do you want to modify: ");
-	            System.out.println("1. name ");
-	            System.out.println("2. treatments (this doesnt work YET!!)"); 
-
-
-				choice = Integer.parseInt(reader.readLine());
-
-				switch (choice) {
-					case 1:
-						System.out.println("Enter new name (" + materialToModify.getName() + "):");
-	                    String newName = reader.readLine();
-	                    if (!newName.trim().isEmpty()) {
-	                        materialManager.updateMaterial(materialToModify.getMaterials_id(), "name", newName);
-	                    }
-						break;
-					case 2:
-						List<Treatment> selectedTreatments = new ArrayList<>();
-
-			            treatmentUI.viewTreatmentsList();
-			            System.out.println("Enter the IDs of the materials to use (comma separated), or leave blank to skip:");
-			            String input = reader.readLine();
-
-			            if (!input.trim().isEmpty()) {
-			                String[] ids = input.split(",");
-			                for (String idStr : ids) {
-			                    try {
-			                        int id = Integer.parseInt(idStr.trim());
-			                        Treatment treatment = treatmentManager.getTreatmentById(id);
-			                        if (treatment != null) {
-			                        	selectedTreatments.add(treatment);
-			                        } else {
-			                            System.out.println("No treatments found with ID: " + id);
-			                        }
-			                    } catch (NumberFormatException e) {
-			                        System.out.println("Invalid ID format: " + idStr.trim());
-			                    }
-			                }
-			            }
-			            materialToModify.setTreatments(selectedTreatments);
-						break;
-				}
+    			System.out.println("Enter new name (" + materialToModify.getName() + "):");
+	            String newName = reader.readLine();
+	            if (!newName.trim().isEmpty()) {
+	            	materialManager.updateMaterial(materialToModify.getMaterials_id(), "name", newName);
+	            }	
     		}catch(Exception e){
     			e.printStackTrace();
     		}
