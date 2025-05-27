@@ -32,6 +32,14 @@ public class Material implements Serializable{
 		super();
 	}
 
+	public Material(Integer materials_id, String name, List<Treatment> treatments) {
+		super();
+		this.materials_id = materials_id;
+		this.name = name;
+		this.supplier = supplier;
+		this.treatments= treatments;
+	}
+	
 	public Material(String name, Supplier supplier, List<Treatment> treatments) {
 		super();
 		this.name = name;
@@ -44,14 +52,7 @@ public class Material implements Serializable{
 		this.name = name;
 		this.supplier = supplier;
 	}
-	
-	public Material(Integer materials_id, String name, List<Treatment> treatments) {
-		super();
-		this.materials_id = materials_id;
-		this.name = name;
-		this.supplier = supplier;
-		this.treatments= treatments;
-	}
+
 
 	public Integer getMaterials_id() {
 		return materials_id;
@@ -105,11 +106,6 @@ public class Material implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Material id: " + materials_id + "  - Name: " + name;
-	} 
-	/*
-	 * public String toString() {
-		return "Material [name=" + name + ", supplier=" + supplier + ", treatments=" + treatments + "]";
+		return "Material [id: " + materials_id + ", name=" + name + ", supplier=" + supplier + ", treatments=" + treatments + "]";
 	}
-	 */
 }

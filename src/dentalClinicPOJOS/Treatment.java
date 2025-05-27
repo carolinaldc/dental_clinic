@@ -18,7 +18,7 @@ public class Treatment implements Serializable {
 	public Treatment() {
 		super();
 	}
-
+	
 	public Treatment(String name, String description, Integer price, List<Appointment> appointments,
 			List<Material> materials) {
 		super();
@@ -98,12 +98,7 @@ public class Treatment implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Treatment id: " + treatment_id + "  - Name: " + name + ", Description: " + description + ", Price: " + price ;
-	} 
-	/*
-	 * public String toString() {
-		return "Treatment [name=" + name + ", description=" + description + ", price=" + price + ", appointments="
+		return "Treatment [id: " + treatment_id + "name=" + name + ", description=" + description + ", price=" + price + ", appointments="
 				+ appointments + ", materials=" + materials + "]";
 	}
-	 */
 }
