@@ -81,7 +81,23 @@ public class JDBCMaterialManager implements MaterialManager {
         }
     }
 
+/*
+    public void assignMaterialToSupplier(int materialId, int supplierId) {
+        String sql = "UPDATE Materials SET supplier_id = ? WHERE material_id = ?";
 
+        try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+            ps.setInt(1, supplierId);
+            ps.setInt(2, materialId);
+            ps.executeUpdate();
+            System.out.println("Material assigned to supplier successfully.");
+        } catch (SQLException e) {
+            System.out.println("Error assigning material to supplier.");
+            e.printStackTrace();
+        }
+    }
+    */
+
+    
 	public void deleteMaterial(Integer material_id) {
 		
 		String sql = "DELETE FROM Materials WHERE materials_id = ? "; 
@@ -220,6 +236,7 @@ public class JDBCMaterialManager implements MaterialManager {
 			    Supplier supplier = jdbcSupplierManager.getSupplierByid(supplier_id);
 			    String name = rs.getString("name");
 			    material = new Material(name, supplier);
+			    material.setMaterials_id(material_id);
 			}
 			rs.close();
 			stmt.close();

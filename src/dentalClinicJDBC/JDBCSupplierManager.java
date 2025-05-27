@@ -2,6 +2,7 @@ package dentalClinicJDBC;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import dentalClinicIFaces.SupplierManager;
@@ -77,6 +78,25 @@ public class JDBCSupplierManager implements SupplierManager {
 			
 		}
 
+		public void updateSupplier(Integer supplier_id, String fieldName, Object value) {
+		    List<String> allowedFields = Arrays.asList("name", "phone", "materials");
+
+		    if (!allowedFields.contains(fieldName)) {
+		        throw new IllegalArgumentException("Invalid field name: " + fieldName);
+		    }
+
+		    String sql = "UPDATE Suppliers SET " + fieldName + " = ? WHERE supplier_id = ?";
+
+		    try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+		        ps.setObject(1, value);
+		        ps.setInt(2, supplier_id);
+		        ps.executeUpdate();
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		}
+
+		
 		public Supplier getSupplierByid(Integer supplier_id) {
 			
 			Supplier supplier = null;
