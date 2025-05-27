@@ -145,9 +145,6 @@ public class AppointmentUI {
         }
     }
 
-	
-
-
     
     public boolean viewAppointmentsList(String email, Role role) {
         try {

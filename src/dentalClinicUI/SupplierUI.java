@@ -49,30 +49,6 @@ public class SupplierUI {
 
 
             List<Material> materials = new ArrayList<>(); //add materials later on
-
-            /*
-            materialUI.viewMaterialsList();
-            System.out.println("Enter the IDs of the materials to use (comma separated), or leave blank to skip:");
-            String input = reader.readLine();
-
-            if (!input.trim().isEmpty()) {
-                String[] ids = input.split(",");
-                for (String idStr : ids) {
-                    try {
-                        int id = Integer.parseInt(idStr.trim());
-                        Material material = materialManager.getMaterialByid(id);
-                        if (material != null) {
-                            selectedMaterials.add(material);
-                        } else {
-                            System.out.println("No material found with ID: " + id);
-                        }
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid ID format: " + idStr.trim());
-                    }
-                }
-            }
-            */
-
             
             Supplier supplier = new Supplier(supplierName, phone, email, materials);
             supplierManager.addSupplier(supplier);
@@ -114,6 +90,50 @@ public class SupplierUI {
         }
     }
 	
-	//modify Supplier
+		
+
+    
+    public void modifySupplier() {
+        if (currentSupplier == null) {
+            System.out.println("No supplier logged in.");
+            return;
+        }
+
+        try {
+        	Supplier supplier = currentSupplier;
+
+            System.out.println("What do you want to modify:");
+            System.out.println("1. Name");
+            System.out.println("2. Phone");
+
+            int choice = Integer.parseInt(reader.readLine());
+
+            switch (choice) {
+                case 1:
+                    System.out.println("Enter new name (" + supplier.getSupplierName() + "):");
+                    String newName = reader.readLine();
+                    if (!newName.trim().isEmpty()) {
+                    	supplierManager.updateSupplier(supplier.getSupplier_id(), "name", newName);
+                    }
+                    break;
+                case 2:
+                    System.out.println("Enter new phone (" + supplier.getPhone() + "):");
+                    String newPhone = reader.readLine();
+                    if (!newPhone.trim().isEmpty()) {
+                    	supplierManager.updateSupplier(supplier.getSupplier_id(), "phone", newPhone);
+                    }
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+                    return;
+            }
+            System.out.println("Supplier updated.");
+
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Error modifying the supplier");
+            e.printStackTrace();
+        }
+    }
+
 	
 }
