@@ -236,6 +236,7 @@ public class JDBCMaterialManager implements MaterialManager {
 			    Supplier supplier = jdbcSupplierManager.getSupplierByid(supplier_id);
 			    String name = rs.getString("name");
 			    material = new Material(name, supplier);
+			    material.setMaterials_id(material_id);
 			}
 			rs.close();
 			stmt.close();
