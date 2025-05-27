@@ -70,7 +70,7 @@ public class JDBCPatientManager implements PatientManager {
         try {
             
             PreparedStatement ps = manager.getConnection().prepareStatement(sql);
-            ps.setString(2, email);
+            ps.setString(1, email);
             ps.executeUpdate();
             ps.close();
             System.out.println("Patient record deleted.");

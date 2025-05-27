@@ -11,7 +11,7 @@ public class Appointment implements Serializable {
 
     private Integer appointment_id;
     private Date date;
-    private String comment;
+    private String comments;
     private Patient patient;
     private Treatment treatment;
     private Clinician clinician;
@@ -27,7 +27,7 @@ public class Appointment implements Serializable {
 		super();
 		this.appointment_id = appointment_id;
 		this.date = date;
-		this.comment = comment;
+		this.comments = comment;
 		this.patient = patient;
 		this.treatment = treatment;
 		this.clinician = clinician;
@@ -38,7 +38,7 @@ public class Appointment implements Serializable {
 			Clinician clinician) {
 		super();
 		this.date = date;
-		this.comment = comment;
+		this.comments = comment;
 		this.patient = patient;
 		this.treatment = treatment;
 		this.clinician = clinician;
@@ -65,12 +65,12 @@ public class Appointment implements Serializable {
 
 
 	public String getComment() {
-		return comment;
+		return comments;
 	}
 
 
 	public void setComment(String comment) {
-		this.comment = comment;
+		this.comments = comment;
 	}
 
 
@@ -106,7 +106,7 @@ public class Appointment implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(appointment_id, clinician, comment, date, patient, treatment);
+		return Objects.hash(appointment_id, clinician, comments, date, patient, treatment);
 	}
 
 
@@ -120,7 +120,7 @@ public class Appointment implements Serializable {
 			return false;
 		Appointment other = (Appointment) obj;
 		return Objects.equals(appointment_id, other.appointment_id) && Objects.equals(clinician, other.clinician)
-				&& Objects.equals(comment, other.comment) && Objects.equals(date, other.date)
+				&& Objects.equals(comments, other.comments) && Objects.equals(date, other.date)
 				&& Objects.equals(patient, other.patient) && Objects.equals(treatment, other.treatment);
 	}
 
@@ -128,7 +128,7 @@ public class Appointment implements Serializable {
 	//TODO: appointment_id
 	@Override
 	public String toString() {
-		return "Appointment [appointment_id=" + appointment_id + ", date=" + date + ", comment=" + comment
+		return "Appointment [appointment_id=" + appointment_id + ", date=" + date + ", comment=" + comments
 				+ ", patient=" + patient + ", treatment=" + treatment + ", clinician=" + clinician + "]";
 	}
 }
