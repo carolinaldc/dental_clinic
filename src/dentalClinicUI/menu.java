@@ -79,7 +79,7 @@ public class menu {
         materialUI = new MaterialUI(materialManager, reader, null); 
         treatmentUI = new TreatmentUI(treatmentManager, materialManager, materialUI, reader);
         appointmentUI = new AppointmentUI(appointmentManager, patientManager, clinicianManager, treatmentManager, reader);
-
+        jpaUserManager = new JPAUserManager();
 
 
 
@@ -326,10 +326,10 @@ public class menu {
 		            }
 		            else if (choice == 2) {
 		            	//delete user 
-		            	//User user = jpaUserManager.getUserByEmail(email);
-		            	if (currentUser != null) {
+		            	User user = jpaUserManager.getUserByEmail(email);
+		            	if (user != null) {
 		            		patientUI.deletePatientByEmail();
-		            		jpaUserManager.deleteUser(currentUser);
+		            		jpaUserManager.deleteUser(user);
 		            		currentUser = null;
 		            		System.out.println("Your profile has been deleted.");
 		            		return; // Exit the menu after deletion
