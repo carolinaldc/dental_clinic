@@ -75,7 +75,6 @@ public class JDBCAppointmentManager implements AppointmentManager {
 	        ps.setInt(5, clinician_id);
 	        ps.setInt(6, appointment_id);
 	        
-	        
 
 	        ps.executeUpdate();
 	        ps.close();
