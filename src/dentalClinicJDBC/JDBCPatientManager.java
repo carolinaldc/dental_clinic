@@ -46,7 +46,7 @@ public class JDBCPatientManager implements PatientManager {
    
 	public void deletePatient (Integer patient_id) {
 		
-		String sql = "DELETE FROM Patients WHERE patient_id=? "; 
+		String sql = "DELETE FROM Patients WHERE patient_id=? ";  
 		
 		try {
 			
@@ -62,6 +62,24 @@ public class JDBCPatientManager implements PatientManager {
 		}
 		
 	}
+	
+	
+	public void deletePatientByEmail(String email) {
+		String sql = "DELETE FROM Patients WHERE email = ?";
+		
+        try {
+            
+            PreparedStatement ps = manager.getConnection().prepareStatement(sql);
+            ps.setString(1, email);
+            ps.executeUpdate();
+            ps.close();
+            System.out.println("Patient record deleted.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Failed to delete patient.");
+        }
+    }
+	
 	/*
 	public void updatePatient(Integer patient_id) {
 		

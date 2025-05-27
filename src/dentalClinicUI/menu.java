@@ -51,6 +51,7 @@ public class menu {
     private static AppointmentManager appointmentManager;
     private static SupplierManager supplierManager;
     private static MaterialManager materialManager;
+    private static JPAUserManager jpaUserManager;
 
     private static TreatmentManager treatmentManager;
     private static UserManager usermanager;
@@ -324,8 +325,17 @@ public class menu {
 		            	patientUI.modifyPatient();
 		            }
 		            else if (choice == 2) {
-		            	patientUI.deletePatient();
-		                currentUser = null; 
+		            	//delete user 
+		            	//User user = jpaUserManager.getUserByEmail(email);
+		            	if (currentUser != null) {
+		            		patientUI.deletePatientByEmail();
+		            		jpaUserManager.deleteUser(currentUser);
+		            		currentUser = null;
+		            		System.out.println("Your profile has been deleted.");
+		            		return; // Exit the menu after deletion
+		            	}else {
+		                    System.out.println("Error: User not found.");
+		                }
 		            }
 		        } else if ("Clinician".equalsIgnoreCase(role.getDescription())) {
 		            if (choice == 1) {

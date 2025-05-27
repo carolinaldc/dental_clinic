@@ -14,5 +14,7 @@ public interface UserManager {
 	boolean newUser(User user);
 	Role getRole(Integer id);
 	User checkPassword(String mail, String password);
+	void deleteUser(User u);
+	User getUserByEmail(String email);
 
 }

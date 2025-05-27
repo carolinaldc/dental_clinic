@@ -69,6 +69,22 @@ public class PatientUI {
             e.printStackTrace();
         }
     }
+    
+    public void deletePatientByEmail() {
+        if (currentPatient == null) {
+            System.out.println("No patient logged in.");
+            return;
+        }
+        try {
+            patientManager.deletePatientByEmail(currentPatient.getEmail());
+            System.out.println("Your patient profile has been deleted.");
+            currentPatient = null;
+        } catch (Exception e) {
+            System.out.println("Error deleting patient.");
+            e.printStackTrace();
+        }
+    }
+    
 
     
     public void modifyPatient() {

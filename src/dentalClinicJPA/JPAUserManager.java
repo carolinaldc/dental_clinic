@@ -123,13 +123,31 @@ public class JPAUserManager implements UserManager{
 		
 	}
 	
+	
+	@Override
 	public void deleteUser (User u) 
 	{
 		entityManager.getTransaction().begin();
 		entityManager.remove(u);
 		entityManager.getTransaction().commit();
+		
+	}
+	
+	@Override
+	public User getUserByEmail(String email) {
+	    User user = null;
+	    Query query = entityManager.createNativeQuery("SELECT user FROM Users where email= ?", User.class);
+	    query.setParameter(1, email);
+	    try {
+			user = (User) query.getSingleResult();
+		}catch(NoResultException e) {}
+		
+		return user;
+	     
+	    
 	}
 
+	
 	
 	
 	
