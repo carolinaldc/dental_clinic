@@ -106,9 +106,9 @@ public class TreatmentUI {
                 int choice=0;
         		try {
         			System.out.println("What do you want to modify: ");
-    	            System.out.println("1. name"); 
-    	            System.out.println("2. description"); 
-    	            System.out.println("3. price");  
+    	            System.out.println("1. Name"); 
+    	            System.out.println("2. Description"); 
+    	            System.out.println("3. Price");  
     	            System.out.println("4. Materials");
 
 
