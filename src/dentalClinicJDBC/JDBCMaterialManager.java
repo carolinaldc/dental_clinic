@@ -68,7 +68,7 @@ public class JDBCMaterialManager implements MaterialManager {
 
 
     public void linkMaterialToTreatment(int materialId, int treatmentId) {
-        String sql = "INSERT INTO Treatment_materials (material_id, treatment_id) VALUES (?, ?)";
+        String sql = "INSERT INTO Treatment_materials (materials_id, treatment_id) VALUES (?, ?)";
         try {
             PreparedStatement ps = manager.getConnection().prepareStatement(sql);
             ps.setInt(1, materialId);
@@ -143,12 +143,12 @@ public class JDBCMaterialManager implements MaterialManager {
 		try {
 			
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT material_id FROM Treatment_materials WHERE treatment_id = " + treatment_id;
+			String sql = "SELECT materials_id FROM Treatment_materials WHERE treatment_id = " + treatment_id;
 			ResultSet rs= stmt.executeQuery(sql);
 			
 			while(rs.next()) {
 				
-				Integer material_id =rs.getInt("material_id");
+				Integer material_id =rs.getInt("materials_id");
 				Material material =  jdbcMaterialManager.getMaterialByid(material_id);
 	            materials.add(material);
 			}

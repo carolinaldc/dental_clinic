@@ -35,7 +35,7 @@ public class JDBCTreatmentManager implements TreatmentManager {
                 }
             }
 
-            String sqlMaterials = "INSERT INTO Material_Treatment (material_id, treatment_id) VALUES (?, ?)";
+            String sqlMaterials = "INSERT INTO Treatment_materials (materials_id, treatment_id) VALUES (?, ?)";
             try (PreparedStatement psMat = manager.getConnection().prepareStatement(sqlMaterials)) {
                 for (Material material : treatment.getMaterials()) {
                 	psMat.setInt(1, material.getMaterials_id()); 
@@ -146,7 +146,7 @@ public class JDBCTreatmentManager implements TreatmentManager {
 	    List<Treatment> treatments = new ArrayList<>();
 
 	    try {
-	        String sql = "SELECT treatment_id FROM Treatment_materials WHERE material_id = ?";
+	        String sql = "SELECT treatment_id FROM Treatment_materials WHERE materials_id = ?";
 	        PreparedStatement ps = manager.getConnection().prepareStatement(sql);
 	        ps.setInt(1, material_id);
 	        ResultSet rs = ps.executeQuery();
