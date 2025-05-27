@@ -126,41 +126,34 @@ public class JDBCPatientManager implements PatientManager {
 	}
 	
 	
-	public Patient getPatientById(Integer patient_id){
-		
-		Patient patient = null;
-		manager = new JDBCManager();
-		JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
-		JDBCMaterialManager jdbcMaterialManager = new JDBCMaterialManager(manager);
-		
-		try {
-			
-			Statement stmt = manager.getConnection().createStatement();
-			String sql =  "SELECT * FROM Patients WHERE patient_id =" + patient_id;
-			
-			ResultSet rs= stmt.executeQuery(sql);
-			
-			String name = rs.getString("name");
-			String surname = rs.getString("surname");
-			Date dob = rs.getDate("dob");
-			Integer phone = rs.getInt("phone");
-			String email = rs.getString("email");
-			Integer credit_card = rs.getInt("credit_card");
-			List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfPatient(patient_id);
-			
-			rs.close();
-			stmt.close();
-			
-			patient = new Patient(name, surname,dob, phone, email, credit_card, appointments);
-			
-		}catch(Exception e) 
-		{
-			e.printStackTrace();
-		}
-		
-		return patient;
-	
+	public Patient getPatientById(Integer patient_id) {
+	    Patient patient = null;
+
+	    try {
+	        Statement stmt = manager.getConnection().createStatement();
+	        String sql = "SELECT * FROM Patients WHERE patient_id = " + patient_id;
+
+	        ResultSet rs = stmt.executeQuery(sql);
+	        if (rs.next()) {
+	            String name = rs.getString("name");
+	            String surname = rs.getString("surname");
+	            Date dob = rs.getDate("dob");
+	            Integer phone = rs.getInt("phone");
+	            String email = rs.getString("email");
+	            Integer credit_card = rs.getInt("credit_card");
+
+	            patient = new Patient(name, surname, dob, phone, email, credit_card, new ArrayList<>());
+	            patient.setPatient_id(patient_id);
+	        }
+
+	        rs.close();
+	        stmt.close();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return patient;
 	}
+
 
 	@Override
 	public void updatePatient(Integer patient_id, String fieldName, Object value) {

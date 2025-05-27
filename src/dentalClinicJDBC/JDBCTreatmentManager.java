@@ -100,39 +100,36 @@ public class JDBCTreatmentManager implements TreatmentManager {
 	}
 	
 	
-	public Treatment getTreatmentById(Integer treatment_id){
-		
-		Treatment treatment = null;
-		manager = new JDBCManager();
-		JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
-		JDBCMaterialManager jdbcMaterialManager = new JDBCMaterialManager(manager);
-		
-		try {
-			
-			Statement stmt = manager.getConnection().createStatement();
-			String sql =  "SELECT * FROM Treatments WHERE treatment_id =" + treatment_id;
-			
-			ResultSet rs= stmt.executeQuery(sql);
-			
-			String name = rs.getString("name");
-			String description = rs.getString("description");
-			Integer price = rs.getInt("price");
-			List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfTreatments(treatment_id);
-			List<Material> materials = jdbcMaterialManager.getListOfTreatment_Materials(treatment_id);
-			
-			rs.close();
-			stmt.close();
-			
-			treatment = new Treatment(name, description,price, appointments, materials);
-			
-		}catch(Exception e) 
-		{
-			e.printStackTrace();
-		}
-		
-		return treatment;
-		
+	public Treatment getTreatmentById(Integer treatment_id) {
+	    Treatment treatment = null;
+	    JDBCMaterialManager jdbcMaterialManager = new JDBCMaterialManager(manager);
+
+	    try {
+	        Statement stmt = manager.getConnection().createStatement();
+	        String sql = "SELECT * FROM Treatments WHERE treatment_id = " + treatment_id;
+	        ResultSet rs = stmt.executeQuery(sql);
+
+	        if (rs.next()) {
+	            String name = rs.getString("name");
+	            String description = rs.getString("description");
+	            Integer price = rs.getInt("price");
+
+	            List<Appointment> appointments = new ArrayList<>();
+	            List<Material> materials = jdbcMaterialManager.getListOfTreatment_Materials(treatment_id);
+
+	            treatment = new Treatment(name, description, price, appointments, materials);
+	            treatment.setTreatment_id(treatment_id);
+	        }
+
+	        rs.close();
+	        stmt.close();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return treatment;
 	}
+
 	
 	public List<Treatment> getTreatmentsOfMaterial(Integer material_id) {
 	    List<Treatment> treatments = new ArrayList<>();

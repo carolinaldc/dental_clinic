@@ -22,9 +22,7 @@ public class Appointment implements Serializable {
 	}
 
 	
-
-	//TODO: appointment_id
-	public Appointment(Date date, String comment, Patient patient, Treatment treatment,
+	public Appointment(Integer appointment_id, Date date, String comment, Patient patient, Treatment treatment,
 			Clinician clinician) {
 		super();
 		this.appointment_id = appointment_id;
@@ -36,6 +34,15 @@ public class Appointment implements Serializable {
 	}
 
 
+	public Appointment(Date date, String comment, Patient patient, Treatment treatment,
+			Clinician clinician) {
+		super();
+		this.date = date;
+		this.comment = comment;
+		this.patient = patient;
+		this.treatment = treatment;
+		this.clinician = clinician;
+	}
 
 	public Integer getAppointment_id() {
 		return appointment_id;

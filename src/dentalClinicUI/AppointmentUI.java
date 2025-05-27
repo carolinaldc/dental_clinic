@@ -30,33 +30,25 @@ public class AppointmentUI {
 	private  ClinicianUI clinicianUI;
 	private  MaterialUI materialUI;
 
-
     private BufferedReader reader;
 
-    public AppointmentUI(AppointmentManager appointmentManager, PatientUI patientUI,
-                         ClinicianUI clinicianUI, BufferedReader reader) {
+    public AppointmentUI(AppointmentManager appointmentManager, PatientUI patientUI, ClinicianUI clinicianUI, BufferedReader reader) {
         this.appointmentManager = appointmentManager;
         this.patientUI = patientUI;
         this.clinicianUI = clinicianUI;
         this.reader = reader;
     }
 
-
-
-    public AppointmentUI(AppointmentManager appointmentManager,
-            PatientManager patientManager,
-            ClinicianManager clinicianManager,
-            TreatmentManager treatmentManager,
-            BufferedReader reader) {
-this.appointmentManager = appointmentManager;
-this.patientManager = patientManager;
-this.clinicianManager = clinicianManager;
-this.treatmentManager = treatmentManager;
-this.patientUI = new PatientUI(patientManager);
-this.clinicianUI = new ClinicianUI(clinicianManager);
-this.treatmentUI = new TreatmentUI(treatmentManager, materialManager, materialUI, reader);
-this.reader = reader;
-}
+    public AppointmentUI(AppointmentManager appointmentManager, PatientManager patientManager, ClinicianManager clinicianManager, TreatmentManager treatmentManager, BufferedReader reader) {
+		this.appointmentManager = appointmentManager;
+		this.patientManager = patientManager;
+		this.clinicianManager = clinicianManager;
+		this.treatmentManager = treatmentManager;
+		this.patientUI = new PatientUI(patientManager);
+		this.clinicianUI = new ClinicianUI(clinicianManager);
+		this.treatmentUI = new TreatmentUI(treatmentManager, materialManager, materialUI, reader);
+		this.reader = reader;
+    }
 
 
     
@@ -120,6 +112,7 @@ this.reader = reader;
                 System.out.println("Treatment not found with id: " + treatmentId);
                 return;
             }
+            
             
             Appointment appointment = new Appointment(date, comment, patient, treatment, clinician);
             appointmentManager.addAppointment(appointment);
