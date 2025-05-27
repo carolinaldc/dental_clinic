@@ -11,4 +11,5 @@ public interface SupplierManager {
 
 	public Supplier getSupplierByid(Integer supplier_id);
 	public List<Supplier> getListOfSuppliers();
+	public Supplier getSupplierByEmail(String email);
 }

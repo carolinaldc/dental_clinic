@@ -85,7 +85,7 @@ public class JDBCTreatmentManager implements TreatmentManager {
 	                Integer price = rs.getInt("price");
 
 	                List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfTreatments(id);
-	                List<Material> materials = jdbcMaterialManager.getMaterialsOfTreatment(id);
+	                List<Material> materials = jdbcMaterialManager.getListOfTreatment_Materials(id);
 
 	                Treatment treatment = new Treatment(name, description, price, appointments, materials);
 	                treatment.setTreatment_id(id);
@@ -118,12 +118,13 @@ public class JDBCTreatmentManager implements TreatmentManager {
 			String description = rs.getString("description");
 			Integer price = rs.getInt("price");
 			List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfTreatments(treatment_id);
-			List<Material> materials = jdbcMaterialManager.getMaterialsOfTreatment(treatment_id);
+			List<Material> materials = jdbcMaterialManager.getListOfTreatment_Materials(treatment_id);
 			
 			rs.close();
 			stmt.close();
 			
 			treatment = new Treatment(name, description,price, appointments, materials);
+			treatment.setTreatment_id(treatment_id);
 			
 		}catch(Exception e) 
 		{

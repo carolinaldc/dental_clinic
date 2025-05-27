@@ -11,7 +11,7 @@ import dentalClinicPOJOS.Material;
 import dentalClinicPOJOS.Supplier;
 import dentalClinicPOJOS.Treatment;
 
-public class JDBCSupplierManager {
+public class JDBCSupplierManager implements SupplierManager {
 	
 
 	    //private Connection c;
@@ -23,29 +23,26 @@ public class JDBCSupplierManager {
 	    }
 	    
 	    public void addSupplier(Supplier supplier) {
-	    	String sql = "INSERT INTO Suppliers ( supplierName , phone , email) VALUES (? , ? ,? ) "; 
+	    	String sql = "INSERT INTO Suppliers (supplierName , phone , email) VALUES (? , ? ,? ) "; 
 	    	
 	    	try {
 	    		PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
-	    		ps.setString (1 , supplier.getSupplierName ()); 
-	    		
+	    		ps.setString (1 ,supplier.getSupplierName ()); 
 	    		ps.setInt ( 2 , supplier.getPhone()); 
 	    		ps.setString(3, supplier.getEmail()); 
 	    		
-	    		
 	    		ps.executeUpdate(); 
 	    		ps.close();
-	    		
-	    		
 	    	}catch(SQLException e) {
 	    		e.printStackTrace(); 
 	    		
 	    	}
 	    	
 	    }
+	    
 		public void deleteSupplier(Integer supplier_id) {
 			
-			String sql = "DELETE FROM Suppliers WHERE id= ?"; 
+			String sql = "DELETE FROM Suppliers WHERE supplier_id= ?"; 
 			
 			try {
 				
@@ -62,13 +59,13 @@ public class JDBCSupplierManager {
 		}
 		public void updateSupplier(Integer supplier_id) {
 			
-			String sql = "UPDATE FROM Suppliers name = ? WHERE id = ?"; 
+			String sql = "UPDATE FROM Suppliers name = ? WHERE supplier_id = ?"; 
 			
 			try {
 				
 				PreparedStatement ps = manager.getConnection().prepareStatement (sql); 
-				ps.setString ( 1 , "UpdatedName"); 
-				ps.setInt ( 2 , supplier_id ); 
+				ps.setString (1, "UpdatedName"); 
+				ps.setInt (2, supplier_id ); 
 				
 				ps.executeUpdate(); 
 				ps.close(); 
@@ -95,11 +92,11 @@ public class JDBCSupplierManager {
 				String supplierName = rs.getString("supplierName");
 				Integer phone = rs.getInt("phone");
 				String email = rs.getString("email");
-				List<Material> materials = jdbcMaterialManager.getMaterialsOfSupplier(supplier_id);
+				List<Material> materials = jdbcMaterialManager.getListOfSupplier_Materials(supplier_id);
 				rs.close();
 				stmt.close();
 				
-				supplier = new Supplier(supplierName, phone,email, materials);
+				supplier = new Supplier(supplierName, phone, email, materials);
 			}catch(Exception e) 
 			{
 				e.printStackTrace();
@@ -108,6 +105,32 @@ public class JDBCSupplierManager {
 			return supplier;
 			
 		}
+		
+		public Supplier getSupplierByEmail(String email) {
+		    Supplier supplier = null;
+		    JDBCMaterialManager jdbcMaterialManager = new JDBCMaterialManager(manager);
+
+		    String sql = "SELECT * FROM Suppliers WHERE email = ?";
+		    try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+		        ps.setString(1, email);
+		        ResultSet rs = ps.executeQuery();
+
+		        if (rs.next()) {
+		            Integer supplier_id = rs.getInt("supplier_id");
+		            String supplierName = rs.getString("supplierName");
+		            Integer phone = rs.getInt("phone");
+
+		            List<Material> materials = jdbcMaterialManager.getListOfSupplier_Materials(supplier_id);
+
+		            supplier = new Supplier(supplier_id, supplierName, phone, email, materials);
+		        }
+		        rs.close();
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		    return supplier;
+		}
+
 		
 		public Supplier getSupplierOfMaterial(Integer material_id) {
 			Supplier suppliers = null;
@@ -156,7 +179,7 @@ public class JDBCSupplierManager {
 	                Integer phone = rs.getInt("phone");
 	                String email = rs.getString("email");
 
-	                List<Material> materials = jdbcMaterialManager.getMaterialsOfTreatment(supplier_id);
+	                List<Material> materials = jdbcMaterialManager.getListOfSupplier_Materials(supplier_id);
 
 	                Supplier supplier = new Supplier(supplier_id, supplierName, phone, email);
 	                supplier.setMaterial(materials);

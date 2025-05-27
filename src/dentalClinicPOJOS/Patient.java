@@ -144,9 +144,14 @@ public class Patient implements Serializable {
 				&& Objects.equals(phone, other.phone) && Objects.equals(surname, other.surname);
 	}
 
+	//when choosing a patient
+	public String toStringList() {
+		return "Patient [id=" + patient_id + "name=" + name + ", surname=" + surname + "]";
+	}
+	
 	@Override
 	public String toString() {
-		return "Patient [name=" + name + ", surname=" + surname + ", dob=" + dob + ", phone=" + phone + ", email="
+		return "Patient [id=" + patient_id + " name=" + name + ", surname=" + surname + ", dob=" + dob + ", phone=" + phone + ", email="
 				+ email + ", credit_card=" + credit_card + ", appointments=" + appointments + "]";
 	}
 }

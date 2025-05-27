@@ -105,6 +105,11 @@ public class Material implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Material [name=" + name + ", supplier=" + supplier + ", treatments=" + treatments + "]";
+		return "Material id: " + materials_id + "  - Name: " + name + "]";
 	} 
+	/*
+	 * public String toString() {
+		return "Material [name=" + name + ", supplier=" + supplier + ", treatments=" + treatments + "]";
+	}
+	 */
 }
