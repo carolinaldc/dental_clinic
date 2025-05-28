@@ -162,8 +162,8 @@ public class JDBCSupplierManager implements SupplierManager {
 
 		            List<Material> materials = jdbcMaterialManager.getListOfSupplier_Materials(supplier_id);
 
-		            supplier = new Supplier(supplier_id, supplierName, phone, email, materials);
-		            supplier.setEmail(email);		        }
+		            supplier = new Supplier(supplier_id, supplierName, phone, email, materials);		        
+		            }
 		        rs.close();
 		    } catch (SQLException e) {
 		        e.printStackTrace();
