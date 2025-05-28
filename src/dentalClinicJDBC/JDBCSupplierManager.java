@@ -41,6 +41,7 @@ public class JDBCSupplierManager implements SupplierManager {
 	    	
 	    }
 	    
+	    
 		public void deleteSupplier(Integer supplier_id) {
 			
 			String sql = "DELETE FROM Suppliers WHERE supplier_id= ?"; 
@@ -56,8 +57,26 @@ public class JDBCSupplierManager implements SupplierManager {
 			} catch(SQLException e) {
 				e.printStackTrace(); 
 			}
-			
 		}
+		
+		@Override
+		public void deleteSupplierByEmail(String email) {
+			String sql = "DELETE FROM Suppliers WHERE email = ?";
+			
+	        try {
+	            
+	            PreparedStatement ps = manager.getConnection().prepareStatement(sql);
+	            ps.setString(1, email);
+	            ps.executeUpdate();
+	            ps.close();
+	            System.out.println("Supplier record deleted.");
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            System.out.println("Failed to delete supplier.");
+	        }
+	    }
+		
+		
 		public void updateSupplier(Integer supplier_id) {
 			
 			String sql = "UPDATE FROM Suppliers name = ? WHERE supplier_id = ?"; 
@@ -117,6 +136,7 @@ public class JDBCSupplierManager implements SupplierManager {
 				stmt.close();
 				
 				supplier = new Supplier(supplierName, phone, email, materials);
+				supplier.setSupplier_id(supplier_id);
 			}catch(Exception e) 
 			{
 				e.printStackTrace();
@@ -143,7 +163,7 @@ public class JDBCSupplierManager implements SupplierManager {
 		            List<Material> materials = jdbcMaterialManager.getListOfSupplier_Materials(supplier_id);
 
 		            supplier = new Supplier(supplier_id, supplierName, phone, email, materials);
-		        }
+		            supplier.setEmail(email);		        }
 		        rs.close();
 		    } catch (SQLException e) {
 		        e.printStackTrace();

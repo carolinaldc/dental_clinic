@@ -62,16 +62,34 @@ public class SupplierUI {
         
     }
 	
-	public void deleteSupplier() {
+	
+	 public void deleteSupplier() {
+	        if (currentSupplier== null) {
+	            System.out.println("No supplier logged in.");
+	            return;
+	        }
+	        try {
+	            supplierManager.deleteSupplier(currentSupplier.getSupplier_id());
+	            System.out.println("Your supplier profile has been deleted.");
+	            currentSupplier= null;
+	        } catch (Exception e) {
+	            System.out.println("Error deleting clinician.");
+	            e.printStackTrace();
+	        }
+	    }
+	
+    public void deleteSupplierByEmail() {
+        if (currentSupplier== null) {
+            System.out.println("No supplier logged in.");
+            return;
+        }
         try {
-        	viewSupplierList();
-            System.out.println("Enter ID of supplier to delete:");
-            int id = Integer.parseInt(reader.readLine());
-
-            supplierManager.deleteSupplier(id);
-            System.out.println("Supplier deleted");
-        } catch (IOException | NumberFormatException e) {
-            System.out.println("Invalid input");
+        	supplierManager.deleteSupplierByEmail(currentSupplier.getEmail());
+            System.out.println("Your supplier profile has been deleted.");
+            currentSupplier= null;
+        } catch (Exception e) {
+            System.out.println("Error deleting supplier.");
+            e.printStackTrace();
         }
     }
 	

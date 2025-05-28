@@ -416,11 +416,19 @@ public class menu {
 		            }
 		        }else if ("Supplier".equalsIgnoreCase(role.getDescription())) {
 		            if (choice == 1) {
-		            	//supplierUI.modifySupplier();
+		            	supplierUI.modifySupplier();
 		            }
 		            else if (choice == 2) {
-		            	supplierUI.deleteSupplier();
-		                currentUser = null; 
+		            	//delete user 
+		            	User user = jpaUserManager.getUserByEmail(email);
+		            	if (user != null) {
+		            		supplierUI.deleteSupplierByEmail();
+		            		jpaUserManager.deleteUser(user);
+			                currentUser = null; 
+			                System.out.println("Your profile has been deleted.");
+			                return;
+		            	}
+
 		            }
 		        }
 		        
