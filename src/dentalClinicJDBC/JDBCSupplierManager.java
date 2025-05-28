@@ -41,7 +41,6 @@ public class JDBCSupplierManager implements SupplierManager {
 	    	
 	    }
 	    
-	    
 		public void deleteSupplier(Integer supplier_id) {
 			
 			String sql = "DELETE FROM Suppliers WHERE supplier_id= ?"; 
@@ -75,7 +74,6 @@ public class JDBCSupplierManager implements SupplierManager {
 	            System.out.println("Failed to delete supplier.");
 	        }
 	    }
-		
 		
 		public void updateSupplier(Integer supplier_id) {
 			
@@ -136,7 +134,6 @@ public class JDBCSupplierManager implements SupplierManager {
 				stmt.close();
 				
 				supplier = new Supplier(supplierName, phone, email, materials);
-				supplier.setSupplier_id(supplier_id);
 			}catch(Exception e) 
 			{
 				e.printStackTrace();
@@ -162,8 +159,8 @@ public class JDBCSupplierManager implements SupplierManager {
 
 		            List<Material> materials = jdbcMaterialManager.getListOfSupplier_Materials(supplier_id);
 
-		            supplier = new Supplier(supplier_id, supplierName, phone, email, materials);		        
-		            }
+		            supplier = new Supplier(supplier_id, supplierName, phone, email, materials);
+		        }
 		        rs.close();
 		    } catch (SQLException e) {
 		        e.printStackTrace();
@@ -329,4 +326,3 @@ public class JDBCSupplierManager implements SupplierManager {
 	    */
 
 	}
-
