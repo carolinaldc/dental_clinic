@@ -65,6 +65,21 @@ public class ClinicianUI {
             e.printStackTrace();
         }
     }
+    
+    public void deleteClinicianByEmail() {
+        if (currentClinician == null) {
+            System.out.println("No clinician logged in.");
+            return;
+        }
+        try {
+        	clinicianManager.deleteClinicianByEmail(currentClinician.getEmail());
+            System.out.println("Your clinian profile has been deleted.");
+            currentClinician = null;
+        } catch (Exception e) {
+            System.out.println("Error deleting clinician.");
+            e.printStackTrace();
+        }
+    }
 
     
     public void modifyClinician() {

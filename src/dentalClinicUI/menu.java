@@ -342,8 +342,16 @@ public class menu {
 		            	clinicianUI.modifyClinician();
 		            }
 		            else if (choice == 2) {
-		            	clinicianUI.deleteClinician();
-		                currentUser = null; 
+		            	//delete user 
+		            	User user = jpaUserManager.getUserByEmail(email);
+		            	if (user != null) {
+		            		clinicianUI.deleteClinicianByEmail();
+		            		jpaUserManager.deleteUser(user);
+			                currentUser = null; 
+			                System.out.println("Your profile has been deleted.");
+			                return;
+		            	}
+		            	
 		            }
 		        }else if ("Supplier".equalsIgnoreCase(role.getDescription())) {
 		            if (choice == 1) {
