@@ -183,6 +183,66 @@ public class menu {
 	        	    return;
 	        	}
 
+	        	switch (userType) {
+                case 1:
+                    patientUI.addPatient(email);
+                    break;
+                case 2:
+                    clinicianUI.addClinician(email);
+                    break;
+                case 3:
+                    supplierUI.addSupplier(email);
+                    break;
+                default:
+                    System.out.println("Invalid user type.");
+                    return;
+            }
+	        
+	        	System.out.println("Registration successful. Please login from the main menu.");
+	        	
+	        	
+	        }catch(Exception e) {
+	        	System.out.println("Error during registration.");
+	        	e.printStackTrace();
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }}
+	/*
+	public static void registerPage() {
+	    System.out.println("\nRegister as:");
+	    System.out.println("1. Patient");
+	    System.out.println("2. Clinician");
+	    System.out.println("3. Supplier");
+
+	    try {
+	        String input = reader.readLine();
+	        int userType;
+
+	        try {
+	            userType = Integer.parseInt(input);
+	        } catch (NumberFormatException e) {
+	            System.out.println("Invalid input. Please enter 1 for Patient, 2 for Clinician or 3 for Supplier");
+	            registerPage(); 
+	            return;
+	        }
+
+	        System.out.println("Introduce mail:");
+	        String email = reader.readLine();
+	        System.out.println("Introduce password:");
+	        String password = reader.readLine();
+
+	        try {
+	        	Role role = usermanager.getRole(userType);
+
+	        	boolean success = createUser(email, password, role);
+	        	if (!success) {
+	        	    System.out.println("Email already registered. Please try again.");
+	        	    registerPage(); // retry registration
+	        	    return;
+	        	}
+
 	        	if (userType == 1) {
 	        		patientUI.addPatient(email); 
 	        	    Patient patient = patientManager.getPatientByEmail(email);
@@ -208,6 +268,7 @@ public class menu {
 	        e.printStackTrace();
 	    }
 	}
+	*/
 	
 	public static void patientMenu(String email, Role role) {
 		System.out.println("\nPatient menu");
