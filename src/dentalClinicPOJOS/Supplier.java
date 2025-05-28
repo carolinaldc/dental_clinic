@@ -122,6 +122,6 @@ public class Supplier implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Supplier [supplierName=" + supplierName + ", phone=" + phone + ", email=" + email + ", material=" + material + "]";
+		return "Supplier [supplierName=" + supplierName + ", phone=" + phone + ", email=" + email + "]";
 	}
 }

@@ -58,6 +58,23 @@ public class JDBCClinicianManager implements ClinicianManager {
 		
 	}
 	
+	@Override
+	public void deleteClinicianByEmail(String email) {
+		String sql = "DELETE FROM Clinicians WHERE email = ?";
+		
+        try {
+            
+            PreparedStatement ps = manager.getConnection().prepareStatement(sql);
+            ps.setString(1, email);
+            ps.executeUpdate();
+            ps.close();
+            System.out.println("Clinician record deleted.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Failed to delete clinician.");
+        }
+    }
+	
 	public void updateClinician(Integer clinician_id, String fieldName, Object value) {
 	    List<String> allowedFields = Arrays.asList("name", "surname", "specialty", "phone");
 
