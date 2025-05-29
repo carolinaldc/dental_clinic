@@ -192,24 +192,40 @@ public class JDBCMaterialManager implements MaterialManager {
 	
 	public List<Material> getListOfSupplier_Materials(Integer supplier_id) {
 	    List<Material> materials = new ArrayList<>();
-
+	    //JDBCSupplierManager jdbcsuppliermanager = new JDBCSupplierManager(manager);
 	    try {
 	        if (manager == null) {
 	            throw new IllegalStateException("JDBCManager is null");
 	        }
 
 	        Statement stmt = manager.getConnection().createStatement();
-	        String sql = "SELECT * FROM Materials WHERE supplier_id = " + supplier_id;
+	       
+	        String sql = "SELECT Materials.materials_id, Materials.name, Suppliers.supplier_id, Suppliers.supplierName, Suppliers.phone, Suppliers.email FROM Materials JOIN Suppliers ON Materials.supplier_id = Suppliers.supplier_id WHERE Suppliers.supplier_id = " + supplier_id;
+	        //String sql = "SELECT * FROM Materials WHERE supplier_id = " + supplier_id;
+	        
 	        ResultSet rs = stmt.executeQuery(sql);
 
 	        while (rs.next()) {
-	            String name = rs.getString("name");
+	            
+	            int materialId = rs.getInt("materials_id");
+	            String materialName = rs.getString("name");
 
-	            Supplier supplier = new Supplier();
-	            supplier.setSupplier_id(supplier_id); 
+	            //int supId = rs.getInt("supplier_id");
+	            String supName = rs.getString("supplierName");
+	            int phone = rs.getInt("phone");
+	            String email = rs.getString("email");
 
-	            Material material = new Material(name, supplier);
+	            Supplier supplier = new Supplier(supplier_id, supName, phone, email);
+	            Material material = new Material(materialId, materialName, supplier);
+
 	            materials.add(material);
+	            
+	            //String name = rs.getString("name");
+	            //Supplier supplier = jdbcsuppliermanager.getSupplierByid(supplier_id);
+		        //supplier.setSupplier_id(supplier_id); 
+	            //Supplier supplier = new Supplier();
+	            //Material material = new Material(name, supplier);
+	            //materials.add(material);
 	        }
 
 	        rs.close();

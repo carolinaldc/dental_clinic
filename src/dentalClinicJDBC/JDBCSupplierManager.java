@@ -175,8 +175,9 @@ public class JDBCSupplierManager implements SupplierManager {
 	        
 			try {
 				
+				
 				Statement stmt = manager.getConnection().createStatement();
-	    		String sql = "SELECT * FROM Suppliers WHERE material_id = " + material_id;
+	    		String sql = "SELECT * FROM Materials m JOIN Suppliers s ON m.supplier_id = s.supplier_id WHERE m.material_id = " + material_id;
 				ResultSet rs= stmt.executeQuery(sql);
 				
 				
