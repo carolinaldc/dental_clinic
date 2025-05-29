@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!DOCTYPE Clinician[
 <!ELEMENT Clinician (name,surname, email, phone)>
-	<!ATTLIST Clinician speciality CDATA #REQUIRED>
+	<!ATTLIST Clinician specialty CDATA #REQUIRED>
 	<!ELEMENT name (#PCDATA)>
 	<!ELEMENT surname (#PCDATA)>
 	<!ELEMENT email (#PCDATA)>
 	<!ELEMENT phone (#PCDATA)>
 ]>
 
-<Clinician speciality="Orthodontist">
+<Clinician specialty="Orthodontist">
 	<name>Lucia</name>
 	<surname>Sanchez</surname>
 	<email>lucia@gmail.com</email>

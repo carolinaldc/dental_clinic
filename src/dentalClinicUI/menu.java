@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,6 +31,7 @@ import dentalClinicJDBC.JDBCTreatmentManager;
 import dentalClinicJDBC.JDBCPatientManager;
 import dentalClinicJPA.JPAUserManager;
 import dentalClinicPOJOS.Clinician;
+import dentalClinicPOJOS.Material;
 import dentalClinicPOJOS.Patient;
 import dentalClinicPOJOS.Role;
 import dentalClinicPOJOS.Supplier;
@@ -52,7 +54,8 @@ public class menu {
     private static SupplierManager supplierManager;
     private static MaterialManager materialManager;
     private static JPAUserManager jpaUserManager;
-
+    private static XMLManager xmlManager;
+    
     private static TreatmentManager treatmentManager;
     private static UserManager usermanager;
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -80,7 +83,7 @@ public class menu {
         treatmentUI = new TreatmentUI(treatmentManager, materialManager, materialUI, reader);
         appointmentUI = new AppointmentUI(appointmentManager, patientManager, clinicianManager, treatmentManager, reader);
         jpaUserManager = new JPAUserManager();
-
+        xmlManager = new XMLManagerImpl();
 
 
 	
@@ -306,7 +309,10 @@ public class menu {
 		System.out.println("1. Profile");
 		System.out.println("2. Appointments");
 		System.out.println("3. Treatments");
-		System.out.println("4. Log Out");
+		System.out.println("4. Export Clinician to XML");
+		System.out.println("5. Import Clinician from XML");
+		System.out.println("6. Delete Clinician that does not have a user (imported through XML)");
+		System.out.println("7. Log Out");
 		
 		try {
 			int choice = Integer.parseInt(reader.readLine());
@@ -321,6 +327,50 @@ public class menu {
 					treatmentMenu(email, role);
 					break;
 				case 4:
+					System.out.println("Exporting clinician to XML...");
+			        Clinician clinician = clinicianManager.getClinicianByEmail(email);
+			        Integer clincian_id = clinician.getClinician_id();
+			        xmlManager.clinician2xml(clincian_id);
+			        System.out.println("Export successful.");
+			        clinicianMenu(email, role);
+					break;
+				case 5:
+					System.out.println("Importing clinician from XML...");
+					
+					try {
+						File xmlFile = new File("./xmls/external_clinician.xml");  // Adjust path if needed
+						
+						if (!xmlFile.exists()) {
+				            System.out.println("XML file not found.");
+				            break;}
+						
+						Clinician importedClinician = xmlManager.xml2Clinician(xmlFile);
+				        if (importedClinician == null) {
+				            System.out.println("Failed to import clinician from XML.");
+				            break;
+				        }
+				        
+				     // Check if a clinician with this email already exists
+				        Clinician existing = clinicianManager.getClinicianByEmail(importedClinician.getEmail());
+				        if (existing != null) {
+				            System.out.println("A clinician with this email already exists: " + importedClinician.getEmail());
+				            System.out.println("Import cancelled to avoid duplicates.");
+				        } else {
+				            clinicianManager.addClinician(importedClinician);
+				            System.out.println("Clinician imported successfully.");
+				        }
+				       
+				        
+					}catch (Exception e) {
+				        System.out.println("Error during import:");
+				        e.printStackTrace();
+				    }
+					clinicianMenu(email, role);
+					break;
+				case 6:
+					manageOrphanCliniciansMenu();
+					break;
+				case 7:
 					currentUser =null;
 					main(null);
 					break;
@@ -331,6 +381,50 @@ public class menu {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void manageOrphanCliniciansMenu() {
+		try {
+			
+			List<Clinician> allClinicians = clinicianManager.getListOfClinicians();
+			List<Clinician> orphanClinicians = new ArrayList<>();
+			
+			for (Clinician c : allClinicians) {
+	            boolean hasUser = usermanager.getUserByEmail(c.getEmail()) != null;
+	            if (!hasUser) {
+	                orphanClinicians.add(c);
+	                System.out.println("ID: " + c.getClinician_id() + " | Name: " + c.getName() + " | Email: " + c.getEmail());
+	            }
+	        }
+			
+			if (orphanClinicians.isEmpty()) {
+	            System.out.println("No orphan clinicians found.");
+	            return;
+	        }
+			
+			System.out.println("Enter the ID of the clinician to delete, or '0' to cancel:");
+	        int idToDelete = Integer.parseInt(reader.readLine());
+	        
+	        if (idToDelete == 0) {
+	            System.out.println("Operation cancelled.");
+	            return;
+	        }
+	        
+	        Clinician cToDelete = clinicianManager.getClinicianById(idToDelete);
+	        boolean hasUser = usermanager.getUserByEmail(cToDelete.getEmail()) != null;
+	        
+	        if (hasUser) {
+	            System.out.println("Cannot delete this clinician. They are linked to a user.");
+	        } else {
+	            clinicianManager.deleteClinician(idToDelete);
+	            System.out.println("Clinician deleted successfully.");
+	        }
+			
+			
+		}catch (Exception e) {
+	        System.out.println("Error occurred: " + e.getMessage());
+	        e.printStackTrace();
+	    }
 	}
 	
 	
@@ -544,7 +638,8 @@ public class menu {
     
     
     public static void materialMenu(String email, Role role) { //supplier
-		int choice = 0;
+		
+    	int choice = 0;
 		do {
 			System.out.println("\nMaterial menu");
 		    System.out.println("Choose an option:");
@@ -552,7 +647,9 @@ public class menu {
 		    System.out.println("2. Modify a Material");
 		    System.out.println("3. Remove a Material");
 	        System.out.println("4. Show List of Materials");
-		    System.out.println("5. Go back");
+	        System.out.println("5. Export Material to XML");
+	        System.out.println("6. Import Material from XML");
+		    System.out.println("7. Go back");
 
 		    try {
 	            String input = reader.readLine();
@@ -576,6 +673,74 @@ public class menu {
 	               	materialUI.viewMaterialsList();
 	                break;
 	           case 5:
+	        	   System.out.println("Exporting material to XML...");
+	        	   Supplier supplier = supplierManager.getSupplierByEmail(email);
+	        	   Integer supplier_id = supplier.getSupplier_id();
+	        	   
+	        	   List<Material> materials = materialManager.getListOfSupplier_Materials(supplier_id);
+	        	   
+	        	   if (materials == null || materials.isEmpty()) {
+	        	        System.out.println("No materials found for this supplier.");
+	        	        break;
+	        	    }
+	        	   
+	        	   System.out.println("Select a material to export by ID:");
+	        	    for (Material m : materials) {
+	        	        System.out.println("ID: " + m.getMaterials_id() + " | Name: " + m.getName());
+	        	    }
+	        	    
+	        	    Integer matId;
+	        	    try {
+	    	            String input2 = reader.readLine();
+	    	            matId = Integer.parseInt(input2);
+	    	        } catch (Exception e) {
+	    	            System.out.println("Invalid input. Please enter a number.");
+	    	            continue; // retry input
+	    	        }
+	        	    
+	        	   xmlManager.material2xml(matId);
+	        	   System.out.println("Export successful.");
+	        	   materialMenu(email, role);
+	        	   break;
+	        	   
+	           case 6:
+	        	   System.out.println("Importing material from XML...");
+	        	   File xmlFile = new File("./xmls/external_material.xml");  // Adjust path if needed
+	        	   if (!xmlFile.exists()) {
+	                   System.out.println("File not found");
+	                   break;
+	               }
+	        	   
+	        	   Material importedMaterial = xmlManager.xml2Material(xmlFile);
+	        	   
+	        	   if (importedMaterial != null) {
+	        		   //Supplier from the XML
+	        	        Supplier xmlSupplier = importedMaterial.getSupplier();
+	        	        //Check if this supplier exists in the db
+	        	        Supplier dbSupplier = supplierManager.getSupplierByEmail(xmlSupplier.getEmail());
+	        	        
+	        	        if (dbSupplier != null) {
+	        	        	// Use the existing db supplier
+	        	            importedMaterial.setSupplier(dbSupplier);
+	        	            System.out.println("Material linked to existing supplier: " + dbSupplier.getEmail());
+	        	        }else {
+	        	        	// Fallback to current user
+	        	            Supplier currentSupplier = supplierManager.getSupplierByEmail(email);
+	        	            importedMaterial.setSupplier(currentSupplier);
+	        	            System.out.println("Supplier from XML not found. Assigned material to current supplier: " + currentSupplier.getEmail());
+	        	        }
+	        	        //add material
+	        	        materialManager.addMaterial(importedMaterial);
+	        	        System.out.println("Import successful.");
+	        	   } else {
+	        	        System.out.println("Failed to import material from XML.");
+	        	    }
+	        	   
+	        	   materialMenu(email, role);
+	        	   break;
+	           case 7:
+	        	   currentUser =null;
+	        	   main(null);
 	        	   break;
 	           default:
 	                System.out.println("Invalid choice");

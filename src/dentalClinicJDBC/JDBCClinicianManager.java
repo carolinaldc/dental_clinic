@@ -43,7 +43,7 @@ public class JDBCClinicianManager implements ClinicianManager {
     }
 	public void deleteClinician(Integer clinician_id) {
 		
-		String sql = "DELETE FROM Clinician WHERE clinician_id=? "; 
+		String sql = "DELETE FROM Clinicians WHERE clinician_id=? "; 
 		
 		try {
 			PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
