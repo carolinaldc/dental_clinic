@@ -131,7 +131,7 @@ public class SupplierUI {
                     System.out.println("Enter new name (" + supplier.getSupplierName() + "):");
                     String newName = reader.readLine();
                     if (!newName.trim().isEmpty()) {
-                    	supplierManager.updateSupplier(supplier.getSupplier_id(), "name", newName);
+                    	supplierManager.updateSupplier(supplier.getSupplier_id(), "supplierName", newName);
                     }
                     break;
                 case 2:

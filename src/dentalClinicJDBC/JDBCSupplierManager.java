@@ -77,7 +77,7 @@ public class JDBCSupplierManager implements SupplierManager {
 		
 		public void updateSupplier(Integer supplier_id) {
 			
-			String sql = "UPDATE FROM Suppliers name = ? WHERE supplier_id = ?"; 
+			String sql = "UPDATE FROM Suppliers supplierName = ? WHERE supplier_id = ?"; 
 			
 			try {
 				
@@ -96,10 +96,10 @@ public class JDBCSupplierManager implements SupplierManager {
 		}
 
 		public void updateSupplier(Integer supplier_id, String fieldName, Object value) {
-		    List<String> allowedFields = Arrays.asList("name", "phone", "materials");
+		    List<String> allowedFields = Arrays.asList("supplierName", "phone", "materials");
 
 		    if (!allowedFields.contains(fieldName)) {
-		        throw new IllegalArgumentException("Invalid field name: " + fieldName);
+		        throw new IllegalArgumentException("Invalid field supplierName: " + fieldName);
 		    }
 
 		    String sql = "UPDATE Suppliers SET " + fieldName + " = ? WHERE supplier_id = ?";

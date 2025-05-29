@@ -61,16 +61,20 @@ public class JDBCTreatmentManager implements TreatmentManager {
         }
 	}
 	
-	public void updateTreatment(Integer treatment_id) {
-		String sql = "UPDATE Treatments SET name = ?, description = ?, price = ? WHERE treatment_id = ?";
-
+	@Override
+	public void updateTreatment(Treatment treatment) {
+		
+		String updatesql = "UPDATE Treatments SET name = ?, description = ?, price = ? WHERE treatment_id = ?";
+		String deleteMaterialsSQL = "DELETE FROM Treatment_Materials WHERE treatment_id = ?";
+	    String insertMaterialSQL = "INSERT INTO Treatment_Materials (treatment_id, materials_id) VALUES (?, ?)";
+		
 	    try {
-	        PreparedStatement ps = manager.getConnection().prepareStatement(sql);
+	        PreparedStatement ps = manager.getConnection().prepareStatement(updatesql);
 
-	        ps.setString(1, "UpdatedName");
-	        ps.setString(2, "Updated description");
-	        ps.setInt(3, 100);
-	        ps.setInt(4, treatment_id);
+	        ps.setString(1, treatment.getName());
+	        ps.setString(2, treatment.getDescription());
+	        ps.setInt(3, treatment.getPrice());
+	        ps.setInt(4, treatment.getTreatment_id());
 
 	        ps.executeUpdate();
 	        ps.close();
@@ -78,6 +82,31 @@ public class JDBCTreatmentManager implements TreatmentManager {
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
+	    
+	    try {
+	    	PreparedStatement ps = manager.getConnection().prepareStatement(deleteMaterialsSQL);
+	    	ps.setInt(1, treatment.getTreatment_id());
+            ps.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } 
+	    
+	    try {
+	    	PreparedStatement ps = manager.getConnection().prepareStatement(insertMaterialSQL);
+	    	
+	    	for (Material material : treatment.getMaterials()) {
+                ps.setInt(1, treatment.getTreatment_id());
+                ps.setInt(2, material.getMaterials_id());
+                ps.addBatch(); // Batch insertion
+            }
+            ps.executeBatch();
+	    	
+	    	
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } 
+	    
+	    
 	}
 	
 	public List <Treatment> getListOfTreatments(){
