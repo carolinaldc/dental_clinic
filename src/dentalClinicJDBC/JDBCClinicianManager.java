@@ -185,6 +185,17 @@ public class JDBCClinicianManager implements ClinicianManager {
 		return clinicians;
 	}
 	
+	@Override
+	public void updateClinicianEmail(int clinicianId, String newEmail) {
+	    String sql = "UPDATE Clinicians SET email = ? WHERE clinician_id = ?";
+	    try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+	        ps.setString(1, newEmail);
+	        ps.setInt(2, clinicianId);
+	        ps.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
 	
 
 

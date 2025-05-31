@@ -15,5 +15,6 @@ public interface SupplierManager {
 	public List<Supplier> getListOfSuppliers();
 	public Supplier getSupplierByEmail(String email);
 	public Supplier getSupplierOfMaterial(Integer material_id);
+	void updateSupplierEmail(int supplierId, String newEmail);
 	
 }

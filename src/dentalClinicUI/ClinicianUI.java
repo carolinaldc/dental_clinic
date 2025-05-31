@@ -1,9 +1,11 @@
 package dentalClinicUI;
 
 import dentalClinicIFaces.ClinicianManager;
+import dentalClinicIFaces.UserManager;
 import dentalClinicPOJOS.Appointment;
 import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Patient;
+import dentalClinicPOJOS.User;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,10 +16,12 @@ import java.util.List;
 public class ClinicianUI {
     private ClinicianManager clinicianManager;
     private Clinician currentClinician;
+    private UserManager usermanager;
     private BufferedReader reader;
 
-    public ClinicianUI(ClinicianManager clinicianManager) {
+    public ClinicianUI(ClinicianManager clinicianManager, UserManager usermanager) {
         this.clinicianManager = clinicianManager;
+        this.usermanager = usermanager;
         this.reader = new BufferedReader(new InputStreamReader(System.in));
     }
     
@@ -96,6 +100,9 @@ public class ClinicianUI {
             System.out.println("2. Surname");
             System.out.println("3. Phone");
             System.out.println("4. Specialty");
+            System.out.println("5. Email");
+            System.out.println("6. Password");
+            
 
             int choice = Integer.parseInt(reader.readLine());
 
@@ -126,6 +133,43 @@ public class ClinicianUI {
                     String newSpecialty = reader.readLine();
                     if (!newSpecialty.trim().isEmpty()) {
                         clinicianManager.updateClinician(clinician.getClinician_id(), "specialty", newSpecialty);
+                    }
+                    break;
+                case 5:
+                	System.out.println("Enter new email (" + clinician.getEmail() + "):");
+                    String newEmail = reader.readLine();
+
+                    if (!newEmail.trim().isEmpty()) {
+                        // Check if email already exists
+                        if (usermanager.getUserByEmail(newEmail) != null) {
+                            System.out.println("Email already in use. Try a different one.");
+                        } else {
+                            // Update in the users table
+                            User u = usermanager.getUserByEmail(clinician.getEmail());
+                            usermanager.changeEmail(u, newEmail);  
+
+                            clinician.setEmail(newEmail);
+                            clinicianManager.updateClinicianEmail(clinician.getClinician_id(), newEmail);
+                            
+                            currentClinician = clinician;
+                            System.out.println("Email updated successfully.");
+                        }
+                    }
+                    break;
+                case 6:
+                	System.out.println("Enter new password:");
+                    String newPassword = reader.readLine();
+                    
+                    if (!newPassword.trim().isEmpty()) {
+                        User u = usermanager.getUserByEmail(clinician.getEmail());
+                        if (u != null) {
+                            usermanager.changePassword(u, newPassword);
+                            System.out.println("Password updated successfully.");
+                        } else {
+                            System.out.println("User not found.");
+                        }
+                    } else {
+                        System.out.println("Password cannot be empty.");
                     }
                     break;
                 default:

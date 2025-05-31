@@ -230,6 +230,18 @@ public class JDBCSupplierManager implements SupplierManager {
 	        }
 			return suppliers;
 		}
+		
+		@Override
+		public void updateSupplierEmail(int supplierId, String newEmail) {
+		    String sql = "UPDATE Suppliers SET email = ? WHERE supplier_id = ?";
+		    try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+		        ps.setString(1, newEmail);
+		        ps.setInt(2, supplierId);
+		        ps.executeUpdate();
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		}
 	    
 	   /*
 	    //TODO tampoco estoy segura de que este bien

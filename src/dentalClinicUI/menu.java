@@ -75,9 +75,9 @@ public class menu {
         appointmentManager = new JDBCAppointmentManager(jdbcmanager);
 
 
-        patientUI = new PatientUI(patientManager);
-        clinicianUI = new ClinicianUI(clinicianManager);
-        supplierUI = new SupplierUI(supplierManager);
+        patientUI = new PatientUI(patientManager,usermanager);
+        clinicianUI = new ClinicianUI(clinicianManager,usermanager);
+        supplierUI = new SupplierUI(supplierManager,usermanager);
 
         materialUI = new MaterialUI(materialManager, reader, null); 
         treatmentUI = new TreatmentUI(treatmentManager, materialManager, materialUI, reader);

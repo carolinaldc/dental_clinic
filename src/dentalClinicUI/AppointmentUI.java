@@ -13,6 +13,7 @@ import dentalClinicIFaces.ClinicianManager;
 import dentalClinicIFaces.MaterialManager;
 import dentalClinicIFaces.PatientManager;
 import dentalClinicIFaces.TreatmentManager;
+import dentalClinicIFaces.UserManager;
 import dentalClinicPOJOS.Appointment;
 import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Patient;
@@ -25,6 +26,7 @@ public class AppointmentUI {
 	private  ClinicianManager clinicianManager;
 	private  TreatmentManager treatmentManager;
 	private  MaterialManager materialManager;
+	private  UserManager usermanager;
 	private  TreatmentUI treatmentUI;
 	private  PatientUI patientUI;
 	private  ClinicianUI clinicianUI;
@@ -44,8 +46,8 @@ public class AppointmentUI {
 		this.patientManager = patientManager;
 		this.clinicianManager = clinicianManager;
 		this.treatmentManager = treatmentManager;
-		this.patientUI = new PatientUI(patientManager);
-		this.clinicianUI = new ClinicianUI(clinicianManager);
+		this.patientUI = new PatientUI(patientManager,usermanager);
+		this.clinicianUI = new ClinicianUI(clinicianManager,usermanager);
 		this.treatmentUI = new TreatmentUI(treatmentManager, materialManager, materialUI, reader);
 		this.reader = reader;
     }

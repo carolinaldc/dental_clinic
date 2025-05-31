@@ -174,6 +174,18 @@ public class JDBCPatientManager implements PatientManager {
 
 
 	@Override
+	public void updatePatientEmail(int patientId, String newEmail) {
+	    String sql = "UPDATE Patients SET email = ? WHERE patient_id = ?";
+	    try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+	        ps.setString(1, newEmail);
+	        ps.setInt(2, patientId);
+	        ps.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	@Override
 	public void updatePatient(Integer patient_id, String fieldName, Object value) {
 		List<String> allowedFields = Arrays.asList("name", "surname", "dob", "phone", "credit_card");
 

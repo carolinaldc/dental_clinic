@@ -148,6 +148,38 @@ public class JPAUserManager implements UserManager{
 	    
 	}
 	
+	
+	@Override
+	public void changePassword(User u, String new_passwd) 
+	{
+
+		entityManager.getTransaction().begin();
+		try {
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.update(new_passwd.getBytes());
+		byte[] new_pw = md.digest();
+		u.setPassword(new_pw);
+		
+		}catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		entityManager.getTransaction().commit();
+	}
+	
+	@Override
+	public void changeEmail(User u, String new_email) 
+	{
+		entityManager.getTransaction().begin();
+		try {
+		u.setEmail(new_email);
+		}catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		entityManager.getTransaction().commit();
+	}
+
 
 	
 	

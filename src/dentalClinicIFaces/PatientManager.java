@@ -16,5 +16,6 @@ public interface PatientManager {
 	public List <Patient> getListOfPatients();
 	public Patient getPatientById(Integer patient_id); 
 	public Patient getPatientByEmail(String email);
+	void updatePatientEmail(int patientId, String newEmail);
 
 }
