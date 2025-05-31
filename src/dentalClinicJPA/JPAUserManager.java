@@ -24,7 +24,7 @@ public class JPAUserManager implements UserManager{
 	
 	@Override
 	public void connect() {
-		// TODO Auto-generated method stub
+		
 		
 		entityManager = Persistence.createEntityManagerFactory("dentalclinic-provider").createEntityManager();
 	

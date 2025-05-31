@@ -108,31 +108,40 @@ public class ClinicianUI {
 
             switch (choice) {
                 case 1:
-                    System.out.println("Enter new name (" + clinician.getName() + "):");
-                    String newName = reader.readLine();
-                    if (!newName.trim().isEmpty()) {
-                        clinicianManager.updateClinician(clinician.getClinician_id(), "name", newName);
+                	System.out.println("Enter new name (" + clinician.getName() + "):");
+                    String newName = reader.readLine().trim();
+                    if (!newName.isEmpty()) {
+                        clinicianManager.updateName(clinician.getClinician_id(), newName);
+                        clinician.setName(newName);
                     }
                     break;
                 case 2:
-                    System.out.println("Enter new surname (" + clinician.getSurname() + "):");
-                    String newSurname = reader.readLine();
-                    if (!newSurname.trim().isEmpty()) {
-                        clinicianManager.updateClinician(clinician.getClinician_id(), "surname", newSurname);
+                	System.out.println("Enter new surname (" + clinician.getSurname() + "):");
+                    String newSurname = reader.readLine().trim();
+                    if (!newSurname.isEmpty()) {
+                        clinicianManager.updateSurname(clinician.getClinician_id(), newSurname);
+                        clinician.setSurname(newSurname);
                     }
                     break;
                 case 3:
-                    System.out.println("Enter new phone (" + clinician.getPhone() + "):");
-                    String newPhone = reader.readLine();
-                    if (!newPhone.trim().isEmpty()) {
-                        clinicianManager.updateClinician(clinician.getClinician_id(), "phone", newPhone);
+                	System.out.println("Enter new phone (" + clinician.getPhone() + "):");
+                    String newPhoneInput = reader.readLine().trim();
+                    if (!newPhoneInput.isEmpty()) {
+                        try {
+                            int newPhone = Integer.parseInt(newPhoneInput);
+                            clinicianManager.updatePhone(clinician.getClinician_id(), newPhone);
+                            clinician.setPhone(newPhone); // update local object
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid phone number. Please enter numeric digits only.");
+                        }
                     }
                     break;
                 case 4:
-                    System.out.println("Enter new specialty (" + clinician.getSpecialty() + "):");
-                    String newSpecialty = reader.readLine();
-                    if (!newSpecialty.trim().isEmpty()) {
-                        clinicianManager.updateClinician(clinician.getClinician_id(), "specialty", newSpecialty);
+                	System.out.println("Enter new specialty (" + clinician.getSpecialty() + "):");
+                    String newSpecialty = reader.readLine().trim();
+                    if (!newSpecialty.isEmpty()) {
+                        clinicianManager.updateSpecialty(clinician.getClinician_id(), newSpecialty);
+                        clinician.setSpeciality(newSpecialty);
                     }
                     break;
                 case 5:

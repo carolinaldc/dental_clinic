@@ -9,12 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dentalClinicIFaces.AppointmentManager;
-import dentalClinicJPA.JPAUserManager;
 import dentalClinicPOJOS.Patient;
 import dentalClinicPOJOS.Role;
 import dentalClinicPOJOS.Appointment;
 import dentalClinicPOJOS.Clinician;
-import dentalClinicPOJOS.Material;
 import dentalClinicPOJOS.Treatment;
 
 public class JDBCAppointmentManager implements AppointmentManager {
@@ -32,83 +30,21 @@ public class JDBCAppointmentManager implements AppointmentManager {
 	    String sql = "INSERT INTO Appointments (date, comments, patient_id, treatment_id, clinician_id) VALUES (?, ?, ?, ?, ?)";
 
 	    try {
-	        PreparedStatement ps = manager.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-	        ps.setDate(1, new java.sql.Date(appointment.getDate().getTime()));
+	        PreparedStatement ps = manager.getConnection().prepareStatement(sql);
+	        ps.setDate(1, appointment.getDate());
 	        ps.setString(2, appointment.getComment());
 	        ps.setInt(3, appointment.getPatient().getPatient_id());   
 	        ps.setInt(4, appointment.getTreatment().getTreatment_id());
 	        ps.setInt(5, appointment.getClinician().getClinician_id());
 
 	        ps.executeUpdate();
-
-	        ResultSet generatedKeys = ps.getGeneratedKeys();
-	        if (generatedKeys.next()) {
-	            int generatedId = generatedKeys.getInt(1);
-	            appointment.setAppointment_id(generatedId);
-	        }
-
 	        ps.close();
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	}
-
-	
-	@Override
-	public void deleteAppointment (Integer appointment_id) {
-		 String sql = "DELETE FROM Appointments WHERE appointment_id = ?";
-	        try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
-	            ps.setInt(1, appointment_id);
-	            ps.executeUpdate();
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	}
-	
-	/*
-	public void updateAppointment(Integer appointment_id, Date newDate, Integer patient_id, Integer treatment_id, Integer clinician_id) {
-		String sql = "UPDATE Appointments SET date = ?, comments = ?, patient_id = ?, treatment_id = ?, clinician_id = ? WHERE appointment_id = ?";
-		
-	    try {
-	        PreparedStatement ps = manager.getConnection().prepareStatement(sql);
 	        
-	        ps.setDate(1, newDate);
-	        ps.setString(2, "Updated comments");
-	        ps.setInt(3, patient_id);
-	        ps.setInt(4, treatment_id);
-	        ps.setInt(5, clinician_id);
-	        ps.setInt(6, appointment_id);
-	        
-
-	        ps.executeUpdate();
-	        ps.close();
-
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-		 
-	}
-	*/
-	
-	@Override
-	public void updateAppointment(Appointment appt) {
-	    String sql = "UPDATE Appointments SET date = ?, comments = ?, patient_id = ?, treatment_id = ?, clinician_id = ? WHERE appointment_id = ?";
-	    try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
-	        ps.setDate(1, appt.getDate());
-	        ps.setString(2, appt.getComment());
-	        ps.setInt(3, appt.getPatient().getPatient_id());
-	        ps.setInt(4, appt.getTreatment().getTreatment_id());
-	        ps.setInt(5, appt.getClinician().getClinician_id());
-	        ps.setInt(6, appt.getAppointment_id());
-
-	        ps.executeUpdate();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
 	}
-	
-	
-	
+
 	@Override
 	public List<Appointment> getListOfAppointments(String email, Role role) {
 	    List<Appointment> appointments = new ArrayList<>();
@@ -135,6 +71,19 @@ public class JDBCAppointmentManager implements AppointmentManager {
 	    
 	    return appointments;
 	}
+	
+	
+	@Override
+	public void deleteAppointment (Integer appointment_id) {
+		 String sql = "DELETE FROM Appointments WHERE appointment_id = ?";
+	        try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+	            ps.setInt(1, appointment_id);
+	            ps.executeUpdate();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	}
+	
 	
 	@Override
 	public List <Appointment> getAppointmentOfPatient (Integer patient_id){
@@ -236,18 +185,7 @@ public class JDBCAppointmentManager implements AppointmentManager {
 	            Patient patient = jdbcPatientManager.getPatientById(patient_id);
 	            Clinician clinician = jdbcClinicianManager.getClinicianById(clinician_id);
 	            Appointment pt = new Appointment(appointment_id, date, comment,patient, treatment, clinician);
-	            /*
-	            Treatment treatment = new Treatment();
-	            treatment.setTreatment_id(treatment_id); //hacer esto para que no entre en bucle infinito
-	            //Treatment treatment = jdbcTreatmentManager.getTreatmentById(treatment_id);
-	            Patient patient = new Patient();
-	            patient.setPatient_id(patient_id);
-	            //Patient patient = jdbcPatientManager.getPatientById(patient_id);
-	            Clinician clinician = new Clinician();
-	            clinician.setClinician_id(clinician_id);
-	            //Clinician clinician = jdbcClinicianManager.getClinicianById(clinician_id);
-	            Appointment pt = new Appointment(date, comment,patient, treatment, clinician);
-	            */
+	            
 	            appointments.add(pt);
 			}
 			
@@ -280,7 +218,7 @@ public class JDBCAppointmentManager implements AppointmentManager {
 	            Integer clinician_id = rs.getInt("clinician_id");
 	            Clinician clinician = jdbcClinicianManager.getClinicianById(clinician_id);
 	            Integer treatment_id = rs.getInt("treatment_id");
-	            Treatment treatment = jdbcTreatmentManager.getTreatmentById(clinician_id);
+	            Treatment treatment = jdbcTreatmentManager.getTreatmentById(treatment_id);
 	            
 	            
 	            appointment = new Appointment(appointment_id, date, comments, patient, treatment, clinician);

@@ -8,7 +8,6 @@ import java.util.List;
 import dentalClinicIFaces.ClinicianManager;
 import dentalClinicPOJOS.Appointment;
 import dentalClinicPOJOS.Clinician;
-import dentalClinicPOJOS.Patient;
 
 public class JDBCClinicianManager implements ClinicianManager {
 
@@ -18,6 +17,7 @@ public class JDBCClinicianManager implements ClinicianManager {
         this.manager = manager;
     }
     
+    @Override
     public void addClinician(Clinician clinician) {
     	String sql = "INSERT INTO Clinicians (name, surname, specialty, phone, email) VALUES (?, ?, ?, ?, ?)";
     	
@@ -41,6 +41,8 @@ public class JDBCClinicianManager implements ClinicianManager {
     	}
     	
     }
+    
+    @Override
 	public void deleteClinician(Integer clinician_id) {
 		
 		String sql = "DELETE FROM Clinicians WHERE clinician_id=? "; 
@@ -75,6 +77,7 @@ public class JDBCClinicianManager implements ClinicianManager {
         }
     }
 	
+	@Override
 	public void updateClinician(Integer clinician_id, String fieldName, Object value) {
 	    List<String> allowedFields = Arrays.asList("name", "surname", "specialty", "phone");
 
@@ -111,10 +114,10 @@ public class JDBCClinicianManager implements ClinicianManager {
 	            String specialty = rs.getString("specialty");
 	            Integer phone = rs.getInt("phone");
 
-	            List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfClinician(clinician_id);
+	            //List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfClinician(clinician_id);
 
-	            clinician = new Clinician(clinician_id, name, surname, specialty, phone, email, appointments);
-	            clinician.setEmail(email);
+	            clinician = new Clinician(clinician_id, name, surname, specialty, phone, email);
+	            
 	        }
 	        rs.close();
 	    } catch (SQLException e) {
@@ -123,8 +126,10 @@ public class JDBCClinicianManager implements ClinicianManager {
 	    return clinician;
 	}
    	
+	@Override
 	public Clinician getClinicianById(Integer clinician_id) {
 	    Clinician clinician = null;
+	    JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
 
 	    try {
 	        Statement stmt = manager.getConnection().createStatement();
@@ -139,8 +144,10 @@ public class JDBCClinicianManager implements ClinicianManager {
 	            Integer phone = rs.getInt("phone");
 	            String email = rs.getString("email");
 
-	            clinician = new Clinician(name, surname, specialty, phone, email, new ArrayList<>());
-	            clinician.setClinician_id(clinician_id);
+	            //List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfClinician(clinician_id);
+	            
+	            clinician = new Clinician(clinician_id, name, surname, specialty, phone, email);
+	            
 	        }
 
 	        rs.close();
@@ -153,7 +160,7 @@ public class JDBCClinicianManager implements ClinicianManager {
 	    return clinician;
 	}
 
-	
+	@Override
 	public List<Clinician> getListOfClinicians(){
 		List<Clinician> clinicians = new ArrayList<Clinician>();
 		JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
@@ -197,159 +204,54 @@ public class JDBCClinicianManager implements ClinicianManager {
 	    }
 	}
 	
-
-
-   
-/*
-    @Override
-    public void addClinician(Clinician clinician) {
-        String sql = "INSERT INTO clinicians (name, specialty) VALUES (?, ?)";
-
-        try (PreparedStatement stmt = manager.getConnection().prepareStatement(sql)) {
-            stmt.setString(1, clinician.getName());
-            stmt.setString(2, clinician.getSpecialty());
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error al añadir dentista: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public List<Clinician> listClinicians() {
-        List<Clinician> clinicians = new ArrayList<>();
-        String sql = "SELECT * FROM clinicians";
-
-        try (Statement stmt = manager.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            while (rs.next()) {
-                Clinician c = new Clinician(
-                    rs.getInt("clinician_id"),
-                    rs.getString("name"),
-                    rs.getString("specialty")
-                );
-                clinicians.add(c);
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Error al obtener los dentistas: " + e.getMessage());
-        }
-
-        return clinicians;
-    }
-
-    
-
-	//()@Override
-	//public void getClinician(String email) {
-		// TODO Auto-generated method stub
-		
-	//}
-	
-	 //He creado este metodo para hacer lo de katerina de XML
 	@Override
-    public Clinician getClinicianByid(int id) {
-    	
-		Clinician clinician = null;
-    	try {
-    		Statement stmt = manager.getConnection().createStatement();
-    		String sql = "SELECT * FROM Clinicians WHERE clinician_id=" + id;
-			
-			ResultSet rs= stmt.executeQuery(sql);
-			
-			String name = rs.getString("name");
-			String surname = rs.getString("surname");
-			Integer phone = rs.getInt("phone");
-			String email = rs.getString("email");
-			String specialty = rs.getString("specialty");
-            
-			
-			rs.close();
-			stmt.close();
-			
-			clinician = new Clinician(name, surname, specialty, email, phone);
-    	}catch(Exception e) 
-		{
-			e.printStackTrace();
-		}
-    	return clinician;
-    }
-	
-	@Override
-	public Clinician getClinicianByEmail(String email) {
-	    Clinician clinician = null;
-	    try {
-	        String sql = "SELECT * FROM Clinicians WHERE email = ?";
-	        PreparedStatement stmt = manager.getConnection().prepareStatement(sql);
-	        stmt.setString(1, email);
-	        ResultSet rs = stmt.executeQuery();
-
-	        if (rs.next()) {
-	            String name = rs.getString("name");
-	            String surname = rs.getString("surname");
-	            String specialty = rs.getString("specialty");
-	            Integer phone = rs.getInt("phone"); 
-	            String emailResult = rs.getString("email");
-
-	            clinician = new Clinician(name, surname, specialty, emailResult, phone);
-	        }
-
-	        rs.close();
-	        stmt.close();
-	    } catch (Exception e) {
+	public void updateName(int clincianId, String name) {
+	    String sql = "UPDATE Clinicians SET name = ? WHERE clinician_id = ?";
+	    try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+	        ps.setString(1, name);
+	        ps.setInt(2, clincianId);
+	        ps.executeUpdate();
+	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
-	    return clinician;
 	}
-
-
 	
-    @Override
-    public Clinician getClinicianById(int id) {
-        try (PreparedStatement ps = manager.getConnection().prepareStatement(
-        		"SELECT * FROM clinicians WHERE clinician_id = ?")) {
-
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return new Clinician(
-                	rs.getInt("clinician_id"),
-                    rs.getString("name"),
-                    rs.getString("specialty")
-                );
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
+	@Override
+	public void updateSurname(int clincianId, String surname) {
+	    String sql = "UPDATE Clinicians SET surname = ? WHERE clinician_id = ?";
+	    try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+	        ps.setString(1, surname);
+	        ps.setInt(2, clincianId);
+	        ps.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
 	
-    @Override
-    public void deleteClinician(int id) {
-        try (PreparedStatement ps = manager.getConnection().prepareStatement(
-        		"DELETE FROM clinicians WHERE clinician_id = ?")) {
-            ps.setInt(1, id);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void updateClinician(Clinician cl) {
-        try (PreparedStatement ps = manager.getConnection().prepareStatement(
-        		"UPDATE clinicians SET name=?, specialty=? WHERE clinician_id=?")) {
-            ps.setString(1, cl.getName());
-            ps.setString(2, cl.getSpecialty());
-            ps.setInt(3, cl.getClinicianId());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    */
+	@Override
+	public void updatePhone(int clincianId, Integer phone) {
+	    String sql = "UPDATE Clinicians SET phone = ? WHERE clinician_id = ?";
+	    try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+	        ps.setInt(1, phone);
+	        ps.setInt(2, clincianId);
+	        ps.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	@Override
+	public void updateSpecialty(int clincianId, String specialty) {
+	    String sql = "UPDATE Clinicians SET specialty = ? WHERE clinician_id = ?";
+	    try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+	        ps.setString(1, specialty);
+	        ps.setInt(2, clincianId);
+	        ps.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
         
 }
 

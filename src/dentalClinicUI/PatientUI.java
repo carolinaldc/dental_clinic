@@ -112,31 +112,45 @@ public class PatientUI {
 
             switch (choice) {
                 case 1:
-                    System.out.println("Enter new name (" + patient.getName() + "):");
-                    String newName = reader.readLine();
-                    if (!newName.trim().isEmpty()) {
-                        patientManager.updatePatient(patient.getPatient_id(), "name", newName);
+                	System.out.println("Enter new name (" + patient.getName() + "):");
+                    String newName = reader.readLine().trim();
+                    if (!newName.isEmpty()) {
+                        patientManager.updateName(patient.getPatient_id(), newName);
+                        patient.setName(newName);
                     }
                     break;
                 case 2:
-                    System.out.println("Enter new surname (" + patient.getSurname() + "):");
-                    String newSurname = reader.readLine();
-                    if (!newSurname.trim().isEmpty()) {
-                        patientManager.updatePatient(patient.getPatient_id(), "surname", newSurname);
+                	System.out.println("Enter new surname (" + patient.getSurname() + "):");
+                    String newSurname = reader.readLine().trim();
+                    if (!newSurname.isEmpty()) {
+                        patientManager.updateSurname(patient.getPatient_id(), newSurname);
+                        patient.setSurname(newSurname);
                     }
                     break;
                 case 3:
-                    System.out.println("Enter new phone (" + patient.getPhone() + "):");
-                    String newPhone = reader.readLine();
-                    if (!newPhone.trim().isEmpty()) {
-                        patientManager.updatePatient(patient.getPatient_id(), "phone", newPhone);
+                	System.out.println("Enter new phone (" + patient.getPhone() + "):");
+                    String newPhoneInput = reader.readLine().trim();
+                    if (!newPhoneInput.isEmpty()) {
+                        try {
+                            int newPhone = Integer.parseInt(newPhoneInput);
+                            patientManager.updatePhone(patient.getPatient_id(), newPhone);
+                            patient.setPhone(newPhone); // update local object
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid phone number. Please enter numeric digits only.");
+                        }
                     }
                     break;
                 case 4:
-                    System.out.println("Enter new credit card (" + patient.getCredit_card() + "):");
-                    String newCard = reader.readLine();
-                    if (!newCard.trim().isEmpty()) {
-                        patientManager.updatePatient(patient.getPatient_id(), "credit_card", newCard);
+                	System.out.println("Enter new credit_card (" + patient.getCredit_card() + "):");
+                    String newCreditCardInput = reader.readLine().trim();
+                    if (!newCreditCardInput.isEmpty()) {
+                        try {
+                            int newCreditCard = Integer.parseInt(newCreditCardInput);
+                            patientManager.updatePhone(patient.getPatient_id(), newCreditCard);
+                            patient.setCredit_card(newCreditCard); // update local object
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid phone number. Please enter numeric digits only.");
+                        }
                     }
                     break;
                 case 5:

@@ -165,7 +165,7 @@ public class AppointmentUI {
                 appointmentManager.updateAppointmentComments(appointmentId, newComments);
                 break;
             case 3:
-            	patientManager.getListOfPatients();
+            	patientUI.viewPatientsList();
             	System.out.println("Enter new Patient ID:");
                 int newPatientId = Integer.parseInt(reader.readLine());
                 Patient newPatient = patientManager.getPatientById(newPatientId);
@@ -177,7 +177,7 @@ public class AppointmentUI {
                 }
             	break;
             case 4:
-            	treatmentManager.getListOfTreatments();
+            	treatmentUI.viewTreatmentsList();
             	System.out.println("Enter new Treatment ID:");
                 int newTreatmentId = Integer.parseInt(reader.readLine());
                 Treatment newTreatment = treatmentManager.getTreatmentById(newTreatmentId);
@@ -193,7 +193,6 @@ public class AppointmentUI {
                 return;
             }
             
-            appointmentManager.updateAppointment(appointmentToModify);
             System.out.println("Appointment updated.");
             
             
@@ -222,7 +221,7 @@ public class AppointmentUI {
     		System.out.println("What do you want to modify:");
             System.out.println("1. date");
             System.out.println("2. comments");
-            System.out.println("5. clincian");
+            System.out.println("3. clincian");
             
             int choice = Integer.parseInt(reader.readLine());
             
@@ -239,7 +238,7 @@ public class AppointmentUI {
                 appointmentManager.updateAppointmentComments(appointmentId, newComments);
             	break;
             case 3:
-            	clinicianManager.getListOfClinicians();
+            	clinicianUI.viewCliniciansList();
             	System.out.println("Enter new Clinician ID:");
                 int newClinicianId = Integer.parseInt(reader.readLine());
                 Clinician newClinician = clinicianManager.getClinicianById(newClinicianId);

@@ -135,17 +135,24 @@ public class SupplierUI {
 
             switch (choice) {
                 case 1:
-                    System.out.println("Enter new name (" + supplier.getSupplierName() + "):");
-                    String newName = reader.readLine();
-                    if (!newName.trim().isEmpty()) {
-                    	supplierManager.updateSupplier(supplier.getSupplier_id(), "supplierName", newName);
+                	System.out.println("Enter new name (" + supplier.getSupplierName() + "):");
+                    String newName = reader.readLine().trim();
+                    if (!newName.isEmpty()) {
+                        supplierManager.updateName(supplier.getSupplier_id(), newName);
+                        supplier.setSupplierName(newName);
                     }
                     break;
                 case 2:
-                    System.out.println("Enter new phone (" + supplier.getPhone() + "):");
-                    String newPhone = reader.readLine();
-                    if (!newPhone.trim().isEmpty()) {
-                    	supplierManager.updateSupplier(supplier.getSupplier_id(), "phone", newPhone);
+                	System.out.println("Enter new phone (" + supplier.getPhone() + "):");
+                    String newPhoneInput = reader.readLine().trim();
+                    if (!newPhoneInput.isEmpty()) {
+                        try {
+                            int newPhone = Integer.parseInt(newPhoneInput);
+                            supplierManager.updatePhone(supplier.getSupplier_id(), newPhone);
+                            supplier.setPhone(newPhone); // update local object
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid phone number. Please enter numeric digits only.");
+                        }
                     }
                     break;
                 case 3:

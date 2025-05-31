@@ -6,10 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import dentalClinicIFaces.PatientManager;
-import dentalClinicPOJOS.Clinician;
-import dentalClinicPOJOS.Material;
 import dentalClinicPOJOS.Patient;
-import dentalClinicPOJOS.Treatment;
 import dentalClinicPOJOS.Appointment;
 
 public class JDBCPatientManager implements PatientManager {
@@ -19,6 +16,7 @@ public class JDBCPatientManager implements PatientManager {
         this.manager = manager;
     }
 
+    @Override
     public void addPatient(Patient patient) {
     	
     	String sql = " INSERT INTO Patients (name , surname , dob , phone  , email, credit_card) VALUES (? , ? , ?, ?, ?, ? ) "; 
@@ -44,6 +42,7 @@ public class JDBCPatientManager implements PatientManager {
     }
     
    
+    @Override
 	public void deletePatient (Integer patient_id) {
 		
 		String sql = "DELETE FROM Patients WHERE patient_id=? ";  
@@ -63,7 +62,7 @@ public class JDBCPatientManager implements PatientManager {
 		
 	}
 	
-	
+	@Override
 	public void deletePatientByEmail(String email) {
 		String sql = "DELETE FROM Patients WHERE email = ?";
 		
@@ -80,34 +79,9 @@ public class JDBCPatientManager implements PatientManager {
         }
     }
 	
-	/*
-	public void updatePatient(Integer patient_id) {
-		
-		String sql = "UPDATE FROM Patients name = ? WHERE patient_id = ?" ;
-		
-				
-				try {
-					
-					PreparedStatement ps = manager.getConnection().prepareStatement(sql); 
-					
-					ps.setString(1, "UpdatedName"); 
-					ps.setInt (2, patient_id); 
-					
-					ps.executeUpdate(); 
-					ps.close(); 
-					
-					
-				}catch(SQLException e) {
-					
-					e.printStackTrace(); 
-					
-				}	
-	}
 	
-*/
 
-
-
+	@Override
 	public List <Patient> getListOfPatients(){
 		List<Patient> patients = new ArrayList<Patient>();
 		JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
@@ -143,9 +117,10 @@ public class JDBCPatientManager implements PatientManager {
 		return patients;
 	}
 	
-	
+	@Override
 	public Patient getPatientById(Integer patient_id) {
 	    Patient patient = null;
+	    //JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
 
 	    try {
 	        Statement stmt = manager.getConnection().createStatement();
@@ -160,8 +135,10 @@ public class JDBCPatientManager implements PatientManager {
 	            String email = rs.getString("email");
 	            Integer credit_card = rs.getInt("credit_card");
 
-	            patient = new Patient(name, surname, dob, phone, email, credit_card, new ArrayList<>());
-	            patient.setPatient_id(patient_id);
+	            //List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfClinician(patient_id);
+	            
+	            patient = new Patient(patient_id, name, surname, dob, phone, email, credit_card);
+	            
 	        }
 
 	        rs.close();
@@ -204,9 +181,10 @@ public class JDBCPatientManager implements PatientManager {
 	    }
 	}
     
+	@Override
 	public Patient getPatientByEmail(String email) {
 	    Patient patient = null;
-	    JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
+	    //JDBCAppointmentManager jdbcAppointmentManager = new JDBCAppointmentManager(manager);
 
 	    String sql = "SELECT * FROM Patients WHERE email = ?";
 	    try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
@@ -221,9 +199,9 @@ public class JDBCPatientManager implements PatientManager {
 	            Integer phone = rs.getInt("phone");
 	            Integer credit_card = rs.getInt("credit_card");
 
-	            List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfPatient(patient_id);
+	            //List<Appointment> appointments = jdbcAppointmentManager.getAppointmentOfPatient(patient_id);
 
-	            patient = new Patient(patient_id, name, surname, dob, phone, email, credit_card, appointments);
+	            patient = new Patient(patient_id, name, surname, dob, phone, email, credit_card);
 	        }
 	        rs.close();
 	    } catch (SQLException e) {
@@ -231,163 +209,53 @@ public class JDBCPatientManager implements PatientManager {
 	    }
 	    return patient;
 	}
-
-    /*
-    @Override
-    public void addPatient(Patient p) {
-        String sql = "INSERT INTO patients (name, surname, dob, phone, email, credit_card) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
-        	ps.setString(1, p.getName());
-            ps.setString(2, p.getSurname());
-            ps.setDate(3, p.getDob());
-            ps.setInt(4, p.getPhone());
-            ps.setString(5, p.getEmail());
-            ps.setInt(6, p.getCredit_card());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    
-    //HE creado uno nuevo paracido a lo que hizo katerina en XMLManager y decidimos que queremos
-    @Override
-    public Patient getPatientByid(int id) {
-    	JDBCPatientsClinicianManager jdbcPatientsCliniciansManager = new JDBCPatientsClinicianManager(manager);
-    	JDBCAppointmentManager jdbcPatientsTreatmentsManager = new JDBCAppointmentManager(manager);
-    	Patient patient = null;
-    	try {
-    		Statement stmt = manager.getConnection().createStatement();
-    		String sql =  "SELECT * FROM patients WHERE patient_id=" + id;
-			
-			ResultSet rs= stmt.executeQuery(sql);
-			
-			String name = rs.getString("name");
-			String surname = rs.getString("surname");
-			Date date = rs.getDate("dob"); 
-			Integer phone = rs.getInt("phone");
-			Integer credit_card = rs.getInt("credit_card");
-			String email = rs.getString("email");
-			
-			//DO IT FOR PATIENTCLINICIANS
-            //int clinician_id = rs.getInt("clinician_id");
-            //Clinician clinician = jdbcClinicianManager.getClinicianByid(clinician_id);
-            rs.close();
-			stmt.close();
-			
-			List<Patients_Clinician> patientsClinicians = jdbcPatientsCliniciansManager.getPatientsCliniciansByPatientid(id);
-			List<Appointment> patientstreatments = jdbcPatientsTreatmentsManager.getPatientsTreatmentsByPatientid(id);
-            patient = new Patient(name, surname, date, phone, email, credit_card, patientstreatments, patientsClinicians);
-            
-	        
-	        
 	
-			
-			patient = new Patient(name, surname, date, phone, email, credit_card,patientstreatments,patientsClinicians);
-    	}catch(Exception e) 
-		{
-			e.printStackTrace();
-		}
-    	return patient;
-    }
-    
-    
-    //@Override
-    //public Patient getPatientById(int id) {
-    //   String sql = "SELECT * FROM patients WHERE id = ?";
-    //   try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
-    //      ps.setInt(1, id);
-    //      ResultSet rs = ps.executeQuery();
-    //      if (rs.next()) {
-    //          return new Patient(
-    //             rs.getString("name"),
-    //               rs.getString("surname"),
-    //              rs.getDate("birth_date"),
-    //               rs.getInt("phone"),
-    //               rs.getString("mail"),
-    //               rs.getInt("credit_card")
-    //           );
-    //       }
-    //  } catch (SQLException e) {
-    //       e.printStackTrace();
-    //   }
-    //   return null;
-    //}
+	@Override
+	public void updateName(int patientId, String name) {
+	    String sql = "UPDATE Patients SET name = ? WHERE patient_id = ?";
+	    try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+	        ps.setString(1, name);
+	        ps.setInt(2, patientId);
+	        ps.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	@Override
+	public void updateSurname(int patientId, String surname) {
+	    String sql = "UPDATE Patients SET surname = ? WHERE patient_id = ?";
+	    try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+	        ps.setString(1, surname);
+	        ps.setInt(2, patientId);
+	        ps.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
 
-    @Override
-    public List<Patient> listPatients() {
-        List<Patient> list = new ArrayList<>();
-        String sql = "SELECT * FROM patients";
-        try (Statement st = manager.getConnection().createStatement()) {
-            ResultSet rs = st.executeQuery(sql);
-            while (rs.next()) {
-                Patient p = new Patient(
-                		rs.getString("name"),
-                        rs.getString("surname"),
-                        rs.getDate("dob"),
-                        rs.getInt("phone"),
-                        rs.getString("email"),
-                        rs.getInt("credit_card")
-                );
-                list.add(p);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-
-    @Override
-    public void deletePatient(int id) {
-        String sql = "DELETE FROM patients WHERE patient_id = ?";
-        try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
-            ps.setInt(1, id);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void updatePatient(Patient p) {
-        String sql = "UPDATE patients SET name = ?, surname = ?, dob = ?, phonw = ? , email = ?, credit_card = ?, WHERE patient_id = ?";
-        try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
-        	ps.setString(1, p.getName());
-            ps.setString(2, p.getSurname());
-            ps.setDate(3, p.getDob());
-            ps.setInt(4, p.getPhone());
-            ps.setString(5, p.getEmail());
-            ps.setInt(6, p.getCredit_card());
-            ps.setInt(8,p.getId());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public Patient getPatient(String email) {
-        String sql = "SELECT * FROM patients WHERE email = ?";
-        try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
-            ps.setString(1, email);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                Patient p = new Patient(
-                    rs.getString("name"),
-                    rs.getString("surname"),
-                    rs.getDate("dob"),
-                    rs.getInt("phone"),
-                    rs.getString("email"),
-                    rs.getInt("credit_card")
-                );
-                p.setId(rs.getInt("patient_id")); 
-                return p;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    */
-
+	@Override
+	public void updatePhone(int patientId, Integer phone) {
+	    String sql = "UPDATE Patients SET phone = ? WHERE patient_id = ?";
+	    try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+	        ps.setInt(1, phone);
+	        ps.setInt(2, patientId);
+	        ps.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	@Override
+	public void updateCreditCard(int patientId, Integer credit_card) {
+	    String sql = "UPDATE Patients SET credit_card = ? WHERE patient_id = ?";
+	    try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
+	        ps.setInt(1, credit_card);
+	        ps.setInt(2, patientId);
+	        ps.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
 }
