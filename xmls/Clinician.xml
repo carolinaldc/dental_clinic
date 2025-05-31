@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Clinician specialty="orthodontist">
-    <name>pepa</name>
-    <surname>lopez</surname>
-    <phone>653745623</phone>
-    <email>pepa@gmail.com</email>
+<Clinician specialty="general">
+    <name>paco</name>
+    <surname>Gomez</surname>
+    <phone>658395064</phone>
+    <email>paco@gmail.com</email>
 </Clinician>
