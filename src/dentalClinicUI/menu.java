@@ -564,9 +564,9 @@ public class menu {
 	                case 2:
 	                	//appointmentUI.modifyAppointment();
 	                	if ("Patient".equalsIgnoreCase(role.getDescription())) {
-		                	//appointmentUI.addPatientAppointment();
+		                	appointmentUI.modifyAppointmentPatients(email,role);
 	        	        } else if ("Clinician".equalsIgnoreCase(role.getDescription())) {
-		                	//appointmentUI.addClinicianAppointment();
+		                	appointmentUI.modifyAppointmentClinicians(email,role);
 	        	        }
 	                	//appointmentUI.modifyAppointment();
 	                    break;
