@@ -3,9 +3,9 @@ package dentalClinicUI;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import dentalClinicIFaces.AppointmentManager;
@@ -13,6 +13,7 @@ import dentalClinicIFaces.ClinicianManager;
 import dentalClinicIFaces.MaterialManager;
 import dentalClinicIFaces.PatientManager;
 import dentalClinicIFaces.TreatmentManager;
+import dentalClinicIFaces.UserManager;
 import dentalClinicPOJOS.Appointment;
 import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Patient;
@@ -25,6 +26,7 @@ public class AppointmentUI {
 	private  ClinicianManager clinicianManager;
 	private  TreatmentManager treatmentManager;
 	private  MaterialManager materialManager;
+	private  UserManager usermanager;
 	private  TreatmentUI treatmentUI;
 	private  PatientUI patientUI;
 	private  ClinicianUI clinicianUI;
@@ -44,8 +46,8 @@ public class AppointmentUI {
 		this.patientManager = patientManager;
 		this.clinicianManager = clinicianManager;
 		this.treatmentManager = treatmentManager;
-		this.patientUI = new PatientUI(patientManager);
-		this.clinicianUI = new ClinicianUI(clinicianManager);
+		this.patientUI = new PatientUI(patientManager,usermanager);
+		this.clinicianUI = new ClinicianUI(clinicianManager,usermanager);
 		this.treatmentUI = new TreatmentUI(treatmentManager, materialManager, materialUI, reader);
 		this.reader = reader;
     }
@@ -56,8 +58,8 @@ public class AppointmentUI {
         try {
             System.out.println("Enter appointment date (yyyy-MM-dd):");
             String dateString = reader.readLine();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = sdf.parse(dateString);
+            //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = Date.valueOf(dateString);
 
             System.out.println("Enter comment:");
             String comment = reader.readLine();
@@ -113,7 +115,6 @@ public class AppointmentUI {
                 return;
             }
             
-            
             Appointment appointment = new Appointment(date, comment, patient, treatment, clinician);
             appointmentManager.addAppointment(appointment);
 
@@ -127,7 +128,140 @@ public class AppointmentUI {
         }
     }
 
-  //modifyAppointment();
+    public void modifyAppointmentClinicians(String email, Role role) {
+    
+    	try {
+    		
+    		viewAppointmentsList(email,role); 
+    		
+    		System.out.println("Enter Appointment ID to modify:");
+            int appointmentId = Integer.parseInt(reader.readLine());
+            
+            Appointment appointmentToModify = appointmentManager.getAppointmentById(appointmentId);
+            if (appointmentToModify == null) {
+                System.out.println("No appointment found with that ID.");
+                return;
+            }
+            
+                		
+    		System.out.println("What do you want to modify:");
+            System.out.println("1. date");
+            System.out.println("2. comments");
+            System.out.println("3. patient");
+            System.out.println("4. treatment");
+            
+            int choice = Integer.parseInt(reader.readLine());
+            
+            switch(choice) {
+            case 1:
+            	System.out.println("Enter new date for the appointment (yyyy-MM-dd):");
+                String newDateStr = reader.readLine();
+                Date newDate = java.sql.Date.valueOf(newDateStr);
+                appointmentManager.updateAppointmentDate(appointmentId, newDate);
+                break;
+            case 2:
+            	System.out.println("Enter new comments:");
+                String newComments = reader.readLine();
+                appointmentManager.updateAppointmentComments(appointmentId, newComments);
+                break;
+            case 3:
+            	patientUI.viewPatientsList();
+            	System.out.println("Enter new Patient ID:");
+                int newPatientId = Integer.parseInt(reader.readLine());
+                Patient newPatient = patientManager.getPatientById(newPatientId);
+                if (newPatient != null) {
+                    appointmentManager.updateAppointmentPatient(appointmentId, newPatientId);
+                } else {
+                    System.out.println("Patient not found.");
+                    return;
+                }
+            	break;
+            case 4:
+            	treatmentUI.viewTreatmentsList();
+            	System.out.println("Enter new Treatment ID:");
+                int newTreatmentId = Integer.parseInt(reader.readLine());
+                Treatment newTreatment = treatmentManager.getTreatmentById(newTreatmentId);
+                if (newTreatment != null) {
+                    appointmentManager.updateAppointmentPatient(appointmentId, newTreatmentId);
+                } else {
+                    System.out.println("Treatment not found.");
+                    return;
+                }
+                break;
+            default:
+            	System.out.println("Invalid choice.");
+                return;
+            }
+            
+            System.out.println("Appointment updated.");
+            
+            
+            
+    	}catch (IOException | NumberFormatException e) {
+            System.out.println("Error modifying Appointment.");
+            e.printStackTrace();
+        }
+    }
+    
+    public void modifyAppointmentPatients(String email, Role role) {
+        
+    	try {
+    		
+    		viewAppointmentsList(email,role); 
+    		
+    		System.out.println("Enter Appointment ID to modify:");
+            int appointmentId = Integer.parseInt(reader.readLine());
+            
+            Appointment appointmentToModify = appointmentManager.getAppointmentById(appointmentId);
+            if (appointmentToModify == null) {
+                System.out.println("No appointment found with that ID.");
+                return;
+            }
+    		
+    		System.out.println("What do you want to modify:");
+            System.out.println("1. date");
+            System.out.println("2. comments");
+            System.out.println("3. clincian");
+            
+            int choice = Integer.parseInt(reader.readLine());
+            
+            switch(choice) {
+            case 1:
+            	System.out.println("Enter new date for the appointment (yyyy-MM-dd):");
+                String newDateStr = reader.readLine();
+                Date newDate = java.sql.Date.valueOf(newDateStr);
+                appointmentManager.updateAppointmentDate(appointmentId, newDate);
+            	break;
+            case 2:
+            	System.out.println("Enter new comments:");
+                String newComments = reader.readLine();
+                appointmentManager.updateAppointmentComments(appointmentId, newComments);
+            	break;
+            case 3:
+            	clinicianUI.viewCliniciansList();
+            	System.out.println("Enter new Clinician ID:");
+                int newClinicianId = Integer.parseInt(reader.readLine());
+                Clinician newClinician = clinicianManager.getClinicianById(newClinicianId);
+                if (newClinician != null) {
+                    appointmentManager.updateAppointmentClinician(appointmentId, newClinicianId);
+                } else {
+                    System.out.println("Clinician not found.");
+                    return;
+                }
+            	break;
+            default:
+            	System.out.println("Invalid choice.");
+                return;
+            }
+            
+            System.out.println("Appointment updated.");
+            
+    	}catch (IOException | NumberFormatException e) {
+            System.out.println("Error modifying Appointment.");
+            e.printStackTrace();
+        }
+    }
+    
 
     public void deleteAppointment(String email, Role role) { 
         try {

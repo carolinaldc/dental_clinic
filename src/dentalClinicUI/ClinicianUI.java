@@ -1,9 +1,11 @@
 package dentalClinicUI;
 
 import dentalClinicIFaces.ClinicianManager;
+import dentalClinicIFaces.UserManager;
 import dentalClinicPOJOS.Appointment;
 import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Patient;
+import dentalClinicPOJOS.User;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,10 +16,12 @@ import java.util.List;
 public class ClinicianUI {
     private ClinicianManager clinicianManager;
     private Clinician currentClinician;
+    private UserManager usermanager;
     private BufferedReader reader;
 
-    public ClinicianUI(ClinicianManager clinicianManager) {
+    public ClinicianUI(ClinicianManager clinicianManager, UserManager usermanager) {
         this.clinicianManager = clinicianManager;
+        this.usermanager = usermanager;
         this.reader = new BufferedReader(new InputStreamReader(System.in));
     }
     
@@ -96,36 +100,85 @@ public class ClinicianUI {
             System.out.println("2. Surname");
             System.out.println("3. Phone");
             System.out.println("4. Specialty");
+            System.out.println("5. Email");
+            System.out.println("6. Password");
+            
 
             int choice = Integer.parseInt(reader.readLine());
 
             switch (choice) {
                 case 1:
-                    System.out.println("Enter new name (" + clinician.getName() + "):");
-                    String newName = reader.readLine();
-                    if (!newName.trim().isEmpty()) {
-                        clinicianManager.updateClinician(clinician.getClinician_id(), "name", newName);
+                	System.out.println("Enter new name (" + clinician.getName() + "):");
+                    String newName = reader.readLine().trim();
+                    if (!newName.isEmpty()) {
+                        clinicianManager.updateName(clinician.getClinician_id(), newName);
+                        clinician.setName(newName);
                     }
                     break;
                 case 2:
-                    System.out.println("Enter new surname (" + clinician.getSurname() + "):");
-                    String newSurname = reader.readLine();
-                    if (!newSurname.trim().isEmpty()) {
-                        clinicianManager.updateClinician(clinician.getClinician_id(), "surname", newSurname);
+                	System.out.println("Enter new surname (" + clinician.getSurname() + "):");
+                    String newSurname = reader.readLine().trim();
+                    if (!newSurname.isEmpty()) {
+                        clinicianManager.updateSurname(clinician.getClinician_id(), newSurname);
+                        clinician.setSurname(newSurname);
                     }
                     break;
                 case 3:
-                    System.out.println("Enter new phone (" + clinician.getPhone() + "):");
-                    String newPhone = reader.readLine();
-                    if (!newPhone.trim().isEmpty()) {
-                        clinicianManager.updateClinician(clinician.getClinician_id(), "phone", newPhone);
+                	System.out.println("Enter new phone (" + clinician.getPhone() + "):");
+                    String newPhoneInput = reader.readLine().trim();
+                    if (!newPhoneInput.isEmpty()) {
+                        try {
+                            int newPhone = Integer.parseInt(newPhoneInput);
+                            clinicianManager.updatePhone(clinician.getClinician_id(), newPhone);
+                            clinician.setPhone(newPhone); // update local object
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid phone number. Please enter numeric digits only.");
+                        }
                     }
                     break;
                 case 4:
-                    System.out.println("Enter new specialty (" + clinician.getSpecialty() + "):");
-                    String newSpecialty = reader.readLine();
-                    if (!newSpecialty.trim().isEmpty()) {
-                        clinicianManager.updateClinician(clinician.getClinician_id(), "specialty", newSpecialty);
+                	System.out.println("Enter new specialty (" + clinician.getSpecialty() + "):");
+                    String newSpecialty = reader.readLine().trim();
+                    if (!newSpecialty.isEmpty()) {
+                        clinicianManager.updateSpecialty(clinician.getClinician_id(), newSpecialty);
+                        clinician.setSpeciality(newSpecialty);
+                    }
+                    break;
+                case 5:
+                	System.out.println("Enter new email (" + clinician.getEmail() + "):");
+                    String newEmail = reader.readLine();
+
+                    if (!newEmail.trim().isEmpty()) {
+                        // Check if email already exists
+                        if (usermanager.getUserByEmail(newEmail) != null) {
+                            System.out.println("Email already in use. Try a different one.");
+                        } else {
+                            // Update in the users table
+                            User u = usermanager.getUserByEmail(clinician.getEmail());
+                            usermanager.changeEmail(u, newEmail);  
+
+                            clinician.setEmail(newEmail);
+                            clinicianManager.updateClinicianEmail(clinician.getClinician_id(), newEmail);
+                            
+                            currentClinician = clinician;
+                            System.out.println("Email updated successfully.");
+                        }
+                    }
+                    break;
+                case 6:
+                	System.out.println("Enter new password:");
+                    String newPassword = reader.readLine();
+                    
+                    if (!newPassword.trim().isEmpty()) {
+                        User u = usermanager.getUserByEmail(clinician.getEmail());
+                        if (u != null) {
+                            usermanager.changePassword(u, newPassword);
+                            System.out.println("Password updated successfully.");
+                        } else {
+                            System.out.println("User not found.");
+                        }
+                    } else {
+                        System.out.println("Password cannot be empty.");
                     }
                     break;
                 default:

@@ -1,8 +1,7 @@
 package dentalClinicPOJOS;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import java.sql.Date;
 import java.util.Objects;
 
 public class Appointment implements Serializable {
@@ -34,8 +33,7 @@ public class Appointment implements Serializable {
 	}
 
 
-	public Appointment(Date date, String comment, Patient patient, Treatment treatment,
-			Clinician clinician) {
+	public Appointment(Date date, String comment, Patient patient, Treatment treatment, Clinician clinician) {
 		super();
 		this.date = date;
 		this.comments = comment;

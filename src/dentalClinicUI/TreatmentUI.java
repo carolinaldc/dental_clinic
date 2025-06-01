@@ -134,7 +134,7 @@ public class TreatmentUI {
     			            System.out.println("Enter new materials for the treatment:");
     			            List<Material> selectedMaterials = new ArrayList<>();
 
-    			            materialUI.viewMaterialsList();
+    			            materialUI.viewAllMaterialsList();
     			            System.out.println("Enter the IDs of the materials to use (comma separated), or leave blank to skip:");
     			            String input = reader.readLine();
 
@@ -157,6 +157,10 @@ public class TreatmentUI {
     			            treatmentToModify.setMaterials(selectedMaterials);
     						break;
     				}
+    				
+    				treatmentManager.updateTreatment(treatmentToModify);
+    	            System.out.println("Treatment updated successfully.");
+    				
         		}catch(Exception e){
         			e.printStackTrace();
         		}

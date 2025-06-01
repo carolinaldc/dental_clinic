@@ -1,7 +1,5 @@
 package dentalClinicJDBC;
 
-import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,53 +9,28 @@ import java.util.Arrays;
 import java.util.List;
 
 import dentalClinicIFaces.MaterialManager;
-import dentalClinicPOJOS.Appointment;
-import dentalClinicPOJOS.Clinician;
 import dentalClinicPOJOS.Material;
-import dentalClinicPOJOS.Patient;
 import dentalClinicPOJOS.Supplier;
-import dentalClinicPOJOS.Treatment;
 
 public class JDBCMaterialManager implements MaterialManager {
     
-	//private Connection c;
 	private JDBCManager manager;
 
     public JDBCMaterialManager(JDBCManager connectionManager) {
         this.manager = connectionManager;
-        //this.c = connectionManager.getConnection();
     }
 
+    @Override
     public void addMaterial(Material material) {
         String sql = "INSERT INTO Materials (supplier_id, name) VALUES (?, ?)";
 
         try {
-            PreparedStatement ps = manager.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = manager.getConnection().prepareStatement(sql);
             ps.setInt(1, material.getSupplier().getSupplier_id());
             ps.setString(2, material.getName());
-
-            int affectedRows = ps.executeUpdate();
-
-            if (affectedRows == 0) {
-                throw new SQLException("Creating material failed, no rows affected.");
-            }
-
-            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    int materialId = generatedKeys.getInt(1);
-                    material.setMaterials_id(materialId);  // Set generated ID back to your object
-
-                    if (material.getTreatments() != null) {
-                        for (Treatment treatment : material.getTreatments()) {
-                            linkMaterialToTreatment(materialId, treatment.getTreatment_id());
-                        }
-                    }
-                } else {
-                    throw new SQLException("Creating material failed, no ID obtained.");
-                }
-            }
-
-            ps.close();
+            
+            ps.executeUpdate();
+	        ps.close();
 
         } catch (SQLException e) {
             System.out.println("Error inserting material");
@@ -66,7 +39,8 @@ public class JDBCMaterialManager implements MaterialManager {
     }
 
 
-
+    /*
+    @Override
     public void linkMaterialToTreatment(int materialId, int treatmentId) {
         String sql = "INSERT INTO Treatment_materials (materials_id, treatment_id) VALUES (?, ?)";
         try {
@@ -80,24 +54,10 @@ public class JDBCMaterialManager implements MaterialManager {
             e.printStackTrace();
         }
     }
-
-/*
-    public void assignMaterialToSupplier(int materialId, int supplierId) {
-        String sql = "UPDATE Materials SET supplier_id = ? WHERE material_id = ?";
-
-        try (PreparedStatement ps = manager.getConnection().prepareStatement(sql)) {
-            ps.setInt(1, supplierId);
-            ps.setInt(2, materialId);
-            ps.executeUpdate();
-            System.out.println("Material assigned to supplier successfully.");
-        } catch (SQLException e) {
-            System.out.println("Error assigning material to supplier.");
-            e.printStackTrace();
-        }
-    }
     */
 
-    
+
+    @Override
 	public void deleteMaterial(Integer material_id) {
 		
 		String sql = "DELETE FROM Materials WHERE materials_id = ? "; 
@@ -116,6 +76,8 @@ public class JDBCMaterialManager implements MaterialManager {
 		}
 		
 	}
+    
+    @Override
 	public void updateMaterial(Integer material_id, String fieldName, String value) {
 	    List<String> allowedFields = Arrays.asList("name");
 
@@ -134,10 +96,9 @@ public class JDBCMaterialManager implements MaterialManager {
 	    }
 	}
 
-	
+	@Override
 	public List<Material> getListOfTreatment_Materials(Integer treatment_id){
 		List<Material> materials = new ArrayList<Material>();
-        JDBCSupplierManager jdbcSupplierManager = new JDBCSupplierManager(manager);
         JDBCMaterialManager jdbcMaterialManager = new JDBCMaterialManager(manager);
         
 		try {
@@ -163,9 +124,9 @@ public class JDBCMaterialManager implements MaterialManager {
 		return materials;
 	}
 	
+	@Override
 	public List<Material> getListOfAllMaterials() {
 	    List<Material> materials = new ArrayList<>();
-	    JDBCSupplierManager jdbcSupplierManager = new JDBCSupplierManager(manager);
 	    JDBCMaterialManager jdbcMaterialManager = new JDBCMaterialManager(manager);
 
 	    try {
@@ -190,25 +151,33 @@ public class JDBCMaterialManager implements MaterialManager {
 	}
 
 	
+	@Override
 	public List<Material> getListOfSupplier_Materials(Integer supplier_id) {
 	    List<Material> materials = new ArrayList<>();
-
+	  
 	    try {
 	        if (manager == null) {
 	            throw new IllegalStateException("JDBCManager is null");
 	        }
 
 	        Statement stmt = manager.getConnection().createStatement();
-	        String sql = "SELECT * FROM Materials WHERE supplier_id = " + supplier_id;
+	       
+	        String sql = "SELECT Materials.materials_id, Materials.name, Suppliers.supplier_id, Suppliers.supplierName, Suppliers.phone, Suppliers.email FROM Materials JOIN Suppliers ON Materials.supplier_id = Suppliers.supplier_id WHERE Suppliers.supplier_id = " + supplier_id;
+	        
 	        ResultSet rs = stmt.executeQuery(sql);
 
 	        while (rs.next()) {
-	            String name = rs.getString("name");
+	            
+	            int materialId = rs.getInt("materials_id");
+	            String materialName = rs.getString("name");
 
-	            Supplier supplier = new Supplier();
-	            supplier.setSupplier_id(supplier_id); 
+	            String supName = rs.getString("supplierName");
+	            int phone = rs.getInt("phone");
+	            String email = rs.getString("email");
 
-	            Material material = new Material(name, supplier);
+	            Supplier supplier = new Supplier(supplier_id, supName, phone, email);
+	            Material material = new Material(materialId, materialName, supplier);
+
 	            materials.add(material);
 	        }
 
@@ -222,6 +191,7 @@ public class JDBCMaterialManager implements MaterialManager {
 	    return materials;
 	}
 
+	@Override
 	public Material getMaterialByid(Integer material_id) {
 		Material material = null;
 		JDBCSupplierManager jdbcSupplierManager = new JDBCSupplierManager(manager);
@@ -250,134 +220,5 @@ public class JDBCMaterialManager implements MaterialManager {
 		
 	}
 
-	
-    /*
-    @Override 
-    public void addMaterial(Material material) {
-        try {
-            String sql = "INSERT INTO materials (name, stock) VALUES (?, ?)";
-            PreparedStatement ps = conMan.getConnection().prepareStatement(sql);
-            ps.setString(1, material.getName());
-            ps.setInt(2, material.getStock());
-            ps.executeUpdate();
-            ps.close();
-            
-  
-        } catch (SQLException e) {
-            System.out.println("Error inserting material");
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public List<Material> getAllMaterials() {
-        List<Material> materials = new ArrayList<>();
-        try {
-           
-            String sql = "SELECT material_id, name, stock FROM materials";
-
-            PreparedStatement ps = conMan.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            
-            while (rs.next()) {
-                
-                int id = rs.getInt("material_id");  
-                String name = rs.getString("name");
-                int stock = rs.getInt("stock");
-
-                
-                Material material = new Material(id, name, stock);
-                materials.add(material);
-            }
-            
-            rs.close();
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println("Error retrieving materials");
-            e.printStackTrace();
-        }
-        return materials;
-    }
-    
-    @Override
-    public List<Material> getAllMaterialsById(int idTreatment) {
-        List<Material> materials = new ArrayList<>();
-        try {
-           
-            String sql = "SELECT * FROM materials WHERE treatment_id =" + idTreatment;
-            
-
-            PreparedStatement ps = conMan.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            
-            while (rs.next()) {
-                
-                int id = rs.getInt("material_id");  
-                String name = rs.getString("name");
-                int stock = rs.getInt("stock");
-
-                
-                Material material = new Material(id, name, stock);
-                materials.add(material);
-            }
-            
-            rs.close();
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println("Error retrieving materials");
-            e.printStackTrace();
-        }
-        return materials;
-    }
-
-    
-
-    
-
-    @Override
-    public void updateMaterial(Material material) {
-        try {
-            String sql = "UPDATE materials SET material_name = ?, quantity = ?, supplier_id = ? WHERE material_id = ?";
-            PreparedStatement ps = conMan.getConnection().prepareStatement(sql);
-            ps.setString(1, material.getName());
-            ps.setInt(2, material.getStock());
-           
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println("Error updating material");
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void deleteMaterial(int materialId) {
-        try {
-            String sql = "DELETE FROM materials WHERE material_id = ?";
-            PreparedStatement ps = conMan.getConnection().prepareStatement(sql);
-            ps.setInt(1, materialId);
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println("Error deleting material");
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void linkMaterialToTreatment(int materialId, int treatmentId) {
-        try {
-            String sql = "INSERT INTO treatment_material (treatment_id, material_id) VALUES (?, ?)";
-            PreparedStatement ps = conMan.getConnection().prepareStatement(sql);
-            ps.setInt(1, treatmentId);
-            ps.setInt(2, materialId);
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e) {
-            System.out.println("Error linking material to treatment");
-            e.printStackTrace();
-        }
-    }
-*/
     
 }

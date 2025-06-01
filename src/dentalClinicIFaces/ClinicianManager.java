@@ -17,5 +17,10 @@ public interface ClinicianManager {
 	public Clinician getClinicianByEmail(String email);
 	public List<Clinician> getListOfClinicians();
 	void deleteClinicianByEmail(String email);
+	void updateClinicianEmail(int clinicianId, String newEmail);
+	void updateName(int clincianId, String name);
+	void updateSurname(int clincianId, String surname);
+	void updatePhone(int clincianId, Integer phone);
+	void updateSpecialty(int clincianId, String specialty);
 }
 

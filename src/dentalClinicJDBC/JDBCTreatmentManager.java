@@ -12,42 +12,47 @@ import dentalClinicPOJOS.Treatment;
 
 public class JDBCTreatmentManager implements TreatmentManager {
 
-    //private Connection c;
     private JDBCManager manager;
 
     public JDBCTreatmentManager(JDBCManager connectionManager) {
         this.manager = connectionManager;
-        //this.c = connectionManager.getConnection();
     }
     
+    
+    @Override
     public void addTreatment(Treatment treatment) {
-        String sql = "INSERT INTO Treatments (name, description, price) VALUES (?, ?, ?)";
+    	String sql = "INSERT INTO Treatments (name, description, price) VALUES (?, ?, ?)";
+        ResultSet generatedKeys = null;
+
         try (PreparedStatement ps = manager.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, treatment.getName());
             ps.setString(2, treatment.getDescription());
             ps.setInt(3, treatment.getPrice());
             ps.executeUpdate();
 
-            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    int treatmentId = generatedKeys.getInt(1);
-                    treatment.setTreatment_id(treatmentId);
-                }
-            }
+            generatedKeys = ps.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int treatmentId = generatedKeys.getInt(1);
+                treatment.setTreatment_id(treatmentId);  // Save for future use
 
-            String sqlMaterials = "INSERT INTO Treatment_materials (materials_id, treatment_id) VALUES (?, ?)";
-            try (PreparedStatement psMat = manager.getConnection().prepareStatement(sqlMaterials)) {
+                // Now link materials
+                JDBCTreatmentMaterialsManager treatmentMaterialsManager = new JDBCTreatmentMaterialsManager(manager);
                 for (Material material : treatment.getMaterials()) {
-                	psMat.setInt(1, material.getMaterials_id()); 
-                	psMat.setInt(2, treatment.getTreatment_id());
-                    psMat.addBatch();
+                    treatmentMaterialsManager.linkMaterialToTreatment(material.getMaterials_id(), treatmentId);
                 }
-                psMat.executeBatch();
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (generatedKeys != null) generatedKeys.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+    
+        
     }
 
     
@@ -61,16 +66,20 @@ public class JDBCTreatmentManager implements TreatmentManager {
         }
 	}
 	
-	public void updateTreatment(Integer treatment_id) {
-		String sql = "UPDATE Treatments SET name = ?, description = ?, price = ? WHERE treatment_id = ?";
-
+	@Override
+	public void updateTreatment(Treatment treatment) {
+		
+		String updatesql = "UPDATE Treatments SET name = ?, description = ?, price = ? WHERE treatment_id = ?";
+		String deleteMaterialsSQL = "DELETE FROM Treatment_Materials WHERE treatment_id = ?";
+	    String insertMaterialSQL = "INSERT INTO Treatment_Materials (treatment_id, materials_id) VALUES (?, ?)";
+		
 	    try {
-	        PreparedStatement ps = manager.getConnection().prepareStatement(sql);
+	        PreparedStatement ps = manager.getConnection().prepareStatement(updatesql);
 
-	        ps.setString(1, "UpdatedName");
-	        ps.setString(2, "Updated description");
-	        ps.setInt(3, 100);
-	        ps.setInt(4, treatment_id);
+	        ps.setString(1, treatment.getName());
+	        ps.setString(2, treatment.getDescription());
+	        ps.setInt(3, treatment.getPrice());
+	        ps.setInt(4, treatment.getTreatment_id());
 
 	        ps.executeUpdate();
 	        ps.close();
@@ -78,6 +87,31 @@ public class JDBCTreatmentManager implements TreatmentManager {
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
+	    
+	    try {
+	    	PreparedStatement ps = manager.getConnection().prepareStatement(deleteMaterialsSQL);
+	    	ps.setInt(1, treatment.getTreatment_id());
+            ps.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } 
+	    
+	    try {
+	    	PreparedStatement ps = manager.getConnection().prepareStatement(insertMaterialSQL);
+	    	
+	    	for (Material material : treatment.getMaterials()) {
+                ps.setInt(1, treatment.getTreatment_id());
+                ps.setInt(2, material.getMaterials_id());
+                ps.addBatch(); // Batch insertion
+            }
+            ps.executeBatch();
+	    	
+	    	
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } 
+	    
+	    
 	}
 	
 	public List <Treatment> getListOfTreatments(){
@@ -141,7 +175,7 @@ public class JDBCTreatmentManager implements TreatmentManager {
 	    return treatment;
 	}
 
-	
+	/*
 	public List<Treatment> getTreatmentsOfMaterial(Integer material_id) {
 	    List<Treatment> treatments = new ArrayList<>();
 
@@ -165,6 +199,7 @@ public class JDBCTreatmentManager implements TreatmentManager {
 
 	    return treatments;
 	}
+	*/
 
     
     /*

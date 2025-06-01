@@ -52,6 +52,13 @@ public class Material implements Serializable{
 		this.name = name;
 		this.supplier = supplier;
 	}
+	
+	public Material(Integer material_id, String name, Supplier supplier) {
+		super();
+		this.materials_id = material_id;
+		this.name = name;
+		this.supplier = supplier;
+	}
 
 
 	public Integer getMaterials_id() {

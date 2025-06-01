@@ -15,5 +15,5 @@ public interface MaterialManager {
 	public List<Material> getListOfTreatment_Materials(Integer treatment_id);
 	public List<Material> getListOfAllMaterials();
 	
-	public void linkMaterialToTreatment(int materialId, int treatmentId);
+	//public void linkMaterialToTreatment(int materialId, int treatmentId);
 }

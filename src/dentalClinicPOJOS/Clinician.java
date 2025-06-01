@@ -63,6 +63,18 @@ public class Clinician implements Serializable {
 			this.email = email;
 			this.appointments = appointments;
 		}
+		
+		public Clinician(Integer clinician_id, String name, String surname, String speciality, Integer phone,
+				String email) {
+			super();
+			this.clinician_id = clinician_id;
+			this.name = name;
+			this.surname = surname;
+			this.specialty = speciality;
+			this.phone = phone;
+			this.email = email;
+			
+		}
 
 		public Integer getClinician_id() {
 			return clinician_id;
