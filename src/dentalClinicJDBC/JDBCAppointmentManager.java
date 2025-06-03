@@ -44,6 +44,18 @@ public class JDBCAppointmentManager implements AppointmentManager {
 	        e.printStackTrace();
 	    }
 	}
+	
+	@Override
+	public boolean isClinicianAvailable(int clinicianId, Date date) {
+    	
+        List<Appointment> appointments = getAppointmentOfClinician(clinicianId);
+        for (Appointment a : appointments) {
+            if (a.getDate().equals(date)) {
+                return false; // Conflict found
+            }
+        }
+        return true; // No conflict
+    }
 
 	@Override
 	public List<Appointment> getListOfAppointments(String email, Role role) {

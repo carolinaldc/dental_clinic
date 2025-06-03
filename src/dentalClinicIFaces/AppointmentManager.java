@@ -20,4 +20,5 @@ public interface AppointmentManager {
 	void updateAppointmentTreatment(int appointmentId, int treatmentId);
 	void updateAppointmentClinician(int appointmentId, int clinicianId);
 	List<Appointment> getListOfAppointments(String email, Role role);
+	boolean isClinicianAvailable(int clinicianId, Date date);
 }
