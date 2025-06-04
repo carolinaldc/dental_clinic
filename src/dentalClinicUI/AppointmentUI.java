@@ -115,6 +115,11 @@ public class AppointmentUI {
                 return;
             }
             
+            if (!appointmentManager.isClinicianAvailable(clinician.getClinician_id(), date)) {
+                System.out.println("This clinician already has an appointment on " + date + ". Please choose another time.");
+                return;
+            }
+            
             Appointment appointment = new Appointment(date, comment, patient, treatment, clinician);
             appointmentManager.addAppointment(appointment);
 
@@ -127,6 +132,7 @@ public class AppointmentUI {
             System.out.println("Invalid number format.");
         }
     }
+    
 
     public void modifyAppointmentClinicians(String email, Role role) {
     
