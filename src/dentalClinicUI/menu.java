@@ -212,66 +212,7 @@ public class menu {
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }}
-	/*
-	public static void registerPage() {
-	    System.out.println("\nRegister as:");
-	    System.out.println("1. Patient");
-	    System.out.println("2. Clinician");
-	    System.out.println("3. Supplier");
-
-	    try {
-	        String input = reader.readLine();
-	        int userType;
-
-	        try {
-	            userType = Integer.parseInt(input);
-	        } catch (NumberFormatException e) {
-	            System.out.println("Invalid input. Please enter 1 for Patient, 2 for Clinician or 3 for Supplier");
-	            registerPage(); 
-	            return;
-	        }
-
-	        System.out.println("Introduce mail:");
-	        String email = reader.readLine();
-	        System.out.println("Introduce password:");
-	        String password = reader.readLine();
-
-	        try {
-	        	Role role = usermanager.getRole(userType);
-
-	        	boolean success = createUser(email, password, role);
-	        	if (!success) {
-	        	    System.out.println("Email already registered. Please try again.");
-	        	    registerPage(); // retry registration
-	        	    return;
-	        	}
-
-	        	if (userType == 1) {
-	        		patientUI.addPatient(email); 
-	        	    Patient patient = patientManager.getPatientByEmail(email);
-	        	    if (patient != null) {
-	        	    	patientUI.setCurrentPatient(patient);
-	        	        patientMenu(email, role);
-	        	    } else {
-	        	        System.out.println("Error: Could not find newly added patient.");
-	        	    }
-	        	}else if(userType == 2){
-	        		clinicianUI.addClinician(email);
-	        		clinicianMenu(email, role);
-	        	} else if(userType == 3) {
-	        		supplierUI.addSupplier(email);
-	        		supplierMenu(email, role);
-	        	}
-	        }catch(Exception e) {
-	        	System.out.println("Error during registration.");
-	        	e.printStackTrace();
-	        }
-
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	}
-	*/
+	
 	
 	public static void patientMenu(String email, Role role) {
 		System.out.println("\nPatient menu");
